@@ -1,0 +1,138 @@
+@import "tailwindcss";
+
+/* ───────── Design tokens (Figma: 💻웹사이트 2026 › 개발 최종 › Color / Typography Specimen) ───────── */
+@theme {
+  /* Core palette */
+  --color-core-deep-purple: #443082;
+  --color-core-violet: #8b6acd;
+  --color-core-electric-blue: #344ead;
+  --color-core-teal: #83bdd5;
+  --color-core-seafoam: #9ec9ab;
+  --color-core-sunlight: #e2bc5f;
+  --color-core-coral-orange: #e4624d;
+  --color-core-coral-pink: #d3558e;
+
+  /* Neutral */
+  --color-neutral-0: #ffffff;
+  --color-neutral-100: #e6e6e6;
+  --color-neutral-300: #b3b3b3;
+  --color-neutral-500: #666666;
+  --color-neutral-700: #333333;
+  --color-neutral-900: #000000;
+
+  /* Semantic */
+  --color-bg: var(--color-neutral-0);
+  --color-bg-subtle: var(--color-neutral-100);
+  --color-bg-inverse: var(--color-neutral-900);
+  --color-fg: var(--color-neutral-900);
+  --color-fg-secondary: var(--color-neutral-700);
+  --color-fg-tertiary: var(--color-neutral-500);
+  --color-fg-inverse: var(--color-neutral-0);
+  --color-border-subtle: var(--color-neutral-100);
+  --color-border: var(--color-neutral-300);
+  --color-border-strong: var(--color-neutral-500);
+  --color-brand: var(--color-core-deep-purple);
+  --color-brand-secondary: var(--color-core-violet);
+
+  /* Fonts — 영문 Plus Jakarta Sans 우선, 한글은 Pretendard로 폴백 */
+  --font-sans: var(--font-jakarta), var(--font-pretendard), system-ui, sans-serif;
+  --font-kr: var(--font-pretendard), system-ui, sans-serif;
+
+  /* Type ramp (Figma Typography/EN) */
+  --text-h1: 40px;
+  --text-h1--line-height: 48px;
+  --text-h1--font-weight: 700;
+  --text-h2: 32px;
+  --text-h2--line-height: 40px;
+  --text-h2--font-weight: 500;
+  --text-body: 16px;
+  --text-body--line-height: 26px;
+  --text-body-sm: 14px;
+  --text-body-sm--line-height: 22px;
+  --text-label: 14px;
+  --text-label--line-height: 20px;
+  --text-label--font-weight: 600;
+  --text-caption: 12px;
+  --text-caption--line-height: 18px;
+  --text-caption--font-weight: 500;
+
+  /* Grid (1920 × 1080 기준, 마진 24 / 거터 16) */
+  --spacing-margin: 24px;
+  --spacing-gutter: 16px;
+
+  /* Motion */
+  --ease-flow: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ───────── Base ───────── */
+@layer base {
+  html {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    word-break: keep-all;
+  }
+
+  /* 마우스가 있는 기기에서만 기본 커서 숨김 (커스텀 십자 커서 사용) */
+  @media (hover: hover) and (pointer: fine) {
+    html.has-custom-cursor,
+    html.has-custom-cursor * {
+      cursor: none !important;
+    }
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+}
+
+/* 12컬럼 페이지 그리드 */
+@utility page-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--spacing-gutter);
+  padding-inline: var(--spacing-margin);
+}
+
+/* 썸네일 무한 루프 (홈 분야별 / Works 상세 Others) */
+@utility marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--marquee-duration, 60s) linear infinite;
+  animation-direction: var(--marquee-direction, normal);
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ───────── Lenis ───────── */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ───────── 모션 줄이기 설정 존중 ───────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

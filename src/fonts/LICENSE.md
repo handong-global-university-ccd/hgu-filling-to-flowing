@@ -1,0 +1,2 @@
+- PretendardVariable.woff2 — Pretendard, SIL Open Font License 1.1 (https://github.com/orioncactus/pretendard)
+- PlusJakartaSans-Variable.woff2 — Plus Jakarta Sans (latin), SIL Open Font License 1.1 (https://github.com/tokotype/PlusJakartaSans)
