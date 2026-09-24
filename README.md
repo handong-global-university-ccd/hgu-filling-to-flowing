@@ -95,16 +95,24 @@ thumbnails: ["/media/works/generative-future/thumb-a.webp", "..."];
 `main` 에 push 하면 프로덕션이 갱신되고, PR 을 올리면 그 브랜치 전용 프리뷰 URL 이 자동으로 생긴다.
 미디어는 git 에 들어가지 않으므로 push 해도 올라가지 않는다 — 파일을 받을 때마다 따로 업로드할 것.
 
-### Cloudflare Pages 설정 (최초 1회)
+### Cloudflare 설정 (최초 1회)
 
-1. 대시보드 → Workers & Pages → Create → Pages → Connect to Git
+1. 대시보드 → Workers & Pages → Create → Connect to Git
 2. `handong-global-university-ccd/hgu-filling-to-flowing` 선택
 3. 빌드 설정
    - Build command: `npm run build`
-   - Build output directory: `out`
+   - Deploy command: `npx wrangler deploy`
+   - Root directory: `/`
    - Node 버전은 `.nvmrc`(22) 를 자동으로 따른다
-4. Settings → Environment variables 에 `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_ASSET_URL` 등록
-   (Production / Preview 양쪽 모두)
+4. Settings → Variables 에 `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_ASSET_URL` 등록
+   (Production / Preview 양쪽 모두. 비워두면 `public/` 을 그대로 사용한다)
+
+배포 동작은 레포의 `wrangler.jsonc` 가 결정한다 — `out/` 을 정적 에셋으로 올리고
+`main` 필드가 없으므로 서버 코드는 배포되지 않는다.
+
+> **`wrangler.jsonc` 를 지우지 말 것.** 이 파일이 없으면 Cloudflare 가 Next.js 프로젝트로 감지해
+> `@opennextjs/cloudflare migrate` 를 자동 실행한다. OpenNext 는 서버 렌더링 Next.js 용 어댑터라
+> `output: "export"` 인 이 프로젝트와는 맞지 않고 빌드가 실패한다.
 
 ### R2 설정 (최초 1회)
 

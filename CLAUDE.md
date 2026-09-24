@@ -40,7 +40,8 @@
 
 ## 배포
 
-- 사이트: Cloudflare Pages — `main` push 시 자동 빌드(`npm run build` → `out/`), PR 마다 프리뷰 URL
+- 사이트: Cloudflare Workers 정적 에셋 — `main` push 시 자동 빌드(`npm run build` → `out/`) 후 `npx wrangler deploy`
+- 배포 설정은 `wrangler.jsonc`. 이 파일을 지우면 Cloudflare 가 OpenNext 자동 변환을 걸어 빌드가 깨진다
 - 미디어: Cloudflare R2 — `npm run upload:media` 로 직접 업로드 (git 에 들어가지 않음)
 - 최초 세팅 절차는 README 의 "배포" 참고
 
