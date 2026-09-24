@@ -45,3 +45,8 @@ next-env.d.ts
 
 # 영상 원본(인코딩 전)은 커밋하지 않기
 media-src/
+
+# 영상·사진은 R2에 올린다 — 레포에 커밋하지 않음 (폴더 구조만 .gitkeep 으로 유지)
+/public/media/**
+!/public/media/**/
+!/public/media/**/.gitkeep

@@ -22,7 +22,13 @@
 ## 규칙
 
 - 색·폰트 크기는 하드코딩하지 말고 토큰 클래스 사용 (`text-fg-tertiary`, `text-body-sm`, `bg-bg-inverse` …)
-- 이미지·영상 경로는 항상 `asset()` 으로 감싸기 (CDN 전환 대비)
+- 이미지·영상 경로는 항상 `asset()` 으로 감싸기
+- 영상·사진은 `public/media/` 에 두고 **커밋하지 않는다** (R2 로 업로드)
+- R2 로 갈 파일은 전부 `public/media/` 아래. 데이터에도 `/media/...` 로 적는다
+  (`works/<slug>/`, `designers/<slug>/`, `archive/behind/`, `intro/`)
+- 이 규칙은 `.gitignore` · `scripts/upload-media.sh` · `src/lib/asset.ts` 세 곳이 한 세트다
+- 로고·아이콘 등 **UI 이미지는 `public/media/` 에 넣지 않는다** (git 제외 대상이라 사라진다).
+  로고타입·아이콘은 인라인 SVG 컴포넌트로, 후원사 로고 같은 고정 이미지는 `public/brand/` 에 둔다
 - 배경 영상에 글자를 넣지 않는다. 영상은 `ResponsiveVideo`(가로/세로 + 포스터), 글자는 HTML
 - 모든 모션은 `prefers-reduced-motion` 을 존중 (Motion `useReducedMotion`, GSAP 은 matchMedia 체크)
 - 커스텀 커서·호버 전용 인터랙션은 마우스 기기(`useHasFinePointer`)에서만
@@ -31,6 +37,12 @@
 - `page.tsx` 에서는 default export 외 컴포넌트를 export 하지 않는다 (components/ 로 분리)
 - 주석에 "변경 없음", "수정됨" 같은 대화형 메모를 남기지 않는다
 - 커밋 전 `npm run check`
+
+## 배포
+
+- 사이트: Cloudflare Pages — `main` push 시 자동 빌드(`npm run build` → `out/`), PR 마다 프리뷰 URL
+- 미디어: Cloudflare R2 — `npm run upload:media` 로 직접 업로드 (git 에 들어가지 않음)
+- 최초 세팅 절차는 README 의 "배포" 참고
 
 ## 남은 작업 (TODO 검색)
 
