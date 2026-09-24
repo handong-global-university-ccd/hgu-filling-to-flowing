@@ -7,12 +7,7 @@ export const metadata: Metadata = { title: "Archive — Behind" };
 
 // TODO: 실제 비하인드 사진 174장 + Figma 레이아웃 좌표로 교체
 const photos = Array.from({ length: 48 }, (_, i) => ({
-  src:
-    i % 3 === 0
-      ? "/placeholder/thumb-a.svg"
-      : i % 3 === 1
-        ? "/placeholder/thumb-b.svg"
-        : "/placeholder/profile.svg",
+  src: `/placeholder/thumb-${String((i % 8) + 1).padStart(2, "0")}${i % 2 ? "b" : "a"}.svg`,
   alt: "",
   x: 2 + (i % 8) * 12.2,
   y: 2 + Math.floor(i / 8) * 16,
