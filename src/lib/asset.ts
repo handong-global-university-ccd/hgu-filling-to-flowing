@@ -14,7 +14,7 @@ const REMOTE_PREFIX = "/media/";
 
 export function asset(path: string) {
   if (/^https?:\/\//.test(path)) return path;
-  const p = path.startsWith("/") ? path : `/${path}`;
+  const p = path.startsWith("/") ? path : `/${path}`; 
   if (!BASE || !p.startsWith(REMOTE_PREFIX)) return p;
   return `${BASE}${p}`;
 }
