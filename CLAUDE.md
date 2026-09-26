@@ -19,6 +19,22 @@
 - 기준 해상도 1920×1080, 마진 24 / 거터 16, 12컬럼(`page-grid` 유틸)
 - 폰트: 영문 Plus Jakarta Sans, 한글 Pretendard (한글 블록에는 `font-kr`)
 
+### 토큰 ↔ Figma 변수 대응
+
+`globals.css` 의 `@theme` 이 Figma 변수의 단일 대응표다. 이름만 다르고 값은 같다.
+
+| Figma 변수                                            | 코드 토큰                                                         |
+| ----------------------------------------------------- | ----------------------------------------------------------------- |
+| `color/background/default·subtle·inverse`             | `bg` · `bg-subtle` · `bg-inverse`                                 |
+| `color/text/primary·secondary·tertiary·inverse·brand` | `fg` · `fg-secondary` · `fg-tertiary` · `fg-inverse` · `fg-brand` |
+| `color/border/subtle·default·strong·brand`            | `border-subtle` · `border` · `border-strong` · `border-brand`     |
+| `color/brand/*` · `color/accent/*`                    | `brand` · `brand-secondary` · `accent-*`                          |
+| `Gradient/Option A–D`                                 | `gradient-a` ~ `gradient-d` 유틸리티                              |
+
+**한글은 영문과 행간·굵기가 다르다.** 한글 텍스트에는 `font-kr` 과 함께 `text-kr-*` 램프를 쓴다
+(예: `font-kr text-kr-h2`). 영문에 `text-h2`(500) 를 쓰는 자리라도 한글은 `text-kr-h2`(700, 행간 44)다.
+`text-kr-body-sm` 에는 자간 2px 이 포함돼 있다.
+
 ## 규칙
 
 - 색·폰트 크기는 하드코딩하지 말고 토큰 클래스 사용 (`text-fg-tertiary`, `text-body-sm`, `bg-bg-inverse` …)

@@ -33,28 +33,91 @@
   --color-border-strong: var(--color-neutral-500);
   --color-brand: var(--color-core-deep-purple);
   --color-brand-secondary: var(--color-core-violet);
+  --color-border-brand: var(--color-core-deep-purple);
+  --color-fg-brand: var(--color-core-deep-purple);
+
+  /* Semantic accent (Figma color/accent/*) — 코어 팔레트를 의미 이름으로 참조 */
+  --color-accent-electric-blue: var(--color-core-electric-blue);
+  --color-accent-teal: var(--color-core-teal);
+  --color-accent-seafoam: var(--color-core-seafoam);
+  --color-accent-sunlight: var(--color-core-sunlight);
+  --color-accent-coral-orange: var(--color-core-coral-orange);
+  --color-accent-coral-pink: var(--color-core-coral-pink);
+
+  /* Gradient (Figma Gradient/Option A–D) */
+  --gradient-option-a: linear-gradient(90deg, #443082 0%, #344ead 50%, #83bdd5 100%);
+  --gradient-option-b: linear-gradient(90deg, #8b6acd 0%, #d3558e 33.333%, #e4624d 66.667%, #e2bc5f 100%);
+  --gradient-option-c: linear-gradient(90deg, #344ead 0%, #83bdd5 33.333%, #9ec9ab 66.667%, #8b6acd 100%);
+  --gradient-option-d: linear-gradient(90deg, #e4624d 0%, #d3558e 33.333%, #e2bc5f 66.667%, #83bdd5 100%);
 
   /* Fonts — 영문 Plus Jakarta Sans 우선, 한글은 Pretendard로 폴백 */
   --font-sans: var(--font-jakarta), var(--font-pretendard), system-ui, sans-serif;
   --font-kr: var(--font-pretendard), system-ui, sans-serif;
 
-  /* Type ramp (Figma Typography/EN) */
+  /* Type ramp — Figma Typography/EN (10단계) */
+  --text-display: 48px;
+  --text-display--line-height: 56px;
+  --text-display--font-weight: 700;
   --text-h1: 40px;
   --text-h1--line-height: 48px;
   --text-h1--font-weight: 700;
   --text-h2: 32px;
   --text-h2--line-height: 40px;
   --text-h2--font-weight: 500;
+  --text-h3: 24px;
+  --text-h3--line-height: 32px;
+  --text-h3--font-weight: 600;
+  --text-h4: 20px;
+  --text-h4--line-height: 28px;
+  --text-h4--font-weight: 600;
+  --text-body-lg: 18px;
+  --text-body-lg--line-height: 24px;
+  --text-body-lg--font-weight: 400;
   --text-body: 16px;
   --text-body--line-height: 26px;
+  --text-body--font-weight: 400;
   --text-body-sm: 14px;
   --text-body-sm--line-height: 22px;
+  --text-body-sm--font-weight: 400;
   --text-label: 14px;
   --text-label--line-height: 20px;
   --text-label--font-weight: 600;
   --text-caption: 12px;
   --text-caption--line-height: 18px;
   --text-caption--font-weight: 500;
+
+  /* Type ramp — Figma Typography/KR (한글은 행간·굵기가 다르다. font-kr 과 함께 쓸 것) */
+  --text-kr-display: 48px;
+  --text-kr-display--line-height: 60px;
+  --text-kr-display--font-weight: 700;
+  --text-kr-h1: 40px;
+  --text-kr-h1--line-height: 52px;
+  --text-kr-h1--font-weight: 700;
+  --text-kr-h2: 32px;
+  --text-kr-h2--line-height: 44px;
+  --text-kr-h2--font-weight: 700;
+  --text-kr-h3: 24px;
+  --text-kr-h3--line-height: 34px;
+  --text-kr-h3--font-weight: 600;
+  --text-kr-h4: 20px;
+  --text-kr-h4--line-height: 30px;
+  --text-kr-h4--font-weight: 600;
+  --text-kr-body-lg: 18px;
+  --text-kr-body-lg--line-height: 26px;
+  --text-kr-body-lg--font-weight: 400;
+  --text-kr-body: 16px;
+  --text-kr-body--line-height: 26px;
+  --text-kr-body--font-weight: 400;
+  --text-kr-body-sm: 14px;
+  --text-kr-body-sm--line-height: 20px;
+  --text-kr-body-sm--font-weight: 400;
+  --text-kr-body-sm--letter-spacing: 2px;
+  --text-kr-label: 14px;
+  --text-kr-label--line-height: 20px;
+  --text-kr-label--font-weight: 600;
+  --text-kr-caption: 12px;
+  --text-kr-caption--line-height: 18px;
+  --text-kr-caption--font-weight: 500;
 
   /* Grid (1920 × 1080 기준, 마진 24 / 거터 16) */
   --spacing-margin: 24px;
@@ -97,6 +160,20 @@
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--spacing-gutter);
   padding-inline: var(--spacing-margin);
+}
+
+/* Figma Gradient/Option A–D */
+@utility gradient-a {
+  background-image: var(--gradient-option-a);
+}
+@utility gradient-b {
+  background-image: var(--gradient-option-b);
+}
+@utility gradient-c {
+  background-image: var(--gradient-option-c);
+}
+@utility gradient-d {
+  background-image: var(--gradient-option-d);
 }
 
 /* 썸네일 무한 루프 (홈 분야별 / Works 상세 Others) */
