@@ -57,10 +57,10 @@ export default function Footer({ inverse = true }: { inverse?: boolean }) {
           </li>
         ))}
       </ul>
-
+{/* 
       <p className="absolute right-margin bottom-6 font-kr text-[18px] leading-[1.2] font-medium tracking-[0.36px]">
         @ HGU CCD DEGREE 2026
-      </p>
+      </p> */}
 
       <a href={`mailto:${SITE.contact.email}`} className="sr-only">
         {SITE.contact.email}
