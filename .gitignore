@@ -50,3 +50,7 @@ media-src/
 /public/media/**
 !/public/media/**/
 !/public/media/**/.gitkeep
+
+# 빌드 검증용 임시 압축파일 (실수로 커밋되는 것 방지)
+__verify.tar.gz
+*.tar.gz
