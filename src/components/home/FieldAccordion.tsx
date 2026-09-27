@@ -52,8 +52,8 @@ export default function FieldAccordion({ worksByField }: { worksByField: Record<
             key={field.key}
             onPointerEnter={() => setActive(field.key)}
             onFocusCapture={() => setActive(field.key)}
-            /* 아코디언 사이 흰색 구분선 */
-            className={cn("border-fg-inverse", i > 0 && "border-t")}
+            /* 아코디언 사이 흰색 구분선 — 선 위아래로 16px 씩 여백 */
+            className={cn("border-fg-inverse", i > 0 && "mt-4 border-t pt-4")}
           >
             {/* ───── 접힌 행 ───── */}
             <button
