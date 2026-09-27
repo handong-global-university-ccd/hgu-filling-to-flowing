@@ -71,7 +71,7 @@ export default function CrosshairCursor() {
       <div className="absolute top-0 h-[calc(var(--y)-8px)] w-[0.8px] translate-x-[var(--x)] bg-white" />
       <div className="absolute bottom-0 h-[calc(100%-var(--y)-8px)] w-[0.8px] translate-x-[var(--x)] bg-white" />
       {/* 중앙 포인트 — 6×6 정사각형 */}
-      <div className="absolute top-0 left-0 size-1 translate-x-[calc(var(--x)-1.7px)] translate-y-[calc(var(--y)-2px)] bg-white" />
+      <div className="absolute top-0 left-0 size-1.5 translate-x-[calc(var(--x)-3px)] translate-y-[calc(var(--y)-3px)] bg-white" />
     </div>
   );
 }
