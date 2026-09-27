@@ -65,13 +65,13 @@ export default function CrosshairCursor() {
       className="pointer-events-none fixed inset-0 z-[9999] opacity-0 mix-blend-difference transition-opacity duration-300"
     >
       {/* 가로선 — 중앙 좌우 11px 비움 */}
-      <div className="absolute left-0 h-px w-[calc(var(--x)-11px)] translate-y-[var(--y)] bg-white" />
-      <div className="absolute right-0 h-px w-[calc(100%-var(--x)-11px)] translate-y-[var(--y)] bg-white" />
+      <div className="absolute left-0 h-[0.8px] w-[calc(var(--x)-8px)] translate-y-[var(--y)] bg-white" />
+      <div className="absolute right-0 h-[0.8px] w-[calc(100%-var(--x)-8px)] translate-y-[var(--y)] bg-white" />
       {/* 세로선 — 중앙 위아래 11px 비움 */}
-      <div className="absolute top-0 h-[calc(var(--y)-11px)] w-px translate-x-[var(--x)] bg-white" />
-      <div className="absolute bottom-0 h-[calc(100%-var(--y)-11px)] w-px translate-x-[var(--x)] bg-white" />
+      <div className="absolute top-0 h-[calc(var(--y)-8px)] w-[0.8px] translate-x-[var(--x)] bg-white" />
+      <div className="absolute bottom-0 h-[calc(100%-var(--y)-8px)] w-[0.8px] translate-x-[var(--x)] bg-white" />
       {/* 중앙 포인트 — 6×6 정사각형 */}
-      <div className="absolute top-0 left-0 size-1.5 translate-x-[calc(var(--x)-3px)] translate-y-[calc(var(--y)-3px)] bg-white" />
+      <div className="absolute top-0 left-0 size-1 translate-x-[calc(var(--x)-1.7px)] translate-y-[calc(var(--y)-2px)] bg-white" />
     </div>
   );
 }
