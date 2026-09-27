@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "motion/react";
 import Marquee from "./Marquee";
 import { FIELDS, type FieldKey, type Work } from "@/data/types";
 import { asset } from "@/lib/asset";
+import { cn } from "@/lib/cn";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -19,85 +20,101 @@ function fillLoop<T>(items: T[], min: number): T[] {
 }
 
 /**
- * Figma 홈 2-1 (1807:14128)
- * - 분야별 썸네일이 가로로 무한 루프
- * - 분야에 호버하면 해당 영역이 펼쳐지고(Reveal) 소개 + 썸네일 그리드 노출, 작품 opacity 50→100
+ * Figma 홈 분야 아코디언 (1696:16987)
+ * - 접힘: 높이 74px. 썸네일이 opacity 50% 로 가로 루프하고 그 위에 분야명(32/40)
+ * - 펼침: 좌측에 분야명 + 소개 문구(456px, Pretendard 18/26),
+ *         우측 37.5% 지점부터 썸네일 그리드(높이 112px, 간격 16px)
  */
 export default function FieldAccordion({ worksByField }: { worksByField: Record<FieldKey, Work[]> }) {
   const [active, setActive] = useState<FieldKey | null>(null);
 
   return (
-    <section aria-label="분야별 작품" onPointerLeave={() => setActive(null)}>
+    <section
+      aria-label="분야별 작품"
+      onPointerLeave={() => setActive(null)}
+      className="flex flex-col gap-4 bg-bg-inverse text-fg-inverse"
+    >
       {FIELDS.map((field) => {
-        const works = worksByField[field.key];
-        const loop = fillLoop(works, 16);
-        const isOpen = active === field.key;
+        const works = worksByField[field.key] ?? [];
+        const open = active === field.key;
 
         return (
-          <motion.div
+          <div
             key={field.key}
-            layout
             onPointerEnter={() => setActive(field.key)}
-            onFocus={() => setActive(field.key)}
-            className="border-t border-neutral-700 bg-bg-inverse text-fg-inverse"
-            transition={{ layout: { duration: 0.6, ease: EASE } }}
+            onFocusCapture={() => setActive(field.key)}
           >
-            <AnimatePresence initial={false} mode="popLayout">
-              {isOpen ? (
-                <motion.div
-                  key="open"
-                  initial={{ opacity: 0, clipPath: "inset(0 0 100% 0)" }}
-                  animate={{ opacity: 1, clipPath: "inset(0 0 0% 0)" }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.6, ease: EASE }}
-                  className="page-grid py-6"
-                >
-                  <div className="col-span-4">
-                    <h2 className="text-h2">{field.short}</h2>
-                    <p className="mt-2 text-body-sm text-neutral-300">분야 소개 문구 (TODO)</p>
+            {/* ───── 접힌 행 ───── */}
+            <button
+              type="button"
+              aria-expanded={open}
+              onClick={() => setActive(open ? null : field.key)}
+              className={cn("relative block h-[74px] w-full overflow-hidden text-left", open && "sr-only")}
+            >
+              <Marquee duration={80} className="h-full">
+                {fillLoop(works, 14).map((w, i) => (
+                  <div
+                    key={`${w.slug}-${i}`}
+                    className="relative mr-4 h-[74px] w-[120px] shrink-0 opacity-50"
+                  >
+                    <Image src={asset(w.thumbnails[0])} alt="" fill sizes="120px" className="object-cover" />
                   </div>
-                  <ul className="col-span-8 grid grid-cols-8 gap-2">
-                    {works.map((w) => (
-                      <li key={w.slug}>
-                        <Link
-                          href={`/works/${w.slug}/`}
-                          className="block opacity-50 transition-opacity hover:opacity-100"
-                        >
-                          <Image
-                            src={asset(w.thumbnails[0])}
-                            alt={w.title}
-                            width={456}
-                            height={326}
-                            className="aspect-square object-cover"
-                          />
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-              ) : (
-                <motion.div key="closed" className="relative h-14" exit={{ opacity: 0 }}>
-                  <Marquee duration={50} reverse={field.key === "service"} className="h-full">
-                    {loop.map((w, i) => (
-                      <Image
-                        key={`${w.slug}-${i}`}
-                        src={asset(w.thumbnails[0])}
-                        alt=""
-                        width={78}
-                        height={56}
-                        className="h-14 w-auto px-1"
-                      />
-                    ))}
-                  </Marquee>
-                  <h2 className="absolute top-1/2 left-margin -translate-y-1/2 text-h2 mix-blend-difference">
-                    <button type="button" className="text-left">
-                      {field.short}
-                    </button>
-                  </h2>
+                ))}
+              </Marquee>
+              <span className="pointer-events-none absolute top-1/2 left-6 -translate-y-1/2 text-[32px] leading-[40px] font-medium">
+                {field.short}
+              </span>
+            </button>
+
+            {/* ───── 펼친 패널 ───── */}
+            <AnimatePresence initial={false}>
+              {open && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.45, ease: EASE }}
+                  className="overflow-hidden"
+                >
+                  {/* Figma: 좌측 카피 456px(left 24), 썸네일 그리드는 37.5%+4px 지점부터 */}
+                  <div className="flex pt-[18px] pb-10">
+                    <div className="w-[calc(37.5%+4px)] shrink-0 pl-6">
+                      <h3 className="text-[32px] leading-[40px] font-medium">{field.short}</h3>
+                      <p className="mt-2 max-w-[456px] font-kr text-[18px] leading-[26px] text-neutral-300">
+                        {field.intro}
+                      </p>
+                      <Link
+                        href="/works/"
+                        className="mt-6 inline-block text-caption uppercase underline underline-offset-4 hover:opacity-70"
+                      >
+                        View all {works.length} works
+                      </Link>
+                    </div>
+
+                    <ul className="flex flex-1 flex-wrap content-start gap-4 pr-6">
+                      {works.map((w) => (
+                        <li key={w.slug}>
+                          <Link
+                            href={`/works/${w.slug}/`}
+                            className="group block h-[112px] w-[157px] overflow-hidden"
+                            title={w.title}
+                          >
+                            <Image
+                              src={asset(w.thumbnails[0])}
+                              alt={w.title}
+                              width={157}
+                              height={112}
+                              className="h-full w-full object-cover transition-opacity group-hover:opacity-70"
+                            />
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
-          </motion.div>
+          </div>
         );
       })}
     </section>

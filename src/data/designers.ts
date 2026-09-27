@@ -9,7 +9,7 @@ export const DESIGNERS: Designer[] = [
     fields: ["communication"],
     email: "jiwon@handong.ac.kr",
     profile: "/placeholder/profile-01.svg",
-    workSlugs: ["generative-future"],
+    workSlugs: ["communication-01", "communication-17", "industrial-13", "service-09", "ux-05"],
   },
   {
     slug: "hana-kim",
@@ -18,7 +18,14 @@ export const DESIGNERS: Designer[] = [
     fields: ["communication"],
     email: "hana@handong.ac.kr",
     profile: "/placeholder/profile-02.svg",
-    workSlugs: ["quiet-signal"],
+    workSlugs: [
+      "communication-02",
+      "communication-18",
+      "industrial-07",
+      "industrial-14",
+      "service-10",
+      "service-19",
+    ],
   },
   {
     slug: "seoyeon-kim",
@@ -27,7 +34,7 @@ export const DESIGNERS: Designer[] = [
     fields: ["communication", "service"],
     email: "seoyeon@handong.ac.kr",
     profile: "/placeholder/profile-03.svg",
-    workSlugs: ["paper-weather", "market-thread"],
+    workSlugs: ["communication-03", "communication-19", "industrial-15", "service-11", "ux-07"],
   },
   {
     slug: "doyun-nam",
@@ -36,7 +43,14 @@ export const DESIGNERS: Designer[] = [
     fields: ["communication"],
     email: "doyun@handong.ac.kr",
     profile: "/placeholder/profile-04.svg",
-    workSlugs: ["letters-unsent"],
+    workSlugs: [
+      "communication-04",
+      "communication-13",
+      "communication-20",
+      "industrial-16",
+      "service-12",
+      "ux-01",
+    ],
   },
   {
     slug: "eunbi-moon",
@@ -45,7 +59,7 @@ export const DESIGNERS: Designer[] = [
     fields: ["industrial"],
     email: "eunbi@handong.ac.kr",
     profile: "/placeholder/profile-05.svg",
-    workSlugs: ["second-hand"],
+    workSlugs: ["communication-05", "industrial-01", "industrial-17", "service-13", "ux-09"],
   },
   {
     slug: "minseo-byun",
@@ -54,7 +68,7 @@ export const DESIGNERS: Designer[] = [
     fields: ["industrial"],
     email: "minseo@handong.ac.kr",
     profile: "/placeholder/profile-06.svg",
-    workSlugs: ["fold-and-carry"],
+    workSlugs: ["communication-06", "industrial-02", "industrial-18", "service-07", "service-14", "ux-10"],
   },
   {
     slug: "jihu-seo",
@@ -63,7 +77,7 @@ export const DESIGNERS: Designer[] = [
     fields: ["industrial"],
     email: "jihu@handong.ac.kr",
     profile: "/placeholder/profile-07.svg",
-    workSlugs: ["warm-grip"],
+    workSlugs: ["communication-07", "industrial-03", "industrial-19", "service-15", "ux-11"],
   },
   {
     slug: "chaewon-song",
@@ -72,7 +86,14 @@ export const DESIGNERS: Designer[] = [
     fields: ["industrial", "ux"],
     email: "chaewon@handong.ac.kr",
     profile: "/placeholder/profile-08.svg",
-    workSlugs: ["light-frame", "first-step"],
+    workSlugs: [
+      "communication-01",
+      "communication-08",
+      "industrial-04",
+      "industrial-13",
+      "industrial-20",
+      "service-16",
+    ],
   },
   {
     slug: "yerin-ahn",
@@ -81,7 +102,7 @@ export const DESIGNERS: Designer[] = [
     fields: ["communication", "service"],
     email: "yerin@handong.ac.kr",
     profile: "/placeholder/profile-01.svg",
-    workSlugs: ["generative-future", "slow-counter"],
+    workSlugs: ["communication-09", "industrial-05", "service-01", "service-17", "ux-13"],
   },
   {
     slug: "junho-oh",
@@ -90,7 +111,7 @@ export const DESIGNERS: Designer[] = [
     fields: ["service"],
     email: "junho@handong.ac.kr",
     profile: "/placeholder/profile-02.svg",
-    workSlugs: ["care-route"],
+    workSlugs: ["communication-10", "communication-19", "industrial-06", "service-02", "service-18", "ux-07"],
   },
   {
     slug: "ssuyeon-yu",
@@ -99,7 +120,7 @@ export const DESIGNERS: Designer[] = [
     fields: ["service"],
     email: "ssuyeon@handong.ac.kr",
     profile: "/placeholder/profile-03.svg",
-    workSlugs: ["market-thread"],
+    workSlugs: ["communication-11", "industrial-07", "service-03", "service-19", "ux-15"],
   },
   {
     slug: "garam-lee",
@@ -108,7 +129,14 @@ export const DESIGNERS: Designer[] = [
     fields: ["service"],
     email: "garam@handong.ac.kr",
     profile: "/placeholder/profile-04.svg",
-    workSlugs: ["open-shelf"],
+    workSlugs: [
+      "communication-12",
+      "industrial-01",
+      "industrial-08",
+      "service-04",
+      "service-13",
+      "service-20",
+    ],
   },
   {
     slug: "taemin-lim",
@@ -117,7 +145,7 @@ export const DESIGNERS: Designer[] = [
     fields: ["ux"],
     email: "taemin@handong.ac.kr",
     profile: "/placeholder/profile-05.svg",
-    workSlugs: ["tide-reader"],
+    workSlugs: ["communication-13", "industrial-09", "service-05", "ux-01", "ux-17"],
   },
   {
     slug: "haeun-jang",
@@ -126,7 +154,14 @@ export const DESIGNERS: Designer[] = [
     fields: ["industrial", "ux"],
     email: "haeun@handong.ac.kr",
     profile: "/placeholder/profile-06.svg",
-    workSlugs: ["fold-and-carry", "memory-lane"],
+    workSlugs: [
+      "communication-07",
+      "communication-14",
+      "industrial-10",
+      "industrial-19",
+      "service-06",
+      "ux-02",
+    ],
   },
   {
     slug: "nayun-jung",
@@ -135,7 +170,7 @@ export const DESIGNERS: Designer[] = [
     fields: ["ux"],
     email: "nayun@handong.ac.kr",
     profile: "/placeholder/profile-07.svg",
-    workSlugs: ["soft-switch"],
+    workSlugs: ["communication-15", "industrial-11", "service-07", "ux-03", "ux-19"],
   },
   {
     slug: "siwoo-choi",
@@ -144,7 +179,7 @@ export const DESIGNERS: Designer[] = [
     fields: ["ux"],
     email: "siwoo@handong.ac.kr",
     profile: "/placeholder/profile-08.svg",
-    workSlugs: ["first-step"],
+    workSlugs: ["communication-16", "industrial-12", "service-01", "service-08", "ux-04", "ux-13"],
   },
 ];
 

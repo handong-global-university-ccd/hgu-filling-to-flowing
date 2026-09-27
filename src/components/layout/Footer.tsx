@@ -19,7 +19,6 @@ export default function Footer({ inverse = true }: { inverse?: boolean }) {
     >
       {/* 마블링 서브비주얼. 파일이 아직 없으면 브랜드 그라디언트가 대신 보인다 */}
       <div className="pointer-events-none absolute inset-x-0 top-4 h-[537px] ">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         {/* <img
           src="/brand/footer-subvisual.webp"
           alt=""
