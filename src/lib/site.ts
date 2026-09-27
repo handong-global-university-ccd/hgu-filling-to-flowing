@@ -14,6 +14,8 @@ export const SITE = {
     email: "CCD@handong.ac.kr",
     instagram: "",
     behance: "",
+    /** Figma 푸터의 "CCD 홈페이지 예정" 링크 */
+    ccd: "",
   },
 } as const;
 
