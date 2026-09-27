@@ -11,6 +11,14 @@ import { cn } from "@/lib/cn";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
+/** 줄마다 흐르는 방향·속도를 다르게 (한 방향으로만 흐르면 단조로워서) */
+const MARQUEE = [
+  { duration: 70, reverse: false },
+  { duration: 95, reverse: true },
+  { duration: 55, reverse: false },
+  { duration: 110, reverse: true },
+] as const;
+
 /** 작품 수가 적어도 루프가 비어 보이지 않게 min 개까지 반복 */
 function fillLoop<T>(items: T[], min: number): T[] {
   if (items.length === 0) return [];
@@ -32,17 +40,20 @@ export default function FieldAccordion({ worksByField }: { worksByField: Record<
     <section
       aria-label="분야별 작품"
       onPointerLeave={() => setActive(null)}
-      className="flex flex-col gap-4 bg-bg-inverse text-fg-inverse"
+      className="flex flex-col bg-bg-inverse text-fg-inverse"
     >
-      {FIELDS.map((field) => {
+      {FIELDS.map((field, i) => {
         const works = worksByField[field.key] ?? [];
         const open = active === field.key;
+        const flow = MARQUEE[i % MARQUEE.length];
 
         return (
           <div
             key={field.key}
             onPointerEnter={() => setActive(field.key)}
             onFocusCapture={() => setActive(field.key)}
+            /* 아코디언 사이 흰색 구분선 */
+            className={cn("border-fg-inverse", i > 0 && "border-t")}
           >
             {/* ───── 접힌 행 ───── */}
             <button
@@ -51,7 +62,7 @@ export default function FieldAccordion({ worksByField }: { worksByField: Record<
               onClick={() => setActive(open ? null : field.key)}
               className={cn("relative block h-[74px] w-full overflow-hidden text-left", open && "sr-only")}
             >
-              <Marquee duration={80} className="h-full">
+              <Marquee duration={flow.duration} reverse={flow.reverse} className="h-full">
                 {fillLoop(works, 14).map((w, i) => (
                   <div
                     key={`${w.slug}-${i}`}
