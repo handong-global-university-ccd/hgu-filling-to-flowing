@@ -4,9 +4,13 @@ import { useEffect, useRef } from "react";
 import { useHasFinePointer } from "@/hooks/useMediaQuery";
 
 /**
- * Figma: 마우스 포인트 — 마우스 위치 기준 가로·세로 십자 Grid Line + 중앙 Point.
- * mix-blend-difference 로 배경(흰/검)에 따라 자동 반전.
- * 마우스가 있는 기기에서만 렌더링.
+ * Figma 마우스 포인트 (1860:11931 화이트배경 / 1901:1376 블랙배경)
+ *
+ * - 마우스 위치 기준 가로·세로 1px 십자선
+ * - 중앙은 6×6px 정사각형
+ * - 선은 중앙을 관통하지 않고 사방 11px 씩 비어 있다
+ * - mix-blend-difference 로 흰 배경에서는 검정, 검은 배경에서는 흰색으로 자동 반전
+ * - 마우스가 있는 기기에서만 렌더링
  */
 export default function CrosshairCursor() {
   const enabled = useHasFinePointer();
@@ -60,12 +64,14 @@ export default function CrosshairCursor() {
       aria-hidden
       className="pointer-events-none fixed inset-0 z-[9999] opacity-0 mix-blend-difference transition-opacity duration-300"
     >
-      {/* 가로선 */}
-      <div className="absolute inset-x-0 h-px translate-y-[var(--y)] bg-white" />
-      {/* 세로선 */}
-      <div className="absolute inset-y-0 w-px translate-x-[var(--x)] bg-white" />
-      {/* 중앙 포인트 */}
-      <div className="absolute top-0 left-0 size-2.5 translate-x-[calc(var(--x)-5px)] translate-y-[calc(var(--y)-5px)] rounded-full bg-white" />
+      {/* 가로선 — 중앙 좌우 11px 비움 */}
+      <div className="absolute left-0 h-px w-[calc(var(--x)-11px)] translate-y-[var(--y)] bg-white" />
+      <div className="absolute right-0 h-px w-[calc(100%-var(--x)-11px)] translate-y-[var(--y)] bg-white" />
+      {/* 세로선 — 중앙 위아래 11px 비움 */}
+      <div className="absolute top-0 h-[calc(var(--y)-11px)] w-px translate-x-[var(--x)] bg-white" />
+      <div className="absolute bottom-0 h-[calc(100%-var(--y)-11px)] w-px translate-x-[var(--x)] bg-white" />
+      {/* 중앙 포인트 — 6×6 정사각형 */}
+      <div className="absolute top-0 left-0 size-1.5 translate-x-[calc(var(--x)-3px)] translate-y-[calc(var(--y)-3px)] bg-white" />
     </div>
   );
 }

@@ -94,12 +94,12 @@ export default function FieldAccordion({ worksByField }: { worksByField: Record<
                       <p className="mt-2 max-w-[456px] font-kr text-[18px] leading-[26px] text-neutral-300">
                         {field.intro}
                       </p>
-                      <Link
+                      {/* <Link
                         href="/works/"
                         className="mt-6 inline-block text-caption uppercase underline underline-offset-4 hover:opacity-70"
                       >
                         View all {works.length} works
-                      </Link>
+                      </Link> */}
                     </div>
 
                     <ul className="flex flex-1 flex-wrap content-start gap-4 pr-6">
