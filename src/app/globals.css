@@ -70,6 +70,10 @@
   --text-h4: 20px;
   --text-h4--line-height: 28px;
   --text-h4--font-weight: 600;
+  /* Figma Typography/EN/Body/Exlarge — Works 상세의 Others 제목 등 */
+  --text-body-xl: 24px;
+  --text-body-xl--line-height: 32px;
+  --text-body-xl--font-weight: 400;
   --text-body-lg: 18px;
   --text-body-lg--line-height: 24px;
   --text-body-lg--font-weight: 400;

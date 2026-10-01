@@ -23,8 +23,8 @@ export default function WorksBrowser({ items }: { items: Item[] }) {
   }, [items, field, q]);
 
   return (
-    <div className="px-margin">
-      <ul className="grid grid-cols-2 gap-x-gutter gap-y-10 lg:grid-cols-4">
+    <div className="px-margin pb-90">
+      <ul className="grid grid-cols-2 gap-x-gutter gap-y-16 lg:grid-cols-4">
         {filtered.map(({ work, designerNames }) => (
           <li key={work.slug}>
             <WorkCard work={work} designerName={designerNames} />

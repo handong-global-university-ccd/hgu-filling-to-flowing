@@ -7,7 +7,8 @@ import type { Work } from "@/data/types";
 import { asset } from "@/lib/asset";
 
 /**
- * Figma Works 썸네일: 호버하면 1.5초 간격으로 A↔B 무한 교차
+ * Figma Works 카드 (1807:14582) — 썸네일 456×270, 아래로 16px, 캡션 줄간격 8
+ * 인터렉션(1801:15055): 호버하면 1.5초 간격으로 썸네일 A↔B 무한 교차
  */
 export default function WorkCard({ work, designerName }: { work: Work; designerName: string }) {
   const [hover, setHover] = useState(false);
@@ -33,7 +34,7 @@ export default function WorkCard({ work, designerName }: { work: Work; designerN
       onFocus={() => setHover(true)}
       onBlur={() => setHover(false)}
     >
-      <div className="relative aspect-[456/326] overflow-hidden bg-bg-subtle">
+      <div className="relative aspect-[456/270] overflow-hidden bg-bg-subtle">
         {work.thumbnails.map((src, i) => (
           <Image
             key={src}
@@ -46,8 +47,10 @@ export default function WorkCard({ work, designerName }: { work: Work; designerN
           />
         ))}
       </div>
-      <p className="mt-3 font-kr text-body-sm">{work.title}</p>
-      <p className="text-caption text-fg-tertiary">{designerName}</p>
+      <div className="mt-4 flex flex-col gap-2">
+        <p className="font-kr text-kr-body-lg">{work.title}</p>
+        <p className="text-body-sm">{designerName}</p>
+      </div>
     </Link>
   );
 }
