@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import PageShell from "@/components/layout/PageShell";
 import ArchiveCanvas, { type Photo } from "@/components/archive/ArchiveCanvas";
-import ArchiveTabs from "@/components/archive/ArchiveTabs";
 import { ARCHIVE_TILES } from "@/data/archive-layout";
 
 export const metadata: Metadata = { title: "Archive — Behind" };
@@ -19,8 +18,7 @@ const photos: Photo[] = ARCHIVE_TILES.map(([col, row]) => {
 
 export default function ArchiveBehindPage() {
   return (
-    <PageShell fullscreen>
-      <ArchiveTabs current="behind" />
+    <PageShell fullscreen archive="behind">
       <ArchiveCanvas photos={photos} />
     </PageShell>
   );

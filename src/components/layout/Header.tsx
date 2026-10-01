@@ -10,20 +10,52 @@ import { FIELDS } from "@/data/types";
 import { useWorksFilter } from "@/components/works/works-filter";
 import Logo from "./Logo";
 
+export type ArchiveTab = "behind" | "exhibition";
+
+const ARCHIVE_TABS = [
+  { key: "behind", label: "Behind", href: "/archive/" },
+  { key: "exhibition", label: "Exhibition View", href: "/archive/exhibition/" },
+] as const;
+
+/** Figma Search (1893:1245) — 334×30, 아래 1px 밑줄, placeholder Neutral/500 */
+function SearchField({
+  value,
+  onChange,
+}: {
+  value?: string;
+  onChange?: (v: string) => void;
+}) {
+  return (
+    <label className="h-[30px] w-[334px] shrink-0 border-b border-border">
+      <span className="sr-only">검색</span>
+      <input
+        type="search"
+        {...(onChange ? { value, onChange: (e) => onChange(e.target.value) } : {})}
+        placeholder="Search"
+        className="w-full bg-transparent text-body outline-none placeholder:text-fg-tertiary"
+      />
+    </label>
+  );
+}
+
 /**
  * Figma 헤더 컴포넌트 (1893:2320 Default / 1893:2360 Scroll / 1696:14396 White·Black)
  *
- * - filters 없음 : 110px 고정. 로고 + 우측 내비.  inverse 면 Black 변형
- * - filters 있음 : Default 176px ↔ Scroll 74px.
- *                  아래로 스크롤하면 로고·내비 행이 접히고 분야 탭 + 검색만 남는다.
+ * - 둘째 줄 없음 : 110px 고정. 로고 + 우측 내비.  inverse 면 Black 변형
+ * - 둘째 줄 있음 : Default 176px ↔ Scroll 74px. (padding 24, 두 줄 사이 44)
+ *                  아래로 스크롤하면 로고·내비 행이 접히고 둘째 줄만 남는다.
  *                  최상단이거나 헤더에 호버하면 다시 펼쳐진다.
+ *   · filters : Works 의 분야 탭 + 검색 (1807:14578)
+ *   · archive : Behind / Exhibition View 탭 + 검색 (1807:15967, 1807:16563)
  */
 export default function Header({
   inverse = false,
   filters = false,
+  archive,
 }: {
   inverse?: boolean;
   filters?: boolean;
+  archive?: ArchiveTab;
 }) {
   const pathname = usePathname();
   const { scrollY } = useScroll();
@@ -68,35 +100,12 @@ export default function Header({
     </div>
   );
 
-  if (!showFilterRow) {
-    return (
-      <header className={cn("fixed inset-x-0 top-0 z-50 h-[110px] px-margin pt-6", brand)}>{topRow}</header>
-    );
-  }
+  /* 둘째 줄 — 탭 간격 12px, 비활성 Neutral/300, Body/Medium(16/26) */
+  let secondRow: React.ReactNode = null;
 
-  const tabs = [{ key: "all" as const, label: "All" }, ...FIELDS];
-
-  return (
-    <motion.header
-      onPointerEnter={() => setHovered(true)}
-      onPointerLeave={() => setHovered(false)}
-      initial={false}
-      animate={{ height: expanded ? 176 : 74 }}
-      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      className={cn("fixed inset-x-0 top-0 z-50 flex flex-col overflow-hidden px-margin py-6", brand)}
-    >
-      {/* Default 상태에서만 보이는 로고·내비 행 */}
-      <motion.div
-        initial={false}
-        animate={{ opacity: expanded ? 1 : 0 }}
-        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-        aria-hidden={!expanded}
-        className="shrink-0"
-      >
-        {topRow}
-      </motion.div>
-
-      {/* 분야 탭 + 검색 — Default/Scroll 공통 */}
+  if (showFilterRow) {
+    const tabs = [{ key: "all" as const, label: "All" }, ...FIELDS];
+    secondRow = (
       <div className="mt-auto flex items-center justify-between gap-6 px-1">
         <div role="tablist" aria-label="분야" className="flex flex-wrap gap-3 text-body">
           {tabs.map((t) => (
@@ -115,17 +124,63 @@ export default function Header({
             </button>
           ))}
         </div>
-        <label className="h-[30px] w-[334px] shrink-0 border-b border-border">
-          <span className="sr-only">프로젝트 또는 디자이너 검색</span>
-          <input
-            type="search"
-            value={filter.q}
-            onChange={(e) => filter.setQ(e.target.value)}
-            placeholder="Search"
-            className="w-full bg-transparent text-body outline-none placeholder:text-fg-tertiary"
-          />
-        </label>
+        <SearchField value={filter.q} onChange={filter.setQ} />
       </div>
+    );
+  } else if (archive) {
+    secondRow = (
+      <div className="mt-auto flex items-center justify-between gap-6 px-1">
+        <nav aria-label="아카이브" className="flex gap-3 text-body">
+          {ARCHIVE_TABS.map((t) => (
+            <Link
+              key={t.key}
+              href={t.href}
+              aria-current={archive === t.key ? "page" : undefined}
+              className={cn(
+                "whitespace-nowrap transition-colors",
+                archive === t.key ? "" : "text-neutral-300 hover:text-fg-secondary",
+              )}
+            >
+              {t.label}
+            </Link>
+          ))}
+        </nav>
+        {/* TODO: 아카이브 검색은 사진 메타데이터가 생기면 연결한다 */}
+        <SearchField />
+      </div>
+    );
+  }
+
+  if (!secondRow) {
+    return (
+      <header className={cn("fixed inset-x-0 top-0 z-50 h-[110px] px-margin pt-6", brand)}>
+        {topRow}
+      </header>
+    );
+  }
+
+  return (
+    <motion.header
+      onPointerEnter={() => setHovered(true)}
+      onPointerLeave={() => setHovered(false)}
+      initial={false}
+      animate={{ height: expanded ? 176 : 74 }}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      className={cn("fixed inset-x-0 top-0 z-50 flex flex-col overflow-hidden px-margin py-6", brand)}
+    >
+      {/* Default 상태에서만 보이는 로고·내비 행.
+          Scroll(74px) 에서는 높이까지 0 으로 접어야 둘째 줄이 화면에 남는다 */}
+      <motion.div
+        initial={false}
+        animate={{ height: expanded ? "auto" : 0, opacity: expanded ? 1 : 0 }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        aria-hidden={!expanded}
+        className="shrink-0 overflow-hidden"
+      >
+        {topRow}
+      </motion.div>
+
+      {secondRow}
     </motion.header>
   );
 }
