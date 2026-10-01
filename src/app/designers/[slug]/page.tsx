@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import PageShell from "@/components/layout/PageShell";
+import DesignerProfile, { type ProfileDesigner } from "@/components/designers/DesignerProfile";
+import { WorksFilterProvider } from "@/components/works/works-filter";
 import { DESIGNERS, getDesigner, getDesigners } from "@/data/designers";
 import { getWork } from "@/data/works";
 import { FIELDS } from "@/data/types";
-import { asset } from "@/lib/asset";
 
 export const dynamicParams = false;
 export function generateStaticParams() {
@@ -19,68 +18,41 @@ export async function generateMetadata({ params }: PageProps<"/designers/[slug]"
   return d ? { title: `${d.nameKo} ${d.nameEn}` } : {};
 }
 
+const fieldLabel = (key: string) => FIELDS.find((f) => f.key === key)?.label ?? key;
+
 /**
- * Figma 디자이너 상세 (1807:15093)
- * 좌측 흑백 리스트 이미지 클릭 → 해당 디자이너로 이동
- * TODO: 스크롤 시 다음 디자이너로 전환
+ * Figma 디자이너 상세 (1807:15093 들어오자마자 / 1807:15124 / 1807:15169)
+ * 화면설명 1837:11750 — 이름(한/영) → 분야 → 연락처 → 참여 작품 순,
+ *                      좌측 리스트는 흑백, 우측 프로필 사진은 컬러
  */
 export default async function DesignerDetailPage({ params }: PageProps<"/designers/[slug]">) {
   const { slug } = await params;
-  const d = getDesigner(slug);
-  if (!d) notFound();
-  const works = d.workSlugs.map(getWork).filter((w) => w !== undefined);
+  if (!getDesigner(slug)) notFound();
 
+  const list = getDesigners();
+  const designers: ProfileDesigner[] = list.map((d) => ({
+    slug: d.slug,
+    nameKo: d.nameKo,
+    nameEn: d.nameEn,
+    disciplines: d.fields.map(fieldLabel).join(", "),
+    contacts: [d.email, d.instagram].filter((c): c is string => Boolean(c)),
+    profile: d.profile,
+    profileMono: d.profileMono,
+    works: d.workSlugs
+      .map(getWork)
+      .filter((w) => w !== undefined)
+      .map((w) => ({ slug: w.slug, title: w.title })),
+  }));
+
+  const initialIndex = list.findIndex((d) => d.slug === slug);
+
+  // 헤더 둘째 줄(분야 탭·검색)이 Scroll 상태로 붙어 있어서 Provider 가 필요하다
   return (
-    <PageShell>
-      <div className="page-grid">
-        <ul className="col-span-2 grid grid-cols-3 content-start gap-1">
-          {getDesigners().map((o) => (
-            <li key={o.slug}>
-              <Link href={`/designers/${o.slug}/`} aria-current={o.slug === slug ? "page" : undefined}>
-                <Image
-                  src={asset(o.profileMono ?? o.profile)}
-                  alt={o.nameKo}
-                  width={80}
-                  height={100}
-                  className="aspect-[4/5] object-cover grayscale"
-                />
-              </Link>
-            </li>
-          ))}
-        </ul>
-
-        <div className="col-span-5 col-start-4 space-y-8">
-          <div>
-            <h1 className="font-kr text-h1">{d.nameKo}</h1>
-            <p className="text-h2">{d.nameEn}</p>
-          </div>
-          <p className="text-body-sm">
-            {d.fields.map((f) => FIELDS.find((x) => x.key === f)?.label).join(" / ")}
-          </p>
-          {d.email && (
-            <p className="text-body-sm">
-              <a href={`mailto:${d.email}`}>{d.email}</a>
-            </p>
-          )}
-          <ul className="space-y-1 text-body-sm">
-            {works.map((w) => (
-              <li key={w.slug}>
-                <Link href={`/works/${w.slug}/`}>{w.title}</Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="col-span-4">
-          <Image
-            src={asset(d.profile)}
-            alt=""
-            width={600}
-            height={750}
-            className="aspect-[4/5] w-full object-cover"
-          />
-        </div>
-      </div>
-    </PageShell>
+    <WorksFilterProvider>
+      <PageShell filters compact>
+        <DesignerProfile designers={designers} initialIndex={initialIndex} />
+        <div className="h-90" />
+      </PageShell>
+    </WorksFilterProvider>
   );
 }

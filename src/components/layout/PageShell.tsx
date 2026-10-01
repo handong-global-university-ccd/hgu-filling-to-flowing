@@ -19,6 +19,7 @@ export default function PageShell({
   inverse = false,
   filters = false,
   archive,
+  compact = false,
   fullscreen = false,
   className,
 }: {
@@ -26,10 +27,12 @@ export default function PageShell({
   inverse?: boolean;
   filters?: boolean;
   archive?: ArchiveTab;
+  /** 둘째 줄 헤더를 처음부터 접힌(74px) 상태로 둔다 */
+  compact?: boolean;
   fullscreen?: boolean;
   className?: string;
 }) {
-  const tall = filters || Boolean(archive);
+  const tall = (filters || Boolean(archive)) && !compact;
 
   return (
     <div
@@ -38,12 +41,12 @@ export default function PageShell({
         inverse ? "bg-bg-inverse text-fg-inverse" : "bg-bg text-fg",
       )}
     >
-      <Header inverse={inverse} filters={filters} archive={archive} />
+      <Header inverse={inverse} filters={filters} archive={archive} compact={compact} />
       <main
         id="main"
         className={cn(
           fullscreen ? "flex h-svh flex-col" : "min-h-svh",
-          tall ? "pt-[176px]" : "pt-[110px]",
+          tall ? "pt-[176px]" : compact ? "pt-[74px]" : "pt-[110px]",
           className,
         )}
       >

@@ -47,15 +47,19 @@ function SearchField({
  *                  최상단이거나 헤더에 호버하면 다시 펼쳐진다.
  *   · filters : Works 의 분야 탭 + 검색 (1807:14578)
  *   · archive : Behind / Exhibition View 탭 + 검색 (1807:15967, 1807:16563)
+ *   · compact : 처음부터 접힌 상태 (디자이너 상세 1807:15093)
  */
 export default function Header({
   inverse = false,
   filters = false,
   archive,
+  compact = false,
 }: {
   inverse?: boolean;
   filters?: boolean;
   archive?: ArchiveTab;
+  /** 스크롤과 상관없이 Scroll(74px) 상태로 시작한다 — 호버하면 펼쳐진다 */
+  compact?: boolean;
 }) {
   const pathname = usePathname();
   const { scrollY } = useScroll();
@@ -65,7 +69,7 @@ export default function Header({
 
   useMotionValueEvent(scrollY, "change", (y) => setAtTop(y < 40));
 
-  const expanded = atTop || hovered;
+  const expanded = compact ? hovered : atTop || hovered;
   const showFilterRow = filters && filter !== null;
 
   const brand = inverse ? "bg-bg-inverse text-fg-inverse" : "bg-bg text-fg";
