@@ -20,6 +20,7 @@ export default function PageShell({
   filters = false,
   archive,
   compact = false,
+  hideOnScroll = false,
   fullscreen = false,
   className,
 }: {
@@ -29,6 +30,8 @@ export default function PageShell({
   archive?: ArchiveTab;
   /** 둘째 줄 헤더를 처음부터 접힌(74px) 상태로 둔다 */
   compact?: boolean;
+  /** 아래로 스크롤하면 헤더를 숨기고, 마우스를 화면 위로 올리면 다시 보여준다 */
+  hideOnScroll?: boolean;
   fullscreen?: boolean;
   className?: string;
 }) {
@@ -41,7 +44,13 @@ export default function PageShell({
         inverse ? "bg-bg-inverse text-fg-inverse" : "bg-bg text-fg",
       )}
     >
-      <Header inverse={inverse} filters={filters} archive={archive} compact={compact} />
+      <Header
+        inverse={inverse}
+        filters={filters}
+        archive={archive}
+        compact={compact}
+        hideOnScroll={hideOnScroll}
+      />
       <main
         id="main"
         className={cn(

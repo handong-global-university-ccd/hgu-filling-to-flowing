@@ -18,7 +18,7 @@ const photos: Photo[] = ARCHIVE_TILES.map(([col, row]) => {
 
 export default function ArchiveBehindPage() {
   return (
-    <PageShell fullscreen archive="behind">
+    <PageShell fullscreen archive="behind" hideOnScroll>
       <ArchiveCanvas photos={photos} />
     </PageShell>
   );

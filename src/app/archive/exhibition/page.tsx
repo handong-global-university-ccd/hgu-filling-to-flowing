@@ -19,7 +19,7 @@ const photos = ["/placeholder/thumb-a.svg", "/placeholder/thumb-b.svg", "/placeh
  */
 export default function ArchiveExhibitionPage() {
   return (
-    <PageShell archive="exhibition">
+    <PageShell archive="exhibition" hideOnScroll>
       <div className="flex flex-col gap-10 px-margin pb-90 lg:flex-row lg:justify-between lg:gap-8">
         <div className="flex flex-col gap-4 lg:sticky lg:top-[228px] lg:mt-[52px] lg:h-fit lg:w-[529px] lg:shrink-0">
           <div className="flex flex-col gap-1">

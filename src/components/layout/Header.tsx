@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import { NAV } from "@/lib/site";
 import { cn } from "@/lib/cn";
@@ -11,6 +11,9 @@ import { useWorksFilter } from "@/components/works/works-filter";
 import Logo from "./Logo";
 
 export type ArchiveTab = "behind" | "exhibition";
+
+/** 숨은 헤더를 다시 불러내는 화면 상단 영역(px) */
+const REVEAL_ZONE = 120;
 
 const ARCHIVE_TABS = [
   { key: "behind", label: "Behind", href: "/archive/" },
@@ -54,21 +57,34 @@ export default function Header({
   filters = false,
   archive,
   compact = false,
+  hideOnScroll = false,
 }: {
   inverse?: boolean;
   filters?: boolean;
   archive?: ArchiveTab;
   /** 스크롤과 상관없이 Scroll(74px) 상태로 시작한다 — 호버하면 펼쳐진다 */
   compact?: boolean;
+  /** 아래로 스크롤하면 헤더를 숨기고, 마우스가 화면 위쪽으로 가면 다시 내려온다 */
+  hideOnScroll?: boolean;
 }) {
   const pathname = usePathname();
   const { scrollY } = useScroll();
   const [atTop, setAtTop] = useState(true);
   const [hovered, setHovered] = useState(false);
+  const [nearTop, setNearTop] = useState(false);
   const filter = useWorksFilter();
 
   useMotionValueEvent(scrollY, "change", (y) => setAtTop(y < 40));
 
+  // 숨어 있는 동안에는 헤더가 포인터 이벤트를 못 받으니 화면 전체에서 커서 높이를 본다
+  useEffect(() => {
+    if (!hideOnScroll) return;
+    const onMove = (e: PointerEvent) => setNearTop(e.clientY <= REVEAL_ZONE);
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => window.removeEventListener("pointermove", onMove);
+  }, [hideOnScroll]);
+
+  const hidden = hideOnScroll && !atTop && !nearTop && !hovered;
   const expanded = compact ? hovered : atTop || hovered;
   const showFilterRow = filters && filter !== null;
 
@@ -149,17 +165,22 @@ export default function Header({
             </Link>
           ))}
         </nav>
-        {/* TODO: 아카이브 검색은 사진 메타데이터가 생기면 연결한다 */}
-        <SearchField />
       </div>
     );
   }
 
   if (!secondRow) {
     return (
-      <header className={cn("fixed inset-x-0 top-0 z-50 h-[110px] px-margin pt-6", brand)}>
+      <motion.header
+        onPointerEnter={() => setHovered(true)}
+        onPointerLeave={() => setHovered(false)}
+        initial={false}
+        animate={{ y: hidden ? "-100%" : "0%" }}
+        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        className={cn("fixed inset-x-0 top-0 z-50 h-[110px] px-margin pt-6", brand)}
+      >
         {topRow}
-      </header>
+      </motion.header>
     );
   }
 
@@ -168,7 +189,7 @@ export default function Header({
       onPointerEnter={() => setHovered(true)}
       onPointerLeave={() => setHovered(false)}
       initial={false}
-      animate={{ height: expanded ? 176 : 74 }}
+      animate={{ height: expanded ? 176 : 74, y: hidden ? "-100%" : "0%" }}
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       className={cn("fixed inset-x-0 top-0 z-50 flex flex-col overflow-hidden px-margin py-6", brand)}
     >
