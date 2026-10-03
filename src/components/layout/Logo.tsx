@@ -6,13 +6,21 @@ import { cn } from "@/lib/cn";
  * mix-blend-difference 로 배경에 따라 자동 반전된다.
  * 원본 SVG: public/brand/logo.svg
  */
-export default function Logo({ className }: { className?: string }) {
+export default function Logo({
+  className,
+  width,
+}: {
+  className?: string;
+  /** px 단위 가로폭. cn() 은 tailwind-merge 가 아니라서 클래스로 덮으면 순서 운에 맡기게 된다 */
+  width?: number;
+}) {
   return (
     <svg
       viewBox="0 0 234 74"
       fill="currentColor"
       role="img"
       aria-label="Filling to Flowing"
+      style={width ? { width } : undefined}
       className={cn("block h-auto w-[180px]", className)}
     >
       <path d="M136.797 12.7213L136.729 12.3691H120.949V16.1911H129.627C130.623 16.1911 131.55 16.6872 132.106 17.5191C132.657 18.3427 132.756 19.335 132.38 20.2413C130.53 24.7017 126.215 27.5827 121.385 27.5827C118.006 27.5827 114.772 26.1389 112.517 23.6201C110.23 21.0666 109.179 17.7672 109.56 14.3305C110.159 8.91916 114.518 4.5249 119.922 3.88156C123.973 3.39864 127.937 4.9731 130.53 8.08728L130.755 8.35685L134.161 6.56409L133.848 6.15559C130.848 2.24426 126.306 0 121.385 0C112.73 0 105.688 7.03709 105.688 15.6883C105.688 24.3396 112.729 31.3766 121.385 31.3766C130.04 31.3766 137.081 24.3396 137.081 15.6883C137.081 14.7026 136.985 13.7054 136.797 12.7197V12.7213Z" />

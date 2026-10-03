@@ -11,6 +11,14 @@ import { cn } from "@/lib/cn";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
+/**
+ * 펼칠 때는 천천히, 접을 때는 조금 빠르게 (초).
+ * 펼침은 처음부터 확 벌어지지 않도록 가속·감속이 고른 커브를 쓴다.
+ */
+const OPEN_DURATION = 0.8;
+const CLOSE_DURATION = 0.45;
+const OPEN_EASE = [0.4, 0, 0.2, 1] as const;
+
 /** 줄마다 흐르는 방향·속도를 다르게 (한 방향으로만 흐르면 단조로워서) */
 const MARQUEE = [
   { duration: 70, reverse: false },
@@ -82,9 +90,16 @@ export default function FieldAccordion({ worksByField }: { worksByField: Record<
               {open && (
                 <motion.div
                   initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.45, ease: EASE }}
+                  animate={{
+                    height: "auto",
+                    opacity: 1,
+                    transition: { duration: OPEN_DURATION, ease: OPEN_EASE },
+                  }}
+                  exit={{
+                    height: 0,
+                    opacity: 0,
+                    transition: { duration: CLOSE_DURATION, ease: EASE },
+                  }}
                   className="overflow-hidden"
                 >
                   {/* Figma: 좌측 카피 456px(left 24), 썸네일 그리드는 37.5%+4px 지점부터 */}

@@ -20,7 +20,7 @@ export default function HomePage() {
   return (
     <>
       <Intro />
-      <PageShell inverse>
+      <PageShell inverse hideOnScroll headerHeight={84}>
         {/* 전시 정보 — TODO: 스크롤에 따라 opacity 조절 (GSAP ScrollTrigger scrub) */}
         <section className="page-grid min-h-[calc(100svh-176px)] content-center gap-y-16 pb-24">
           <dl className="col-span-6 space-y-12 text-body">
@@ -69,6 +69,8 @@ export default function HomePage() {
         </section>
 
         <FieldAccordion worksByField={worksByField} />
+        {/* 마지막 콘텐츠와 푸터 사이 360px */}
+        <div className="h-90" />
       </PageShell>
     </>
   );

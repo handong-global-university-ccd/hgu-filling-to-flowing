@@ -21,6 +21,7 @@ export default function PageShell({
   archive,
   compact = false,
   hideOnScroll = false,
+  headerHeight = 110,
   fullscreen = false,
   className,
 }: {
@@ -32,6 +33,8 @@ export default function PageShell({
   compact?: boolean;
   /** 아래로 스크롤하면 헤더를 숨기고, 마우스를 화면 위로 올리면 다시 보여준다 */
   hideOnScroll?: boolean;
+  /** 둘째 줄이 없는 단순 헤더의 높이(px) */
+  headerHeight?: number;
   fullscreen?: boolean;
   className?: string;
 }) {
@@ -50,14 +53,16 @@ export default function PageShell({
         archive={archive}
         compact={compact}
         hideOnScroll={hideOnScroll}
+        height={headerHeight}
       />
       <main
         id="main"
         className={cn(
           fullscreen ? "flex h-svh flex-col" : "min-h-svh",
-          tall ? "pt-[176px]" : compact ? "pt-[74px]" : "pt-[110px]",
+          tall ? "pt-[176px]" : compact ? "pt-[74px]" : undefined,
           className,
         )}
+        style={tall || compact ? undefined : { paddingTop: headerHeight }}
       >
         {children}
       </main>

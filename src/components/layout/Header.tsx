@@ -58,20 +58,28 @@ export default function Header({
   archive,
   compact = false,
   hideOnScroll = false,
+  height = 110,
 }: {
   inverse?: boolean;
   filters?: boolean;
   archive?: ArchiveTab;
   /** 스크롤과 상관없이 Scroll(74px) 상태로 시작한다 — 호버하면 펼쳐진다 */
   compact?: boolean;
-  /** 아래로 스크롤하면 헤더를 숨기고, 마우스가 화면 위쪽으로 가면 다시 내려온다 */
+  /**
+   * 아래로 스크롤하면 헤더를 숨기고, 마우스가 화면 위쪽으로 가면 다시 내려온다.
+   * 스크롤이 없는 화면에서는 커서가 위쪽을 벗어나기만 해도 숨는다.
+   */
   hideOnScroll?: boolean;
+  /** 둘째 줄이 없는 단순 헤더의 전체 높이(px). 위 여백 24px 을 포함한 값이다 */
+  height?: number;
 }) {
   const pathname = usePathname();
   const { scrollY } = useScroll();
   const [atTop, setAtTop] = useState(true);
   const [hovered, setHovered] = useState(false);
-  const [nearTop, setNearTop] = useState(false);
+  // 처음에는 보인 상태로 둔다 — 커서를 한 번이라도 아래로 내려야 숨는다
+  const [nearTop, setNearTop] = useState(true);
+  const [scrollable, setScrollable] = useState(true);
   const filter = useWorksFilter();
 
   useMotionValueEvent(scrollY, "change", (y) => setAtTop(y < 40));
@@ -84,7 +92,17 @@ export default function Header({
     return () => window.removeEventListener("pointermove", onMove);
   }, [hideOnScroll]);
 
-  const hidden = hideOnScroll && !atTop && !nearTop && !hovered;
+  // 아카이브 비하인드처럼 스크롤이 아예 없는 화면에서는 커서 위치만으로 판단한다
+  useEffect(() => {
+    if (!hideOnScroll) return;
+    const check = () =>
+      setScrollable(document.documentElement.scrollHeight > window.innerHeight + 4);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, [hideOnScroll]);
+
+  const hidden = hideOnScroll && !nearTop && !hovered && (!scrollable || !atTop);
   const expanded = compact ? hovered : atTop || hovered;
   const showFilterRow = filters && filter !== null;
 
@@ -94,7 +112,7 @@ export default function Header({
   const topRow = (
     <div className="flex w-full items-start justify-between">
       <Link href="/" aria-label="홈으로">
-        <Logo className="w-[187px]" />
+        <Logo width={187} />
       </Link>
       <nav aria-label="주요 메뉴">
         <ul className="flex items-center gap-4 text-body">
@@ -177,7 +195,8 @@ export default function Header({
         initial={false}
         animate={{ y: hidden ? "-100%" : "0%" }}
         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-        className={cn("fixed inset-x-0 top-0 z-50 h-[110px] px-margin pt-6", brand)}
+        className={cn("fixed inset-x-0 top-0 z-50 px-margin pt-6", brand)}
+        style={{ height }}
       >
         {topRow}
       </motion.header>
