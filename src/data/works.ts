@@ -10,6 +10,7 @@ export const WORKS: Work[] = [
     subtitle: "서브 타이틀",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
+    teamName: "온도",
     designerSlugs: ["jiwon-kang", "chaewon-song"],
     thumbnails: ["/placeholder/thumb-01a.svg", "/placeholder/thumb-01b.svg"],
     pages: ["/placeholder/thumb-02a.svg", "/placeholder/thumb-03a.svg", "/placeholder/thumb-04a.svg"],
@@ -32,7 +33,8 @@ export const WORKS: Work[] = [
     subtitle: "서브 타이틀",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
-    designerSlugs: ["seoyeon-kim"],
+    teamName: "경계",
+    designerSlugs: ["jiwon-kang", "hana-kim", "seoyeon-kim"],
     thumbnails: ["/placeholder/thumb-03a.svg", "/placeholder/thumb-03b.svg"],
     pages: ["/placeholder/thumb-04a.svg", "/placeholder/thumb-05a.svg", "/placeholder/thumb-06a.svg"],
   },
@@ -43,7 +45,8 @@ export const WORKS: Work[] = [
     subtitle: "서브 타이틀",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
-    designerSlugs: ["doyun-nam"],
+    teamName: "물결",
+    designerSlugs: ["doyun-nam", "eunbi-moon", "minseo-byun", "jihu-seo"],
     thumbnails: ["/placeholder/thumb-04a.svg", "/placeholder/thumb-04b.svg"],
     pages: ["/placeholder/thumb-05a.svg", "/placeholder/thumb-06a.svg", "/placeholder/thumb-07a.svg"],
   },
@@ -54,7 +57,8 @@ export const WORKS: Work[] = [
     subtitle: "서브 타이틀",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
-    designerSlugs: ["eunbi-moon"],
+    teamName: "윤곽",
+    designerSlugs: ["chaewon-song", "yerin-ahn", "junho-oh", "suyeon-yu", "garam-lee"],
     thumbnails: ["/placeholder/thumb-05a.svg", "/placeholder/thumb-05b.svg"],
     pages: ["/placeholder/thumb-06a.svg", "/placeholder/thumb-07a.svg", "/placeholder/thumb-08a.svg"],
   },
@@ -76,6 +80,7 @@ export const WORKS: Work[] = [
     subtitle: "서브 타이틀",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
+    teamName: "느루",
     designerSlugs: ["jihu-seo", "haeun-jang"],
     thumbnails: ["/placeholder/thumb-07a.svg", "/placeholder/thumb-07b.svg"],
     pages: ["/placeholder/thumb-08a.svg", "/placeholder/thumb-01a.svg", "/placeholder/thumb-02a.svg"],
@@ -120,7 +125,7 @@ export const WORKS: Work[] = [
     subtitle: "서브 타이틀",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
-    designerSlugs: ["ssuyeon-yu"],
+    designerSlugs: ["suyeon-yu"],
     thumbnails: ["/placeholder/thumb-03a.svg", "/placeholder/thumb-03b.svg"],
     pages: ["/placeholder/thumb-04a.svg", "/placeholder/thumb-05a.svg", "/placeholder/thumb-06a.svg"],
   },
@@ -142,6 +147,7 @@ export const WORKS: Work[] = [
     subtitle: "서브 타이틀",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
+    teamName: "무게",
     designerSlugs: ["taemin-lim", "doyun-nam"],
     thumbnails: ["/placeholder/thumb-05a.svg", "/placeholder/thumb-05b.svg"],
     pages: ["/placeholder/thumb-06a.svg", "/placeholder/thumb-07a.svg", "/placeholder/thumb-08a.svg"],
@@ -208,6 +214,7 @@ export const WORKS: Work[] = [
     subtitle: "서브 타이틀",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
+    teamName: "윤곽",
     designerSlugs: ["seoyeon-kim", "junho-oh"],
     thumbnails: ["/placeholder/thumb-03a.svg", "/placeholder/thumb-03b.svg"],
     pages: ["/placeholder/thumb-04a.svg", "/placeholder/thumb-05a.svg", "/placeholder/thumb-06a.svg"],
@@ -230,6 +237,7 @@ export const WORKS: Work[] = [
     subtitle: "서브 타이틀",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
+    teamName: "리듬",
     designerSlugs: ["eunbi-moon", "garam-lee"],
     thumbnails: ["/placeholder/thumb-05a.svg", "/placeholder/thumb-05b.svg"],
     pages: ["/placeholder/thumb-06a.svg", "/placeholder/thumb-07a.svg", "/placeholder/thumb-08a.svg"],
@@ -296,7 +304,8 @@ export const WORKS: Work[] = [
     subtitle: "서브 타이틀",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
-    designerSlugs: ["ssuyeon-yu", "hana-kim"],
+    teamName: "호흡",
+    designerSlugs: ["suyeon-yu", "hana-kim"],
     thumbnails: ["/placeholder/thumb-03a.svg", "/placeholder/thumb-03b.svg"],
     pages: ["/placeholder/thumb-04a.svg", "/placeholder/thumb-05a.svg", "/placeholder/thumb-06a.svg"],
   },
@@ -362,6 +371,7 @@ export const WORKS: Work[] = [
     subtitle: "서브 타이틀",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
+    teamName: "사이",
     designerSlugs: ["jiwon-kang", "chaewon-song"],
     thumbnails: ["/placeholder/thumb-01a.svg", "/placeholder/thumb-01b.svg"],
     pages: ["/placeholder/thumb-02a.svg", "/placeholder/thumb-03a.svg", "/placeholder/thumb-04a.svg"],
@@ -428,6 +438,7 @@ export const WORKS: Work[] = [
     subtitle: "서브 타이틀",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
+    teamName: "기록",
     designerSlugs: ["jihu-seo", "haeun-jang"],
     thumbnails: ["/placeholder/thumb-07a.svg", "/placeholder/thumb-07b.svg"],
     pages: ["/placeholder/thumb-08a.svg", "/placeholder/thumb-01a.svg", "/placeholder/thumb-02a.svg"],
@@ -450,6 +461,7 @@ export const WORKS: Work[] = [
     subtitle: "서브 타이틀",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
+    teamName: "자리",
     designerSlugs: ["yerin-ahn", "siwoo-choi"],
     thumbnails: ["/placeholder/thumb-01a.svg", "/placeholder/thumb-01b.svg"],
     pages: ["/placeholder/thumb-02a.svg", "/placeholder/thumb-03a.svg", "/placeholder/thumb-04a.svg"],
@@ -472,7 +484,7 @@ export const WORKS: Work[] = [
     subtitle: "서브 타이틀",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
-    designerSlugs: ["ssuyeon-yu"],
+    designerSlugs: ["suyeon-yu"],
     thumbnails: ["/placeholder/thumb-03a.svg", "/placeholder/thumb-03b.svg"],
     pages: ["/placeholder/thumb-04a.svg", "/placeholder/thumb-05a.svg", "/placeholder/thumb-06a.svg"],
   },
@@ -516,6 +528,7 @@ export const WORKS: Work[] = [
     subtitle: "서브 타이틀",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
+    teamName: "물결",
     designerSlugs: ["nayun-jung", "minseo-byun"],
     thumbnails: ["/placeholder/thumb-07a.svg", "/placeholder/thumb-07b.svg"],
     pages: ["/placeholder/thumb-08a.svg", "/placeholder/thumb-01a.svg", "/placeholder/thumb-02a.svg"],
@@ -582,6 +595,7 @@ export const WORKS: Work[] = [
     subtitle: "서브 타이틀",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
+    teamName: "방향",
     designerSlugs: ["eunbi-moon", "garam-lee"],
     thumbnails: ["/placeholder/thumb-05a.svg", "/placeholder/thumb-05b.svg"],
     pages: ["/placeholder/thumb-06a.svg", "/placeholder/thumb-07a.svg", "/placeholder/thumb-08a.svg"],
@@ -648,7 +662,8 @@ export const WORKS: Work[] = [
     subtitle: "서브 타이틀",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
-    designerSlugs: ["ssuyeon-yu", "hana-kim"],
+    teamName: "윤곽",
+    designerSlugs: ["suyeon-yu", "hana-kim"],
     thumbnails: ["/placeholder/thumb-03a.svg", "/placeholder/thumb-03b.svg"],
     pages: ["/placeholder/thumb-04a.svg", "/placeholder/thumb-05a.svg", "/placeholder/thumb-06a.svg"],
   },
@@ -670,6 +685,7 @@ export const WORKS: Work[] = [
     subtitle: "서브 타이틀",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
+    teamName: "리듬",
     designerSlugs: ["taemin-lim", "doyun-nam"],
     thumbnails: ["/placeholder/thumb-05a.svg", "/placeholder/thumb-05b.svg"],
     pages: ["/placeholder/thumb-06a.svg", "/placeholder/thumb-07a.svg", "/placeholder/thumb-08a.svg"],
@@ -736,6 +752,7 @@ export const WORKS: Work[] = [
     subtitle: "서브 타이틀",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
+    teamName: "질감",
     designerSlugs: ["seoyeon-kim", "junho-oh"],
     thumbnails: ["/placeholder/thumb-03a.svg", "/placeholder/thumb-03b.svg"],
     pages: ["/placeholder/thumb-04a.svg", "/placeholder/thumb-05a.svg", "/placeholder/thumb-06a.svg"],
@@ -802,6 +819,7 @@ export const WORKS: Work[] = [
     subtitle: "서브 타이틀",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
+    teamName: "여백",
     designerSlugs: ["yerin-ahn", "siwoo-choi"],
     thumbnails: ["/placeholder/thumb-01a.svg", "/placeholder/thumb-01b.svg"],
     pages: ["/placeholder/thumb-02a.svg", "/placeholder/thumb-03a.svg", "/placeholder/thumb-04a.svg"],
@@ -824,7 +842,7 @@ export const WORKS: Work[] = [
     subtitle: "서브 타이틀",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
-    designerSlugs: ["ssuyeon-yu"],
+    designerSlugs: ["suyeon-yu"],
     thumbnails: ["/placeholder/thumb-03a.svg", "/placeholder/thumb-03b.svg"],
     pages: ["/placeholder/thumb-04a.svg", "/placeholder/thumb-05a.svg", "/placeholder/thumb-06a.svg"],
   },
@@ -868,6 +886,7 @@ export const WORKS: Work[] = [
     subtitle: "서브 타이틀",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
+    teamName: "무게",
     designerSlugs: ["nayun-jung", "minseo-byun"],
     thumbnails: ["/placeholder/thumb-07a.svg", "/placeholder/thumb-07b.svg"],
     pages: ["/placeholder/thumb-08a.svg", "/placeholder/thumb-01a.svg", "/placeholder/thumb-02a.svg"],

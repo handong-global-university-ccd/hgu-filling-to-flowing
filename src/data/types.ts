@@ -41,6 +41,8 @@ export type Work = {
   title: string; // 한글 타이틀
   subtitle?: string;
   description: string;
+  /** 팀 작품의 팀 이름. 개인 작품은 없음 (Figma 2243:14655~) */
+  teamName?: string;
   designerSlugs: string[];
   /** 호버 시 A↔B 교차 */
   thumbnails: [string, string];

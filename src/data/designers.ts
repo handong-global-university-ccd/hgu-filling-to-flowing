@@ -114,7 +114,7 @@ export const DESIGNERS: Designer[] = [
     workSlugs: ["communication-10", "communication-19", "industrial-06", "service-02", "service-18", "ux-07"],
   },
   {
-    slug: "ssuyeon-yu",
+    slug: "suyeon-yu",
     nameKo: "유수연",
     nameEn: "Suyeon Yu",
     fields: ["service"],

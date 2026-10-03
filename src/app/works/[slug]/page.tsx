@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import PageShell from "@/components/layout/PageShell";
 import OthersMarquee from "@/components/works/OthersMarquee";
+import WorkCredits from "@/components/works/WorkCredits";
 import { WORKS, getOtherWorks, getWork } from "@/data/works";
 import { getDesigner } from "@/data/designers";
 import { asset } from "@/lib/asset";
@@ -68,18 +68,10 @@ export default async function WorkDetailPage({ params }: PageProps<"/works/[slug
             </div>
           </div>
 
-          <div className="flex w-fit min-w-[84px] flex-col gap-1 text-body-sm whitespace-nowrap">
-            <p className="text-fg-tertiary">Designers</p>
-            <ul>
-              {designers.map((d) => (
-                <li key={d.slug}>
-                  <Link href={`/designers/${d.slug}/`} className="hover:text-fg-tertiary">
-                    {d.nameEn}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <WorkCredits
+            teamName={work.teamName}
+            designers={designers.map((d) => ({ slug: d.slug, nameKo: d.nameKo }))}
+          />
         </div>
 
         {/* 우측 작업물 — PDF를 페이지별 webp로 변환해서 나열 */}
