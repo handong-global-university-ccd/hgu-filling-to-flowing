@@ -48,7 +48,8 @@ export default function DesignerList({ designers }: { designers: DesignerRow[] }
   const [scrolled, setScrolled] = useState(0);
 
   const filtered = useMemo(() => {
-    const query = q.trim().toLowerCase();
+    // macOS 등에서 한글이 자모 분리(NFD)로 들어와도 일치하도록 NFC 로 맞춘다
+    const query = q.trim().normalize("NFC").toLowerCase();
     return designers.filter((d) => {
       if (field !== "all" && !d.fieldKeys.includes(field)) return false;
       if (!query) return true;
@@ -59,6 +60,17 @@ export default function DesignerList({ designers }: { designers: DesignerRow[] }
       );
     });
   }, [designers, field, q]);
+
+  // 검색어·분야가 바뀌면 맨 위로 올린다 — 스크롤을 내린 채 검색하면
+  // 줄어든 결과가 화면 위쪽 밖에 그려져 아무것도 안 나온 것처럼 보인다
+  const firstFilter = useRef(true);
+  useEffect(() => {
+    if (firstFilter.current) {
+      firstFilter.current = false;
+      return;
+    }
+    window.scrollTo(0, 0);
+  }, [q, field]);
 
   // 스크롤 위치로 활성 디자이너를 정한다.
   // 기준선은 "스크롤 0 일 때 첫 행이 있던 자리" — 리스트가 그 선을 지나가며

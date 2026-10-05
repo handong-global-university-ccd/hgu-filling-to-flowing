@@ -51,6 +51,7 @@ function SearchField({
  *   · filters : Works 의 분야 탭 + 검색 (1807:14578)
  *   · archive : Behind / Exhibition View 탭 + 검색 (1807:15967, 1807:16563)
  *   · compact : 처음부터 접힌 상태 (디자이너 상세 1807:15093)
+ *   hideOnScroll 이어도 둘째 줄은 숨지 않는다 — 숨는 대신 Scroll(74px) 로 접힌다
  */
 export default function Header({
   inverse = false,
@@ -103,7 +104,8 @@ export default function Header({
   }, [hideOnScroll]);
 
   const hidden = hideOnScroll && !nearTop && !hovered && (!scrollable || !atTop);
-  const expanded = compact ? hovered : atTop || hovered;
+  // 둘째 줄이 있는 헤더는 통째로 숨지 않고 Scroll(74px) 로 접혀 둘째 줄(탭)만 남긴다
+  const expanded = compact ? hovered : (atTop || hovered) && !hidden;
   const showFilterRow = filters && filter !== null;
 
   const brand = inverse ? "bg-bg-inverse text-fg-inverse" : "bg-bg text-fg";
@@ -208,7 +210,7 @@ export default function Header({
       onPointerEnter={() => setHovered(true)}
       onPointerLeave={() => setHovered(false)}
       initial={false}
-      animate={{ height: expanded ? 176 : 74, y: hidden ? "-100%" : "0%" }}
+      animate={{ height: expanded ? 176 : 74 }}
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       className={cn("fixed inset-x-0 top-0 z-50 flex flex-col overflow-hidden px-margin py-6", brand)}
     >
