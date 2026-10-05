@@ -12,6 +12,8 @@ import { cn } from "@/lib/cn";
  *
  * fullscreen=true 면 페이지가 화면 한 장으로 끝난다 — 스크롤도 푸터도 없다.
  * 아카이브_비하인드처럼 "전체 레이아웃을 마우스로 둘러보는" 화면에 쓴다.
+ * 본문은 헤더 높이만큼 내리지 않고 화면 전체(top 0)를 쓰며, 헤더는 그 위에 겹친다.
+ * 헤더가 숨었을 때 그 자리가 빈 칸으로 남지 않게 하기 위해서다.
  * 본문은 flex column 이므로 안에서 flex-1 로 남은 높이를 다 쓰면 된다.
  */
 export default function PageShell({
@@ -39,6 +41,7 @@ export default function PageShell({
   className?: string;
 }) {
   const tall = (filters || Boolean(archive)) && !compact;
+  const padTop = !fullscreen;
 
   return (
     <div
@@ -59,10 +62,10 @@ export default function PageShell({
         id="main"
         className={cn(
           fullscreen ? "flex h-svh flex-col" : "min-h-svh",
-          tall ? "pt-[176px]" : compact ? "pt-[74px]" : undefined,
+          padTop && (tall ? "pt-[176px]" : compact ? "pt-[74px]" : undefined),
           className,
         )}
-        style={tall || compact ? undefined : { paddingTop: headerHeight }}
+        style={padTop && !tall && !compact ? { paddingTop: headerHeight } : undefined}
       >
         {children}
       </main>
