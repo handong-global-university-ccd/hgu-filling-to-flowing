@@ -77,7 +77,7 @@ export default async function WorkDetailPage({ params }: PageProps<"/works/[slug
         </div>
 
         {/* 우측 상세 설명 이미지 — PDF를 페이지별 webp로 변환해서 나열 */}
-        <div className="w-full min-w-0 space-y-4">
+        <div className="w-full min-w-0">
           {work.pages.length === 0 && (
             <div className="grid aspect-[1518/1000] place-items-center bg-bg-subtle text-fg-tertiary">
               작업물 이미지 (TODO)
@@ -90,7 +90,7 @@ export default async function WorkDetailPage({ params }: PageProps<"/works/[slug
               alt={`${work.title} ${i + 1}페이지`}
               width={1518}
               height={2024}
-              className="w-full"
+              className="block w-full"
             />
           ))}
         </div>

@@ -15,7 +15,7 @@ export default function HomePage() {
   const worksByField = Object.fromEntries(FIELDS.map((f) => [f.key, getWorks(f.key)])) as Record<
     FieldKey,
     Work[]
-  >;
+  >; 
 
   return (
     <>
