@@ -34,6 +34,7 @@ export default async function DesignerDetailPage({ params }: PageProps<"/designe
     slug: d.slug,
     nameKo: d.nameKo,
     nameEn: d.nameEn,
+    fieldKeys: [...d.fields],
     disciplines: d.fields.map(fieldLabel).join(", "),
     contacts: [d.email, d.instagram].filter((c): c is string => Boolean(c)),
     profile: d.profile,

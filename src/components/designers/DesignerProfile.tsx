@@ -2,9 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { motion } from "motion/react";
 import ArrowUpRight from "@/components/icons/ArrowUpRight";
+import { useWorksFilter } from "@/components/works/works-filter";
+import type { FieldKey } from "@/data/types";
 import { asset } from "@/lib/asset";
 import { cn } from "@/lib/cn";
 
@@ -13,6 +15,7 @@ export type ProfileDesigner = {
   slug: string;
   nameKo: string;
   nameEn: string;
+  fieldKeys: FieldKey[];
   disciplines: string;
   contacts: string[];
   profile: string;
@@ -47,19 +50,52 @@ export default function DesignerProfile({
   designers: ProfileDesigner[];
   initialIndex: number;
 }) {
+  const filter = useWorksFilter();
+  const field = filter?.field ?? "all";
+  const query = (filter?.q ?? "").trim().normalize("NFC").toLowerCase();
+  const filtered = useMemo(
+    () =>
+      designers.filter((designer) => {
+        if (field !== "all" && !designer.fieldKeys.includes(field)) return false;
+        return [designer.nameKo, designer.nameEn, designer.disciplines].some((value) =>
+          value.normalize("NFC").toLowerCase().includes(query),
+        );
+      }),
+    [designers, field, query],
+  );
+
+  // 필터가 바뀌면 레일·스크롤 상태를 함께 초기화하고 첫 결과부터 보여준다.
+  // 전체 목록으로 돌아오면 처음 진입했던 디자이너를 다시 보여준다.
+  return (
+    <ProfileStage
+      key={JSON.stringify([field, query])}
+      designers={filtered}
+      initialIndex={field === "all" && !query ? initialIndex : 0}
+    />
+  );
+}
+
+function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[]; initialIndex: number }) {
   const section = useRef<HTMLElement>(null);
   const stage = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(initialIndex * PITCH);
   const [stageH, setStageH] = useState(0);
 
-  const span = (designers.length - 1) * PITCH;
+  const span = Math.max(0, designers.length - 1) * PITCH;
   const active = Math.min(designers.length - 1, Math.max(0, Math.round(progress / PITCH)));
   const d = designers[active];
 
   // 들어오자마자 해당 디자이너가 보이도록 스크롤 위치를 맞춘다
   useLayoutEffect(() => {
+    const previousRestoration = history.scrollRestoration;
     if ("scrollRestoration" in history) history.scrollRestoration = "manual";
-    window.scrollTo(0, (section.current?.offsetTop ?? 0) + initialIndex * PITCH);
+    window.scrollTo({
+      top: (section.current?.offsetTop ?? 0) + initialIndex * PITCH,
+      behavior: "instant",
+    });
+    return () => {
+      if ("scrollRestoration" in history) history.scrollRestoration = previousRestoration;
+    };
   }, [initialIndex]);
 
   useEffect(() => {
@@ -79,19 +115,27 @@ export default function DesignerProfile({
   }, [span]);
 
   // 주소만 바꾼다 — 페이지를 다시 그리지 않고 공유·새로고침만 맞춰준다
+  const activeSlug = d?.slug;
   useEffect(() => {
-    history.replaceState(null, "", `/designers/${d.slug}/`);
-  }, [d.slug]);
+    if (activeSlug) history.replaceState(null, "", `/designers/${activeSlug}/`);
+  }, [activeSlug]);
 
-  const goTo = useCallback(
-    (i: number) => {
-      const top = (section.current?.offsetTop ?? 0) + i * PITCH;
-      window.scrollTo({ top, behavior: "smooth" });
-    },
-    [],
-  );
+  const goTo = useCallback((i: number) => {
+    const top = (section.current?.offsetTop ?? 0) + i * PITCH;
+    window.scrollTo({ top, behavior: "smooth" });
+  }, []);
 
   const markerTop = stageH / 2 - ITEM_H / 2;
+
+  if (!d) {
+    return (
+      <section ref={section} className="px-margin" style={{ minHeight: `calc(100svh - ${HEADER}px)` }}>
+        <p role="status" className="py-20 text-center text-fg-tertiary">
+          검색 결과가 없습니다.
+        </p>
+      </section>
+    );
+  }
 
   return (
     <section ref={section} className="relative" style={{ height: `calc(100svh - ${HEADER}px + ${span}px)` }}>
@@ -196,10 +240,7 @@ export default function DesignerProfile({
             </div>
           </div>
 
-          <div
-            className="absolute h-[452px] w-[338px]"
-            style={{ left: "calc(81.25% - 2px)", top: 48 }}
-          >
+          <div className="absolute h-[452px] w-[338px]" style={{ left: "calc(81.25% - 2px)", top: 48 }}>
             <Image
               src={asset(d.profile)}
               alt={`${d.nameKo} 프로필 사진`}
