@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import Marquee from "./Marquee";
 import { FIELDS, type FieldKey, type Work } from "@/data/types";
@@ -18,6 +18,11 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 const OPEN_DURATION = 0.8;
 const CLOSE_DURATION = 0.45;
 const OPEN_EASE = [0.4, 0, 0.2, 1] as const;
+
+/** 접힌 행 높이. 펼침 패널이 0 이 아니라 이 높이에서 시작해야 행이 순간적으로 줄어들지 않는다 */
+const ROW_H = 74;
+/** 행이 바뀐 직후 호버를 무시하는 시간 (ms) */
+const HOVER_LOCK_MS = 250;
 
 /** 줄마다 흐르는 방향·속도를 다르게 (한 방향으로만 흐르면 단조로워서) */
 const MARQUEE = [
@@ -43,6 +48,18 @@ function fillLoop<T>(items: T[], min: number): T[] {
  */
 export default function FieldAccordion({ worksByField }: { worksByField: Record<FieldKey, Work[]> }) {
   const [active, setActive] = useState<FieldKey | null>(null);
+  const lockedUntil = useRef(0);
+
+  /**
+   * 호버로 행을 바꾼다. 행이 열리고 닫히면 아래 행들이 위아래로 밀리는데,
+   * 커서가 경계에 있으면 밀린 행이 다시 커서 밑으로 들어와 열림↔닫힘이 무한 반복된다.
+   * 그래서 enter 대신 실제로 마우스가 움직일 때만 반응하고, 전환 직후 잠깐은 무시한다.
+   */
+  const hoverTo = (key: FieldKey, time: number) => {
+    if (key === active || time < lockedUntil.current) return;
+    lockedUntil.current = time + HOVER_LOCK_MS;
+    setActive(key);
+  };
 
   return (
     <section
@@ -59,7 +76,7 @@ export default function FieldAccordion({ worksByField }: { worksByField: Record<
         return (
           <div
             key={field.key}
-            onPointerEnter={(e) => e.pointerType === "mouse" && setActive(field.key)}
+            onPointerMove={(e) => e.pointerType === "mouse" && hoverTo(field.key, e.timeStamp)}
             onFocusCapture={() => setActive(field.key)}
             /* 아코디언 사이 흰색 구분선 — 선 위아래로 16px 씩 여백 */
             className={cn("border-fg-inverse", i > 0 && "mt-4 border-t pt-4")}
@@ -92,7 +109,7 @@ export default function FieldAccordion({ worksByField }: { worksByField: Record<
             <AnimatePresence initial={false}>
               {open && (
                 <motion.div
-                  initial={{ height: 0, opacity: 0 }}
+                  initial={{ height: ROW_H, opacity: 0 }}
                   animate={{
                     height: "auto",
                     opacity: 1,
