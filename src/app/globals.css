@@ -159,6 +159,14 @@
   }
 }
 
+/* 모바일(< 768px) 그리드 — Figma Mobile Grid(2365:20239): 마진 16 / 거터 14 */
+@media (width < 48rem) {
+  :root {
+    --spacing-margin: 16px;
+    --spacing-gutter: 14px;
+  }
+}
+
 /* 12컬럼 페이지 그리드 */
 @utility page-grid {
   display: grid;

@@ -47,7 +47,8 @@ export default function FieldAccordion({ worksByField }: { worksByField: Record<
   return (
     <section
       aria-label="분야별 작품"
-      onPointerLeave={() => setActive(null)}
+      // 터치는 손을 떼는 순간 pointerleave 가 와서 바로 닫혀 버리므로 마우스일 때만 호버로 연다
+      onPointerLeave={(e) => e.pointerType === "mouse" && setActive(null)}
       className="flex flex-col bg-bg-inverse text-fg-inverse"
     >
       {FIELDS.map((field, i) => {
@@ -58,7 +59,7 @@ export default function FieldAccordion({ worksByField }: { worksByField: Record<
         return (
           <div
             key={field.key}
-            onPointerEnter={() => setActive(field.key)}
+            onPointerEnter={(e) => e.pointerType === "mouse" && setActive(field.key)}
             onFocusCapture={() => setActive(field.key)}
             /* 아코디언 사이 흰색 구분선 — 선 위아래로 16px 씩 여백 */
             className={cn("border-fg-inverse", i > 0 && "mt-4 border-t pt-4")}
@@ -80,7 +81,7 @@ export default function FieldAccordion({ worksByField }: { worksByField: Record<
                   </div>
                 ))}
               </Marquee>
-              <span className="pointer-events-none absolute top-1/2 left-6 -translate-y-1/2 text-[32px] leading-[40px] font-medium">
+              <span className="pointer-events-none absolute top-1/2 left-6 -translate-y-1/2 text-[32px] leading-[40px] font-medium max-md:left-margin max-md:text-[28px] max-md:leading-[36px]">
                 {field.short}
               </span>
             </button>
@@ -103,10 +104,13 @@ export default function FieldAccordion({ worksByField }: { worksByField: Record<
                   className="overflow-hidden"
                 >
                   {/* Figma: 좌측 카피 456px(left 24), 썸네일 그리드는 37.5%+4px 지점부터 */}
-                  <div className="flex pt-[18px] pb-10">
-                    <div className="w-[calc(37.5%+4px)] shrink-0 pl-6">
-                      <h3 className="text-[32px] leading-[40px] font-medium">{field.short}</h3>
-                      <p className="mt-2 max-w-[456px] font-kr text-[18px] leading-[26px] text-neutral-300">
+                  {/* 모바일: 카피 위, 썸네일 아래로 쌓는다 */}
+                  <div className="flex pt-[18px] pb-10 max-md:flex-col max-md:gap-6">
+                    <div className="w-[calc(37.5%+4px)] shrink-0 pl-6 max-md:w-full max-md:px-margin">
+                      <h3 className="text-[32px] leading-[40px] font-medium max-md:text-[28px] max-md:leading-[36px]">
+                        {field.short}
+                      </h3>
+                      <p className="mt-2 max-w-[456px] font-kr text-[18px] leading-[26px] text-neutral-300 max-md:text-[16px] max-md:leading-[24px]">
                         {field.intro}
                       </p>
                       {/* <Link
@@ -117,12 +121,12 @@ export default function FieldAccordion({ worksByField }: { worksByField: Record<
                       </Link> */}
                     </div>
 
-                    <ul className="flex flex-1 flex-wrap content-start gap-4 pr-6">
+                    <ul className="flex flex-1 flex-wrap content-start gap-4 pr-6 max-md:grid max-md:grid-cols-2 max-md:gap-(--spacing-gutter) max-md:px-margin">
                       {works.map((w) => (
                         <li key={w.slug}>
                           <Link
                             href={`/works/${w.slug}/`}
-                            className="group block h-[112px] w-[157px] overflow-hidden"
+                            className="group block h-[112px] w-[157px] overflow-hidden max-md:aspect-[157/112] max-md:h-auto max-md:w-full"
                             title={w.title}
                           >
                             <Image

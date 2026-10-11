@@ -117,7 +117,8 @@ export default function ArchiveCanvas({ photos }: { photos: Photo[] }) {
   return (
     <div
       ref={viewport}
-      className="relative min-h-0 flex-1 overflow-hidden motion-reduce:overflow-auto"
+      // 터치: 손가락 위치가 커서 역할 — 브라우저 기본 스크롤·줌을 꺼야 pointermove 가 계속 온다
+      className="relative min-h-0 flex-1 touch-none overflow-hidden motion-reduce:overflow-auto"
     >
       <div
         ref={plate}
@@ -141,13 +142,7 @@ export default function ArchiveCanvas({ photos }: { photos: Photo[] }) {
               className="relative"
               style={{ gridColumn: p.col + 1, gridRow: p.row + 1 }}
             >
-              <Image
-                src={asset(p.src)}
-                alt={p.alt}
-                fill
-                sizes={`${TILE_W}px`}
-                className="object-cover"
-              />
+              <Image src={asset(p.src)} alt={p.alt} fill sizes={`${TILE_W}px`} className="object-cover" />
             </div>
           ))}
         </div>

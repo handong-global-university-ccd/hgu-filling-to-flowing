@@ -38,7 +38,7 @@ export default function Footer({ inverse = true }: { inverse?: boolean }) {
 
       <nav
         aria-label="푸터 메뉴"
-        className="absolute top-[21px] left-[25px] w-[143px] space-y-[2px] text-caption"
+        className="absolute top-[21px] left-[25px] w-[143px] space-y-[2px] text-caption max-md:left-margin"
       >
         <Link href="/" className="block hover:opacity-70">
           HOME
@@ -50,7 +50,8 @@ export default function Footer({ inverse = true }: { inverse?: boolean }) {
         ))}
       </nav>
 
-      <ul className="absolute top-[21px] left-[calc(81.25%-2px)] w-[163px] text-caption">
+      {/* 모바일은 81.25% 지점이 화면 밖으로 넘쳐서 오른쪽 마진에 붙인다 */}
+      <ul className="absolute top-[21px] left-[calc(81.25%-2px)] w-[163px] text-caption max-md:right-margin max-md:left-auto max-md:w-auto">
         {links.map((l) => (
           <li key={l.label}>
             <a

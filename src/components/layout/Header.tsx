@@ -3,11 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { motion, useMotionValueEvent, useScroll } from "motion/react";
+import { createPortal } from "react-dom";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { NAV } from "@/lib/site";
 import { cn } from "@/lib/cn";
 import { FIELDS } from "@/data/types";
 import { useWorksFilter } from "@/components/works/works-filter";
+import { useHasFinePointer, useMediaQuery } from "@/hooks/useMediaQuery";
+import { HEADER_H, MOBILE_QUERY } from "@/lib/header";
 import Logo from "./Logo";
 
 export type ArchiveTab = "behind" | "exhibition";
@@ -21,15 +24,9 @@ const ARCHIVE_TABS = [
 ] as const;
 
 /** Figma Search (1893:1245) — 334×30, 아래 1px 밑줄, placeholder Neutral/500 */
-function SearchField({
-  value,
-  onChange,
-}: {
-  value?: string;
-  onChange?: (v: string) => void;
-}) {
+function SearchField({ value, onChange }: { value?: string; onChange?: (v: string) => void }) {
   return (
-    <label className="h-[30px] w-[334px] shrink-0 border-b border-border">
+    <label className="h-[30px] w-full shrink-0 border-b border-border md:w-[334px]">
       <span className="sr-only">검색</span>
       <input
         type="search"
@@ -38,6 +35,89 @@ function SearchField({
         className="w-full bg-transparent text-body outline-none placeholder:text-fg-tertiary"
       />
     </label>
+  );
+}
+
+/**
+ * 모바일 전체 화면 메뉴 (< 768px). 데스크톱 내비 4개를 화면 가득 크게 보여준다.
+ * 헤더는 transform·overflow 가 걸려 있어 그 안에 두면 잘리므로 body 로 포털한다.
+ */
+function MobileMenu({
+  open,
+  onClose,
+  inverse,
+  pathname,
+}: {
+  open: boolean;
+  onClose: () => void;
+  inverse: boolean;
+  pathname: string;
+}) {
+  useEffect(() => {
+    if (!open) return;
+    const root = document.documentElement;
+    const previous = root.style.overflow;
+    root.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    return () => {
+      root.style.overflow = previous;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open, onClose]);
+
+  if (typeof document === "undefined") return null;
+  return createPortal(
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          id="mobile-menu"
+          role="dialog"
+          aria-modal="true"
+          aria-label="메뉴"
+          data-lenis-prevent
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+          className={cn(
+            "fixed inset-0 z-[70] flex flex-col px-margin pt-4 pb-8 md:hidden",
+            inverse ? "bg-bg-inverse text-fg-inverse" : "bg-bg text-fg",
+          )}
+        >
+          <div className="flex items-start justify-between">
+            <Link href="/" aria-label="홈으로" onClick={onClose}>
+              <Logo width={120} />
+            </Link>
+            <button type="button" onClick={onClose} className="text-body" autoFocus>
+              Close
+            </button>
+          </div>
+          <nav aria-label="주요 메뉴" className="mt-auto">
+            <ul className="flex flex-col gap-2 text-h2">
+              <li>
+                <Link href="/" onClick={onClose} className={pathname === "/" ? "" : "opacity-50"}>
+                  Home
+                </Link>
+              </li>
+              {NAV.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    onClick={onClose}
+                    aria-current={pathname.startsWith(item.href) ? "page" : undefined}
+                    className={pathname.startsWith(item.href) ? "" : "opacity-50"}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </motion.div>
+      )}
+    </AnimatePresence>,
+    document.body,
   );
 }
 
@@ -82,8 +162,21 @@ export default function Header({
   const [nearTop, setNearTop] = useState(true);
   const [scrollable, setScrollable] = useState(true);
   const filter = useWorksFilter();
+  const isMobile = useMediaQuery(MOBILE_QUERY);
+  const finePointer = useHasFinePointer();
+  const [menuOpen, setMenuOpen] = useState(false);
+  // 터치 기기는 커서로 헤더를 불러낼 수 없으니 위로 스크롤하면 다시 보여준다
+  const [scrollingDown, setScrollingDown] = useState(false);
 
-  useMotionValueEvent(scrollY, "change", (y) => setAtTop(y < 40));
+  useMotionValueEvent(scrollY, "change", (y) => {
+    setAtTop(y < 40);
+    const previous = scrollY.getPrevious() ?? 0;
+    if (Math.abs(y - previous) > 4) setScrollingDown(y > previous);
+  });
+
+  // 페이지를 옮기면 메뉴를 닫는다
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => setMenuOpen(false), [pathname]);
 
   // 숨어 있는 동안에는 헤더가 포인터 이벤트를 못 받으니 화면 전체에서 커서 높이를 본다
   useEffect(() => {
@@ -96,14 +189,15 @@ export default function Header({
   // 아카이브 비하인드처럼 스크롤이 아예 없는 화면에서는 커서 위치만으로 판단한다
   useEffect(() => {
     if (!hideOnScroll) return;
-    const check = () =>
-      setScrollable(document.documentElement.scrollHeight > window.innerHeight + 4);
+    const check = () => setScrollable(document.documentElement.scrollHeight > window.innerHeight + 4);
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
   }, [hideOnScroll]);
 
-  const hidden = hideOnScroll && !nearTop && !hovered && (!scrollable || !atTop);
+  const hidden = finePointer
+    ? hideOnScroll && !nearTop && !hovered && (!scrollable || !atTop)
+    : hideOnScroll && scrollable && !atTop && scrollingDown && !menuOpen;
   // 둘째 줄이 있는 헤더는 통째로 숨지 않고 Scroll(74px) 로 접혀 둘째 줄(탭)만 남긴다
   const expanded = compact ? hovered : (atTop || hovered) && !hidden;
   const showFilterRow = filters && filter !== null;
@@ -114,9 +208,19 @@ export default function Header({
   const topRow = (
     <div className="flex w-full items-start justify-between">
       <Link href="/" aria-label="홈으로">
-        <Logo width={187} />
+        <Logo width={187} className="max-md:!w-[120px]" />
       </Link>
-      <nav aria-label="주요 메뉴">
+      {/* 모바일: 내비 대신 메뉴 버튼 → 전체 화면 메뉴 */}
+      <button
+        type="button"
+        onClick={() => setMenuOpen(true)}
+        aria-expanded={menuOpen}
+        aria-controls="mobile-menu"
+        className="text-body md:hidden"
+      >
+        Menu
+      </button>
+      <nav aria-label="주요 메뉴" className="max-md:hidden">
         <ul className="flex items-center gap-4 text-body">
           {NAV.map((item) => {
             const active = pathname.startsWith(item.href);
@@ -146,8 +250,13 @@ export default function Header({
   if (showFilterRow) {
     const tabs = [{ key: "all" as const, label: "All" }, ...FIELDS];
     secondRow = (
-      <div className="mt-auto flex items-center justify-between gap-6 px-1">
-        <div role="tablist" aria-label="분야" className="flex flex-wrap gap-3 text-body">
+      <div className="mt-auto flex flex-col gap-2 md:flex-row md:items-center md:justify-between md:gap-6 md:px-1">
+        {/* 모바일은 탭이 한 줄을 넘치면 가로로 밀어서 본다 */}
+        <div
+          role="tablist"
+          aria-label="분야"
+          className="-mx-margin flex [scrollbar-width:none] gap-3 overflow-x-auto px-margin text-body md:mx-0 md:flex-wrap md:overflow-visible md:px-0 [&::-webkit-scrollbar]:hidden"
+        >
           {tabs.map((t) => (
             <button
               key={t.key}
@@ -169,7 +278,7 @@ export default function Header({
     );
   } else if (archive) {
     secondRow = (
-      <div className="mt-auto flex items-center justify-between gap-6 px-1">
+      <div className="mt-auto flex items-center justify-between gap-6 md:px-1">
         <nav aria-label="아카이브" className="flex gap-3 text-body">
           {ARCHIVE_TABS.map((t) => (
             <Link
@@ -189,44 +298,59 @@ export default function Header({
     );
   }
 
+  const menu = (
+    <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} inverse={inverse} pathname={pathname} />
+  );
+
   if (!secondRow) {
     return (
+      <>
+        <motion.header
+          onPointerEnter={() => setHovered(true)}
+          onPointerLeave={() => setHovered(false)}
+          initial={false}
+          animate={{ y: hidden ? "-100%" : "0%" }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          className={cn("fixed inset-x-0 top-0 z-50 px-margin pt-6 max-md:pt-4", brand)}
+          style={{ height: isMobile ? HEADER_H.mobile.simple : height }}
+        >
+          {topRow}
+        </motion.header>
+        {menu}
+      </>
+    );
+  }
+
+  const rowH = isMobile ? HEADER_H.mobile[showFilterRow ? "filters" : "archive"] : HEADER_H.desktop;
+
+  return (
+    <>
       <motion.header
         onPointerEnter={() => setHovered(true)}
         onPointerLeave={() => setHovered(false)}
         initial={false}
-        animate={{ y: hidden ? "-100%" : "0%" }}
-        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-        className={cn("fixed inset-x-0 top-0 z-50 px-margin pt-6", brand)}
-        style={{ height }}
-      >
-        {topRow}
-      </motion.header>
-    );
-  }
-
-  return (
-    <motion.header
-      onPointerEnter={() => setHovered(true)}
-      onPointerLeave={() => setHovered(false)}
-      initial={false}
-      animate={{ height: expanded ? 176 : 74 }}
-      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      className={cn("fixed inset-x-0 top-0 z-50 flex flex-col overflow-hidden px-margin py-6", brand)}
-    >
-      {/* Default 상태에서만 보이는 로고·내비 행.
-          Scroll(74px) 에서는 높이까지 0 으로 접어야 둘째 줄이 화면에 남는다 */}
-      <motion.div
-        initial={false}
-        animate={{ height: expanded ? "auto" : 0, opacity: expanded ? 1 : 0 }}
+        animate={{ height: expanded ? rowH.expanded : rowH.collapsed }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        aria-hidden={!expanded}
-        className="shrink-0 overflow-hidden"
+        className={cn(
+          "fixed inset-x-0 top-0 z-50 flex flex-col overflow-hidden px-margin py-6 max-md:pt-4 max-md:pb-3",
+          brand,
+        )}
       >
-        {topRow}
-      </motion.div>
+        {/* Default 상태에서만 보이는 로고·내비 행.
+          Scroll(74px) 에서는 높이까지 0 으로 접어야 둘째 줄이 화면에 남는다 */}
+        <motion.div
+          initial={false}
+          animate={{ height: expanded ? "auto" : 0, opacity: expanded ? 1 : 0 }}
+          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          aria-hidden={!expanded}
+          className="shrink-0 overflow-hidden"
+        >
+          {topRow}
+        </motion.div>
 
-      {secondRow}
-    </motion.header>
+        {secondRow}
+      </motion.header>
+      {menu}
+    </>
   );
 }

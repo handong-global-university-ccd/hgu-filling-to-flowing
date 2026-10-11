@@ -47,9 +47,9 @@ export default function WorkCard({ work, designerName }: { work: Work; designerN
           />
         ))}
       </div>
-      <div className="mt-4 flex flex-col gap-2">
-        <p className="font-kr text-kr-body-lg">{work.title}</p>
-        <p className="text-body-sm">{designerName}</p>
+      <div className="mt-4 flex flex-col gap-2 max-md:mt-2 max-md:gap-1">
+        <p className="font-kr text-kr-body-lg max-md:text-kr-body">{work.title}</p>
+        <p className="text-body-sm max-md:text-caption">{designerName}</p>
       </div>
     </Link>
   );

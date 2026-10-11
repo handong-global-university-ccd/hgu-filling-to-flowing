@@ -22,8 +22,8 @@ export default function HomePage() {
       <Intro />
       <PageShell inverse hideOnScroll headerHeight={84}>
         {/* 전시 정보 — TODO: 스크롤에 따라 opacity 조절 (GSAP ScrollTrigger scrub) */}
-        <section className="page-grid min-h-[calc(100svh-176px)] content-center gap-y-16 pb-24">
-          <dl className="col-span-6 space-y-12 text-body">
+        <section className="page-grid min-h-[calc(100svh-176px)] content-center gap-y-16 pb-24 max-md:min-h-0 max-md:gap-y-12 max-md:pt-16">
+          <dl className="col-span-6 space-y-12 text-body max-md:col-span-12 max-md:space-y-8">
             <div className="relative pl-[22px]">
               <Marker />
               <dt className="sr-only">전시명</dt>
@@ -53,7 +53,7 @@ export default function HomePage() {
               </dd>
             </div>
           </dl>
-          <div className="col-span-6 space-y-10 font-kr text-body-sm">
+          <div className="col-span-6 space-y-10 font-kr text-body-sm max-md:col-span-12 max-md:space-y-8">
             <div className="relative pl-[22px]">
               <Marker />
               <h2 className="mb-2">주제 말씀</h2>

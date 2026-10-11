@@ -8,6 +8,8 @@ import ArrowUpRight from "@/components/icons/ArrowUpRight";
 import { useWorksFilter } from "@/components/works/works-filter";
 import type { FieldKey } from "@/data/types";
 import { asset } from "@/lib/asset";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { HEADER_H, MOBILE_QUERY } from "@/lib/header";
 
 export type ProfileWork = { slug: string; title: string };
 export type ProfileDesigner = {
@@ -23,14 +25,25 @@ export type ProfileDesigner = {
 };
 
 /** Figma 디자이너 상세 (1807:15093 / 1807:15124 / 1807:15169) */
-const HEADER = 74;
-const ITEM_W = 80;
-const ITEM_H = 120;
-const RAIL_GAP = 36;
-const PITCH = ITEM_H + RAIL_GAP; // 156
-const RAIL_X = 24;
+const DESKTOP = {
+  header: HEADER_H.desktop.collapsed,
+  itemW: 80,
+  itemH: 120,
+  pitch: 120 + 36, // 사진 높이 + 간격
+  railX: 24,
+};
+/**
+ * 모바일(< 768px): 같은 구성을 좁게 — 좌측 레일 56×84, 우측에 컬러 사진 → 정보 순으로 쌓는다.
+ * 레일 폭 = 16 + (6 + 10) + 56 = 88, 우측 영역은 104 부터.
+ */
+const MOBILE = {
+  header: HEADER_H.mobile.filters.collapsed,
+  itemW: 56,
+  itemH: 84,
+  pitch: 84 + 20,
+  railX: 16,
+};
 const MARKER = 6;
-const MARKER_GAP = 16;
 
 /**
  * 인터렉션 설명 (1841:11720)
@@ -78,6 +91,10 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
   const stage = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(initialIndex);
   const reduceMotion = useReducedMotion();
+  const isMobile = useMediaQuery(MOBILE_QUERY);
+  const size = isMobile ? MOBILE : DESKTOP;
+  const markerGap = isMobile ? 10 : 16;
+  const header = size.header;
   const d = designers[active];
   const last = designers.length - 1;
   const selected = useRef(initialIndex);
@@ -85,11 +102,11 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
     const element = stage.current;
     if (element) {
       window.scrollTo({
-        top: window.scrollY + element.getBoundingClientRect().top - HEADER,
+        top: window.scrollY + element.getBoundingClientRect().top - header,
         behavior: "instant",
       });
     }
-  }, []);
+  }, [header]);
   useLayoutEffect(alignStage, [alignStage]);
   const goTo = useCallback(
     (index: number) => {
@@ -201,7 +218,7 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
 
   if (!d) {
     return (
-      <section className="px-margin" style={{ minHeight: `calc(100svh - ${HEADER}px)` }}>
+      <section className="px-margin" style={{ minHeight: `calc(100svh - ${header}px)` }}>
         <p role="status" className="py-20 text-center text-fg-tertiary">
           검색 결과가 없습니다.
         </p>
@@ -214,7 +231,7 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
       <div
         ref={stage}
         className="relative overflow-hidden"
-        style={{ height: `calc(100svh - ${HEADER}px)` }}
+        style={{ height: `calc(100svh - ${header}px)` }}
         tabIndex={0}
         aria-label="디자이너 프로필. 위아래 방향키로 이전 또는 다음 프로필 보기"
         onKeyDown={(event) => {
@@ -237,12 +254,12 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
         <div
           aria-hidden
           className="absolute bg-fg"
-          style={{ left: RAIL_X, top: `calc(50% - ${MARKER / 2}px)`, width: MARKER, height: MARKER }}
+          style={{ left: size.railX, top: `calc(50% - ${MARKER / 2}px)`, width: MARKER, height: MARKER }}
         />
         <motion.ul
-          className="absolute inset-y-0 left-0 w-[102px] list-none"
+          className="absolute inset-y-0 left-0 w-[102px] list-none max-md:w-[88px]"
           initial={false}
-          animate={{ y: -active * PITCH }}
+          animate={{ y: -active * size.pitch }}
           transition={{ duration: reduceMotion ? 0 : 0.32, ease: [0.22, 1, 0.36, 1] }}
         >
           {designers.map((o, i) => (
@@ -250,11 +267,11 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
               key={o.slug}
               className="absolute transition-transform duration-300 ease-out"
               style={{
-                left: RAIL_X,
-                top: `calc(50% - ${ITEM_H / 2}px + ${i * PITCH}px)`,
-                width: ITEM_W,
-                height: ITEM_H,
-                transform: i === active ? `translateX(${MARKER + MARKER_GAP}px)` : undefined,
+                left: size.railX,
+                top: `calc(50% - ${size.itemH / 2}px + ${i * size.pitch}px)`,
+                width: size.itemW,
+                height: size.itemH,
+                transform: i === active ? `translateX(${MARKER + markerGap}px)` : undefined,
               }}
             >
               <button
@@ -267,8 +284,8 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
                 <Image
                   src={asset(o.profileMono ?? o.profile)}
                   alt=""
-                  width={ITEM_W}
-                  height={ITEM_H}
+                  width={DESKTOP.itemW}
+                  height={DESKTOP.itemH}
                   className="size-full object-cover grayscale"
                 />
               </button>
@@ -277,22 +294,21 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
         </motion.ul>
 
         {/* 우측 정보 — 좌측 리스트는 흑백, 이 프로필 사진만 컬러 (화면설명 1837:11750) */}
+        {/* 데스크톱: 정보·사진을 각각 절대 배치 / 모바일: 레일 오른쪽에 사진 → 정보로 쌓는다 */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+          className="max-md:absolute max-md:inset-y-4 max-md:right-margin max-md:left-[104px] max-md:flex max-md:flex-col max-md:gap-5 max-md:overflow-hidden"
         >
-          <div
-            className="absolute top-12 flex w-[calc(18.75%-22px)] flex-col gap-10 py-8"
-            style={{ left: "calc(56.25% + 16px)" }}
-          >
+          <div className="flex flex-col gap-10 max-md:gap-5 md:absolute md:top-12 md:left-[calc(56.25%+16px)] md:w-[calc(18.75%-22px)] md:py-8">
             <div className="flex flex-col gap-[2px]">
               <p className="font-kr text-kr-body-lg">{d.nameKo}</p>
               <p className="text-body-lg text-fg-secondary">{d.nameEn}</p>
             </div>
 
             <div className="flex flex-col gap-6 text-body">
-              <div className="flex w-[210px] flex-col gap-[2px]">
+              <div className="flex flex-col gap-[2px] md:w-[210px]">
                 <p>Disciplines</p>
                 <p className="text-fg-secondary">{d.disciplines}</p>
               </div>
@@ -316,7 +332,7 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
 
               <div className="flex flex-col gap-[2px]">
                 <p>Work</p>
-                <ul className="w-[308px]">
+                <ul className="md:w-[308px]">
                   {d.works.map((w) => (
                     <li key={w.slug}>
                       <Link
@@ -334,7 +350,7 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
           </div>
 
           {/* Figma: 1920px에서 338×452, 오른쪽 24px, 접힌 헤더 아래 48px. */}
-          <div className="absolute top-12 right-margin aspect-[338/452] w-[calc(18.75%-22px)] overflow-hidden">
+          <div className="aspect-[338/452] overflow-hidden max-md:order-first max-md:h-[45%] max-md:max-w-full max-md:shrink-0 max-md:self-start md:absolute md:top-12 md:right-margin md:w-[calc(18.75%-22px)]">
             <Image
               src={asset(d.profile)}
               alt={`${d.nameKo} 프로필 사진`}

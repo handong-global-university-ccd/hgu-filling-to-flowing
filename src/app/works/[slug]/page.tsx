@@ -47,10 +47,10 @@ export default async function WorkDetailPage({ params }: PageProps<"/works/[slug
 
   return (
     <PageShell>
-      <article className="flex flex-col gap-4 px-margin pt-[46px] lg:flex-row lg:items-start">
+      <article className="flex flex-col gap-4 px-margin pt-[46px] max-lg:gap-10 max-md:pt-6 lg:flex-row lg:items-start">
         {/* 좌측 정보 — 스크롤해도 고정 */}
         {/* Figma: 좌측 열 높이 890, 크레딧은 열 맨 아래 (justify-between). 화면이 낮으면 줄어들고 최소 간격 104 */}
-        <div className="flex w-full flex-col justify-between gap-[104px] lg:sticky lg:top-[126px] lg:min-h-[min(890px,calc(100svh-160px))] lg:w-[338px] lg:shrink-0">
+        <div className="flex w-full flex-col justify-between gap-10 lg:sticky lg:top-[126px] lg:min-h-[min(890px,calc(100svh-160px))] lg:w-[338px] lg:shrink-0 lg:gap-[104px]">
           <div className="flex flex-col gap-6">
             {/* 타이틀 위 작품 사진 — 따로 없으면 대표 썸네일 */}
             <Image
@@ -98,7 +98,7 @@ export default async function WorkDetailPage({ params }: PageProps<"/works/[slug
 
       {others.length > 0 && (
         <section className="pb-90" aria-label="같은 분야의 다른 작품">
-          <h2 className="mt-[110px] mb-4 px-margin text-body-xl">Others</h2>
+          <h2 className="mt-[110px] mb-4 px-margin text-body-xl max-md:mt-16">Others</h2>
           <OthersMarquee items={others} />
         </section>
       )}

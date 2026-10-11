@@ -62,10 +62,22 @@ export default function PageShell({
         id="main"
         className={cn(
           fullscreen ? "flex h-svh flex-col" : "min-h-svh",
-          padTop && (tall ? "pt-[176px]" : compact ? "pt-[74px]" : undefined),
+          // 모바일 값은 lib/header.ts 의 HEADER_H.mobile 과 같아야 한다
+          padTop &&
+            (tall
+              ? filters
+                ? "pt-[146px] md:pt-[176px]"
+                : "pt-[108px] md:pt-[176px]"
+              : compact
+                ? "pt-[92px] md:pt-[74px]"
+                : "pt-16 md:pt-(--header-h)"),
           className,
         )}
-        style={padTop && !tall && !compact ? { paddingTop: headerHeight } : undefined}
+        style={
+          padTop && !tall && !compact
+            ? ({ "--header-h": `${headerHeight}px` } as React.CSSProperties)
+            : undefined
+        }
       >
         {children}
       </main>
