@@ -69,7 +69,9 @@ export default function FieldAccordion({ worksByField }: { worksByField: Record<
               type="button"
               aria-expanded={open}
               onClick={() => setActive(open ? null : field.key)}
-              className={cn("relative block h-[74px] w-full overflow-hidden text-left", open && "sr-only")}
+              // 펼쳤을 때는 sr-only 만 남긴다 — relative·h-[74px] 와 섞이면 sr-only 가 지고
+              // 보이지 않는 74px 빈칸이 패널 위에 남는다
+              className={cn(open ? "sr-only" : "relative block h-[74px] w-full overflow-hidden text-left")}
             >
               <Marquee duration={flow.duration} reverse={flow.reverse} className="h-full">
                 {fillLoop(works, 14).map((w, i) => (
@@ -105,7 +107,8 @@ export default function FieldAccordion({ worksByField }: { worksByField: Record<
                 >
                   {/* Figma: 좌측 카피 456px(left 24), 썸네일 그리드는 37.5%+4px 지점부터 */}
                   {/* 모바일: 카피 위, 썸네일 아래로 쌓는다 */}
-                  <div className="flex pt-[18px] pb-10 max-md:flex-col max-md:gap-6">
+                  {/* 모바일: 구분선→제목, 마지막 사진→다음 구분선 간격을 같게 (각 16 + 24 = 40) */}
+                  <div className="flex pt-[18px] pb-10 max-md:flex-col max-md:gap-6 max-md:pt-6 max-md:pb-6">
                     <div className="w-[calc(37.5%+4px)] shrink-0 pl-6 max-md:w-full max-md:px-margin">
                       <h3 className="text-[32px] leading-[40px] font-medium max-md:text-[28px] max-md:leading-[36px]">
                         {field.short}

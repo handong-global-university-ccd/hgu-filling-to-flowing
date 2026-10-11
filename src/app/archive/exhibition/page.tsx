@@ -7,7 +7,7 @@ import { asset } from "@/lib/asset";
 export const metadata: Metadata = { title: "Archive — Exhibition View" };
 
 // TODO: 전시 현장 사진 전달받으면 교체 (Figma 기준 810×540)
-const photos = ["/placeholder/thumb-a.svg", "/placeholder/thumb-b.svg", "/placeholder/profile.svg"];
+const photos = ["/placeholder/dummy/archive/view-1.webp", "/placeholder/dummy/archive/view-2.webp"];
 
 /**
  * Figma 아카이브_전시 현장 (1807:16563 디폴트 / 1807:16574 헤더 호버시)

@@ -64,9 +64,16 @@ export default function Intro() {
           exit={{ clipPath: "inset(0% 0% 100% 0%)" }}
           transition={{ duration: 1.1, ease: EASE }}
         >
+          {/* TODO: 실제 영상이 R2 에 올라가면 /media/intro/bg-*.mp4 · bg-*.webp 로 교체 */}
           <ResponsiveVideo
-            landscape={{ src: "/media/intro/bg-landscape.mp4", poster: "/media/intro/bg-landscape.webp" }}
-            portrait={{ src: "/media/intro/bg-portrait.mp4", poster: "/media/intro/bg-portrait.webp" }}
+            landscape={{
+              src: "/placeholder/dummy/intro/bg-landscape.mp4",
+              poster: "/placeholder/dummy/intro/bg-landscape.webp",
+            }}
+            portrait={{
+              src: "/placeholder/dummy/intro/bg-portrait.mp4",
+              poster: "/placeholder/dummy/intro/bg-portrait.webp",
+            }}
             focus="65% 50%"
           />
 

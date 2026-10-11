@@ -66,10 +66,10 @@ export default function PageShell({
           padTop &&
             (tall
               ? filters
-                ? "pt-[146px] md:pt-[176px]"
-                : "pt-[108px] md:pt-[176px]"
+                ? "pt-[166px] md:pt-[176px]"
+                : "pt-[120px] md:pt-[176px]"
               : compact
-                ? "pt-[92px] md:pt-[74px]"
+                ? "pt-[108px] md:pt-[74px]"
                 : "pt-16 md:pt-(--header-h)"),
           className,
         )}

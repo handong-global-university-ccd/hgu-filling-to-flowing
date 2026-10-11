@@ -9,7 +9,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "고재현",
     nameEn: "Jaehyeon Ko",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-01.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["communication-01", "communication-11", "service-10"],
   },
   {
@@ -17,7 +17,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "김강",
     nameEn: "Gang Kim",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-02.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["communication-09", "service-08"],
   },
   {
@@ -25,7 +25,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "김민",
     nameEn: "Min Kim",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-03.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["communication-02", "service-01"],
   },
   {
@@ -33,7 +33,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "김시은",
     nameEn: "Sieun Kim",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-04.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["communication-03", "service-02"],
   },
   {
@@ -41,7 +41,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "김시은",
     nameEn: "Sieun Kim",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-05.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["communication-04", "service-03"],
   },
   {
@@ -49,7 +49,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "김예희",
     nameEn: "Yehui Kim",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-06.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["communication-11", "service-10"],
   },
   {
@@ -57,7 +57,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "김윤아",
     nameEn: "Yuna Kim",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-07.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["communication-04", "service-03"],
   },
   {
@@ -65,7 +65,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "김지민",
     nameEn: "Jimin Kim",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-08.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["communication-10", "service-09"],
   },
   {
@@ -73,7 +73,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "김지민",
     nameEn: "Jimin Kim",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-01.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["communication-05", "service-04"],
   },
   {
@@ -81,7 +81,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "김현진",
     nameEn: "Hyeonjin Kim",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-02.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["communication-09", "service-08"],
   },
   {
@@ -89,7 +89,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "김희원",
     nameEn: "Huiwon Kim",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-03.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["communication-02", "service-01"],
   },
   {
@@ -97,7 +97,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "박서우",
     nameEn: "Seou Park",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-04.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["communication-06", "service-05"],
   },
   {
@@ -105,7 +105,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "박서한",
     nameEn: "Seohan Park",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-05.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["communication-07", "service-06"],
   },
   {
@@ -113,7 +113,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "박시현",
     nameEn: "Sihyeon Park",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-06.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["communication-07", "service-06"],
   },
   {
@@ -121,7 +121,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "박예림",
     nameEn: "Yerim Park",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-07.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["communication-13", "service-12"],
   },
   {
@@ -129,7 +129,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "박주현",
     nameEn: "Juhyeon Park",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-08.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["communication-05", "service-04"],
   },
   {
@@ -137,7 +137,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "박지우",
     nameEn: "Jiu Park",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-01.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["communication-03", "service-02"],
   },
   {
@@ -145,7 +145,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "박찬미",
     nameEn: "Chanmi Park",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-02.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["communication-03", "service-02"],
   },
   {
@@ -153,7 +153,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "방예원",
     nameEn: "Yewon Bang",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-03.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["communication-07", "service-06"],
   },
   {
@@ -161,7 +161,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "송우상",
     nameEn: "Usang Song",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-04.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["communication-13", "service-12"],
   },
   {
@@ -169,7 +169,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "송주희",
     nameEn: "Juhui Song",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-05.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["communication-08", "service-07"],
   },
   {
@@ -177,7 +177,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "송하연",
     nameEn: "Hayeon Song",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-06.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["communication-11", "service-10"],
   },
   {
@@ -185,7 +185,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "안예인",
     nameEn: "Yein Ahn",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-07.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["communication-07", "service-06"],
   },
   {
@@ -193,7 +193,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "오희원",
     nameEn: "Huiwon Oh",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-08.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["communication-10", "service-09"],
   },
   {
@@ -201,7 +201,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "윤고은",
     nameEn: "Goeun Yoon",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-01.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["communication-04", "service-03"],
   },
   {
@@ -209,7 +209,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "이다경",
     nameEn: "Dagyeong Lee",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-02.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["communication-13", "service-12"],
   },
   {
@@ -217,7 +217,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "이새희",
     nameEn: "Saehui Lee",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-03.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["communication-11", "service-10"],
   },
   {
@@ -225,7 +225,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "이승진",
     nameEn: "Seungjin Lee",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-04.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["communication-08", "service-07"],
   },
   {
@@ -233,7 +233,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "이예인",
     nameEn: "Yein Lee",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-05.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["communication-12", "service-11"],
   },
   {
@@ -241,7 +241,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "이예찬",
     nameEn: "Yechan Lee",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-06.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["communication-03", "service-02"],
   },
   {
@@ -249,7 +249,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "이은혜",
     nameEn: "Eunhye Lee",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-07.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["communication-09", "service-08"],
   },
   {
@@ -257,7 +257,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "이준희",
     nameEn: "Junhui Lee",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-08.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["communication-07", "service-06"],
   },
   {
@@ -265,7 +265,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "이지수",
     nameEn: "Jisu Lee",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-01.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["communication-06", "service-05"],
   },
   {
@@ -273,7 +273,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "이진아",
     nameEn: "Jina Lee",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-02.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["communication-08", "service-07"],
   },
   {
@@ -281,7 +281,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "이하람",
     nameEn: "Haram Lee",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-03.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["communication-13", "service-12"],
   },
   {
@@ -289,7 +289,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "이한빈",
     nameEn: "Hanbin Lee",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-04.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["communication-10", "service-09"],
   },
   {
@@ -297,7 +297,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "이해빈",
     nameEn: "Haebin Lee",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-05.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["communication-12", "service-11"],
   },
   {
@@ -305,7 +305,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "이혜원",
     nameEn: "Hyewon Lee",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-06.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["communication-04", "service-03"],
   },
   {
@@ -313,7 +313,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "임지인",
     nameEn: "Jiin Lim",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-07.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["communication-09", "service-08"],
   },
   {
@@ -321,7 +321,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "장민희",
     nameEn: "Minhui Jang",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-08.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["communication-10", "service-09"],
   },
   {
@@ -329,7 +329,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "장희원",
     nameEn: "Huiwon Jang",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-01.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["communication-05", "service-04"],
   },
   {
@@ -337,7 +337,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "전서현",
     nameEn: "Seohyeon Jeon",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-02.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["communication-02", "service-01"],
   },
   {
@@ -345,7 +345,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "정주은",
     nameEn: "Jueun Jung",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-03.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["communication-12", "service-11"],
   },
   {
@@ -353,7 +353,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "조서현",
     nameEn: "Seohyeon Cho",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-04.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["communication-13", "service-12"],
   },
   {
@@ -361,7 +361,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "채서은",
     nameEn: "Seoeun Chae",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-05.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["communication-06", "service-05"],
   },
   {
@@ -369,7 +369,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "최윤하",
     nameEn: "Yunha Choi",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-06.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["communication-12", "service-11"],
   },
   {
@@ -377,7 +377,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "최주은",
     nameEn: "Jueun Choi",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-07.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["communication-02", "service-01"],
   },
   {
@@ -385,7 +385,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "함지현",
     nameEn: "Jihyeon Ham",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-08.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["communication-05", "service-04"],
   },
   {
@@ -393,7 +393,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "황규상",
     nameEn: "Gyusang Hwang",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-01.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["communication-08", "service-07"],
   },
   {
@@ -401,7 +401,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "황현수",
     nameEn: "Hyeonsu Hwang",
     fields: ["communication", "service"],
-    profile: "/placeholder/profile-02.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["communication-06", "service-05"],
   },
   {
@@ -409,7 +409,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "공신영",
     nameEn: "Sinyeong Kong",
     fields: ["industrial"],
-    profile: "/placeholder/profile-03.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["industrial-01", "industrial-09"],
   },
   {
@@ -417,7 +417,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "기노은",
     nameEn: "Noeun Ki",
     fields: ["ux"],
-    profile: "/placeholder/profile-04.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["ux-06", "ux-08"],
   },
   {
@@ -425,7 +425,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "김사랑",
     nameEn: "Sarang Kim",
     fields: ["ux"],
-    profile: "/placeholder/profile-05.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["ux-05", "ux-08"],
   },
   {
@@ -433,7 +433,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "김소정",
     nameEn: "Sojeong Kim",
     fields: ["industrial"],
-    profile: "/placeholder/profile-06.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["industrial-02"],
   },
   {
@@ -441,7 +441,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "김영채",
     nameEn: "Yeongchae Kim",
     fields: ["industrial"],
-    profile: "/placeholder/profile-07.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["industrial-03"],
   },
   {
@@ -449,7 +449,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "김예빈",
     nameEn: "Yebin Kim",
     fields: ["industrial"],
-    profile: "/placeholder/profile-08.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["industrial-04"],
   },
   {
@@ -457,7 +457,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "김은진",
     nameEn: "Eunjin Kim",
     fields: ["ux"],
-    profile: "/placeholder/profile-01.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["ux-01", "ux-07"],
   },
   {
@@ -465,7 +465,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "김채원",
     nameEn: "Chaewon Kim",
     fields: ["ux"],
-    profile: "/placeholder/profile-02.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["ux-06"],
   },
   {
@@ -473,7 +473,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "김채은",
     nameEn: "Chaeeun Kim",
     fields: ["industrial"],
-    profile: "/placeholder/profile-03.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["industrial-05"],
   },
   {
@@ -481,7 +481,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "김하경",
     nameEn: "Hagyeong Kim",
     fields: ["ux"],
-    profile: "/placeholder/profile-04.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["ux-06", "ux-10"],
   },
   {
@@ -489,7 +489,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "김하경",
     nameEn: "Hagyeong Kim",
     fields: ["industrial"],
-    profile: "/placeholder/profile-05.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["industrial-08"],
   },
   {
@@ -497,7 +497,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "박다민",
     nameEn: "Damin Park",
     fields: ["ux"],
-    profile: "/placeholder/profile-06.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["ux-01"],
   },
   {
@@ -505,7 +505,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "박다은",
     nameEn: "Daeun Park",
     fields: ["ux"],
-    profile: "/placeholder/profile-07.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["ux-05"],
   },
   {
@@ -513,7 +513,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "박세윤",
     nameEn: "Seyun Park",
     fields: ["industrial"],
-    profile: "/placeholder/profile-08.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["industrial-06"],
   },
   {
@@ -521,7 +521,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "박예빈",
     nameEn: "Yebin Park",
     fields: ["industrial"],
-    profile: "/placeholder/profile-01.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["industrial-03"],
   },
   {
@@ -529,7 +529,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "방주현",
     nameEn: "Juhyeon Bang",
     fields: ["industrial"],
-    profile: "/placeholder/profile-02.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["industrial-02"],
   },
   {
@@ -537,7 +537,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "변민서",
     nameEn: "Minseo Byun",
     fields: ["ux"],
-    profile: "/placeholder/profile-03.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["ux-02"],
   },
   {
@@ -545,7 +545,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "송정훈",
     nameEn: "Jeonghun Song",
     fields: ["industrial"],
-    profile: "/placeholder/profile-04.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["industrial-04"],
   },
   {
@@ -553,7 +553,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "유종빈",
     nameEn: "Jongbin Yoo",
     fields: ["ux"],
-    profile: "/placeholder/profile-05.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["ux-01"],
   },
   {
@@ -561,7 +561,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "유하람",
     nameEn: "Haram Yoo",
     fields: ["industrial"],
-    profile: "/placeholder/profile-06.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["industrial-07"],
   },
   {
@@ -569,7 +569,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "유혜연",
     nameEn: "Hyeyeon Yoo",
     fields: ["industrial"],
-    profile: "/placeholder/profile-07.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["industrial-06"],
   },
   {
@@ -577,7 +577,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "이서현",
     nameEn: "Seohyeon Lee",
     fields: ["industrial"],
-    profile: "/placeholder/profile-08.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["industrial-05"],
   },
   {
@@ -585,7 +585,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "이윤서",
     nameEn: "Yunseo Lee",
     fields: ["industrial"],
-    profile: "/placeholder/profile-01.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["industrial-08"],
   },
   {
@@ -593,7 +593,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "이주향",
     nameEn: "Juhyang Lee",
     fields: ["ux"],
-    profile: "/placeholder/profile-02.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["ux-02", "ux-10"],
   },
   {
@@ -601,7 +601,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "이주희",
     nameEn: "Juhui Lee",
     fields: ["ux"],
-    profile: "/placeholder/profile-03.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["ux-01"],
   },
   {
@@ -609,7 +609,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "이진희",
     nameEn: "Jinhui Lee",
     fields: ["ux"],
-    profile: "/placeholder/profile-04.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["ux-06"],
   },
   {
@@ -617,7 +617,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "임현호",
     nameEn: "Hyeonho Lim",
     fields: ["ux"],
-    profile: "/placeholder/profile-05.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["ux-05"],
   },
   {
@@ -625,7 +625,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "장지원",
     nameEn: "Jiwon Jang",
     fields: ["industrial"],
-    profile: "/placeholder/profile-06.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["industrial-08"],
   },
   {
@@ -633,7 +633,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "정성은",
     nameEn: "Seongeun Jung",
     fields: ["ux"],
-    profile: "/placeholder/profile-07.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["ux-05", "ux-09"],
   },
   {
@@ -641,7 +641,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "정예한",
     nameEn: "Yehan Jung",
     fields: ["ux"],
-    profile: "/placeholder/profile-08.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["ux-02"],
   },
   {
@@ -649,7 +649,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "정재은",
     nameEn: "Jaeeun Jung",
     fields: ["ux"],
-    profile: "/placeholder/profile-01.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["ux-06"],
   },
   {
@@ -657,7 +657,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "정주연",
     nameEn: "Juyeon Jung",
     fields: ["ux"],
-    profile: "/placeholder/profile-02.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["ux-02", "ux-08"],
   },
   {
@@ -665,7 +665,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "차수연",
     nameEn: "Suyeon Cha",
     fields: ["industrial"],
-    profile: "/placeholder/profile-03.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["industrial-07"],
   },
   {
@@ -673,7 +673,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "최수원",
     nameEn: "Suwon Choi",
     fields: ["ux"],
-    profile: "/placeholder/profile-04.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["ux-03", "ux-09"],
   },
   {
@@ -681,7 +681,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "최영은",
     nameEn: "Yeongeun Choi",
     fields: ["ux"],
-    profile: "/placeholder/profile-05.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["ux-03", "ux-09"],
   },
   {
@@ -689,7 +689,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "한영찬",
     nameEn: "Yeongchan Han",
     fields: ["ux"],
-    profile: "/placeholder/profile-06.svg",
+    profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["ux-04"],
   },
   {
@@ -697,7 +697,7 @@ export const DESIGNERS: Designer[] = [
     nameKo: "한예원",
     nameEn: "Yewon Han",
     fields: ["ux"],
-    profile: "/placeholder/profile-07.svg",
+    profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["ux-03", "ux-10"],
   },
 ];

@@ -250,7 +250,7 @@ export default function Header({
   if (showFilterRow) {
     const tabs = [{ key: "all" as const, label: "All" }, ...FIELDS];
     secondRow = (
-      <div className="mt-auto flex flex-col gap-2 md:flex-row md:items-center md:justify-between md:gap-6 md:px-1">
+      <div className="mt-auto flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-6 md:px-1">
         {/* 모바일은 탭이 한 줄을 넘치면 가로로 밀어서 본다 */}
         <div
           role="tablist"
@@ -332,7 +332,7 @@ export default function Header({
         animate={{ height: expanded ? rowH.expanded : rowH.collapsed }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         className={cn(
-          "fixed inset-x-0 top-0 z-50 flex flex-col overflow-hidden px-margin py-6 max-md:pt-4 max-md:pb-3",
+          "fixed inset-x-0 top-0 z-50 flex flex-col overflow-hidden px-margin py-6 max-md:pt-4 max-md:pb-5",
           brand,
         )}
       >
