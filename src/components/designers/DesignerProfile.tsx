@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import ArrowUpRight from "@/components/icons/ArrowUpRight";
 import { useWorksFilter } from "@/components/works/works-filter";
 import type { FieldKey } from "@/data/types";
@@ -40,8 +40,8 @@ const MARKER_GAP = 16;
  * - Scroll : 스크롤하면 리스트 순서대로 다음 디자이너로 전환된다
  * - Work   : 작품을 누르면 작품 상세로 간다
  *
- * 스크롤 한 칸(156px)이 디자이너 한 명이다. 화면은 sticky 로 고정하고
- * 그 아래 (n-1)×156px 만큼 길이를 줘서, 다 넘기면 푸터가 나온다.
+ * 한 번의 스크롤 제스처마다 한 명씩 전환하고 사진 중앙을 마커에 맞춘다.
+ * 첫/마지막 프로필에서 바깥 방향으로 다시 스크롤하면 페이지 스크롤을 허용한다.
  */
 export default function DesignerProfile({
   designers,
@@ -76,43 +76,104 @@ export default function DesignerProfile({
 }
 
 function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[]; initialIndex: number }) {
-  const section = useRef<HTMLElement>(null);
   const stage = useRef<HTMLDivElement>(null);
-  const [progress, setProgress] = useState(initialIndex * PITCH);
-  const [stageH, setStageH] = useState(0);
-
-  const span = Math.max(0, designers.length - 1) * PITCH;
-  const active = Math.min(designers.length - 1, Math.max(0, Math.round(progress / PITCH)));
+  const [active, setActive] = useState(initialIndex);
+  const reduceMotion = useReducedMotion();
   const d = designers[active];
-
-  // 들어오자마자 해당 디자이너가 보이도록 스크롤 위치를 맞춘다
-  useLayoutEffect(() => {
-    const previousRestoration = history.scrollRestoration;
-    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
-    window.scrollTo({
-      top: (section.current?.offsetTop ?? 0) + initialIndex * PITCH,
-      behavior: "instant",
-    });
-    return () => {
-      if ("scrollRestoration" in history) history.scrollRestoration = previousRestoration;
-    };
-  }, [initialIndex]);
+  const last = designers.length - 1;
+  const selected = useRef(initialIndex);
+  const alignStage = useCallback(() => {
+    const element = stage.current;
+    if (element) {
+      window.scrollTo({
+        top: window.scrollY + element.getBoundingClientRect().top - HEADER,
+        behavior: "instant",
+      });
+    }
+  }, []);
+  useLayoutEffect(alignStage, [alignStage]);
+  const goTo = useCallback(
+    (index: number) => {
+      selected.current = index;
+      setActive(index);
+      alignStage();
+    },
+    [alignStage],
+  );
 
   useEffect(() => {
-    const measure = () => setStageH(stage.current?.clientHeight ?? 0);
-    const read = () => {
-      const top = section.current?.offsetTop ?? 0;
-      setProgress(Math.min(span, Math.max(0, window.scrollY - top)));
+    const element = stage.current;
+    if (!element || last < 0) return;
+    let lastWheel = 0;
+    let lockedUntil = 0;
+    let accumulated = 0;
+    let consumed = false;
+    let touchY: number | null = null;
+    let touchDelta = 0;
+    const canMove = (direction: number) => (direction > 0 ? selected.current < last : selected.current > 0);
+    const move = (direction: number) => {
+      goTo(Math.max(0, Math.min(last, selected.current + direction)));
+      lockedUntil = performance.now() + 400;
     };
-    measure();
-    read();
-    window.addEventListener("scroll", read, { passive: true });
-    window.addEventListener("resize", measure);
+    const wheel = (event: WheelEvent) => {
+      if (event.ctrlKey || Math.abs(event.deltaX) > Math.abs(event.deltaY) || !event.deltaY) return;
+      const now = performance.now();
+      if (now - lastWheel > 180 && now >= lockedUntil) {
+        consumed = false;
+        accumulated = 0;
+      }
+      lastWheel = now;
+      const direction = Math.sign(event.deltaY);
+      // 끝에 도달시킨 제스처의 관성은 흡수하고, 다음 제스처부터 페이지를 넘긴다.
+      if (!consumed && now >= lockedUntil && !canMove(direction)) return;
+      event.preventDefault();
+      event.stopPropagation();
+      if (consumed || now < lockedUntil) return;
+      const delta =
+        event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? element.clientHeight : 1);
+      if (Math.sign(accumulated) !== direction) accumulated = 0;
+      accumulated += delta;
+      if (Math.abs(accumulated) >= 24) {
+        consumed = true;
+        move(direction);
+      }
+    };
+    const touchStart = (event: TouchEvent) => {
+      touchY = event.touches.length === 1 ? event.touches[0].clientY : null;
+      touchDelta = 0;
+    };
+    const touchMove = (event: TouchEvent) => {
+      if (touchY === null || event.touches.length !== 1) return;
+      touchDelta = touchY - event.touches[0].clientY;
+      if (canMove(Math.sign(touchDelta))) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    };
+    const touchEnd = () => {
+      if (touchY !== null && Math.abs(touchDelta) >= 30 && canMove(Math.sign(touchDelta))) {
+        move(Math.sign(touchDelta));
+      }
+      touchY = null;
+      touchDelta = 0;
+    };
+    const touchCancel = () => {
+      touchY = null;
+      touchDelta = 0;
+    };
+    element.addEventListener("wheel", wheel, { passive: false });
+    element.addEventListener("touchstart", touchStart, { passive: true });
+    element.addEventListener("touchmove", touchMove, { passive: false });
+    element.addEventListener("touchend", touchEnd);
+    element.addEventListener("touchcancel", touchCancel);
     return () => {
-      window.removeEventListener("scroll", read);
-      window.removeEventListener("resize", measure);
+      element.removeEventListener("wheel", wheel);
+      element.removeEventListener("touchstart", touchStart);
+      element.removeEventListener("touchmove", touchMove);
+      element.removeEventListener("touchend", touchEnd);
+      element.removeEventListener("touchcancel", touchCancel);
     };
-  }, [span]);
+  }, [goTo, last]);
 
   // 주소만 바꾼다 — 페이지를 다시 그리지 않고 공유·새로고침만 맞춰준다
   const activeSlug = d?.slug;
@@ -120,16 +181,9 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
     if (activeSlug) history.replaceState(null, "", `/designers/${activeSlug}/`);
   }, [activeSlug]);
 
-  const goTo = useCallback((i: number) => {
-    const top = (section.current?.offsetTop ?? 0) + i * PITCH;
-    window.scrollTo({ top, behavior: "smooth" });
-  }, []);
-
-  const markerTop = stageH / 2 - ITEM_H / 2;
-
   if (!d) {
     return (
-      <section ref={section} className="px-margin" style={{ minHeight: `calc(100svh - ${HEADER}px)` }}>
+      <section className="px-margin" style={{ minHeight: `calc(100svh - ${HEADER}px)` }}>
         <p role="status" className="py-20 text-center text-fg-tertiary">
           검색 결과가 없습니다.
         </p>
@@ -138,11 +192,28 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
   }
 
   return (
-    <section ref={section} className="relative" style={{ height: `calc(100svh - ${HEADER}px + ${span}px)` }}>
+    <section className="relative">
       <div
         ref={stage}
-        className="sticky overflow-hidden"
-        style={{ top: HEADER, height: `calc(100svh - ${HEADER}px)` }}
+        className="relative overflow-hidden"
+        style={{ height: `calc(100svh - ${HEADER}px)` }}
+        tabIndex={0}
+        aria-label="디자이너 프로필. 위아래 방향키로 이전 또는 다음 프로필 보기"
+        onKeyDown={(event) => {
+          if (event.target instanceof HTMLElement && event.target.closest("a, input, textarea, select"))
+            return;
+          const direction =
+            event.key === "ArrowDown" || event.key === "PageDown"
+              ? 1
+              : event.key === "ArrowUp" || event.key === "PageUp"
+                ? -1
+                : 0;
+          const next = active + direction;
+          if (direction && next >= 0 && next <= last) {
+            event.preventDefault();
+            goTo(next);
+          }
+        }}
       >
         {/* 좌측 리스트 — 흑백. 움직이는 건 리스트, ■ 는 제자리 */}
         <div
@@ -150,14 +221,19 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
           className="absolute bg-fg"
           style={{ left: RAIL_X, top: `calc(50% - ${MARKER / 2}px)`, width: MARKER, height: MARKER }}
         />
-        <ul className="absolute inset-y-0 left-0 w-[102px] list-none">
+        <motion.ul
+          className="absolute inset-y-0 left-0 w-[102px] list-none"
+          initial={false}
+          animate={{ y: -active * PITCH }}
+          transition={{ duration: reduceMotion ? 0 : 0.32, ease: [0.22, 1, 0.36, 1] }}
+        >
           {designers.map((o, i) => (
             <li
               key={o.slug}
               className="absolute transition-transform duration-300 ease-out"
               style={{
                 left: RAIL_X,
-                top: markerTop + i * PITCH - progress,
+                top: `calc(50% - ${ITEM_H / 2}px + ${i * PITCH}px)`,
                 width: ITEM_W,
                 height: ITEM_H,
                 transform: i === active ? `translateX(${MARKER + MARKER_GAP}px)` : undefined,
@@ -180,7 +256,7 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
               </button>
             </li>
           ))}
-        </ul>
+        </motion.ul>
 
         {/* 우측 정보 — 좌측 리스트는 흑백, 이 프로필 사진만 컬러 (화면설명 1837:11750) */}
         <motion.div
