@@ -46,7 +46,7 @@ export default function AboutPage() {
       <div className="grid gap-y-16 pt-[118px] pb-90 lg:grid-cols-[43.75%_1fr]">
         {/* ───── 좌측: 전시 개요 ───── */}
         <div className="px-margin lg:pr-0">
-          <div className="max-w-[529px]">
+          <div className="max-w-[529px]"> 
             <h1 className="flex flex-col gap-1">
               <span className="font-kr text-kr-h3 font-semibold">{SITE.fullTitle}</span>
               <span className="text-h3 uppercase">{SITE.title}</span>
