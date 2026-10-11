@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import PageShell from "@/components/layout/PageShell";
 import { SITE } from "@/lib/site";
 import { ABOUT_MESSAGE, COMMITTEE_LEADS, COMMITTEE_TEAMS, HOST, THANKS } from "@/data/about";
@@ -46,7 +47,7 @@ export default function AboutPage() {
       <div className="grid gap-y-16 pt-[118px] pb-90 lg:grid-cols-[43.75%_1fr]">
         {/* ───── 좌측: 전시 개요 ───── */}
         <div className="px-margin lg:pr-0">
-          <div className="max-w-[529px]"> 
+          <div className="max-w-[529px]">
             <h1 className="flex flex-col gap-1">
               <span className="font-kr text-kr-h3 font-semibold">{SITE.fullTitle}</span>
               <span className="text-h3 uppercase">{SITE.title}</span>
@@ -98,6 +99,14 @@ export default function AboutPage() {
                   <CreditRow key={t.role} role={t.role} names={t.names} stacked />
                 ))}
               </div>
+              {/* 협력·후원 로고 — 원본 1367×173(@2x). 그룹 gap 12px + mt 20px = 이름 목록 아래 32px */}
+              <Image
+                src="/brand/logo1.png"
+                alt="RixFont, 산돌구름, Yoondesign, YESOD, ADSLAND, hddn, 무림페이퍼, 콘텐츠융합디자인학부, 한동대학교"
+                width={1367}
+                height={173}
+                className="mt-10 h-auto w-full max-w-[684px]"
+              />
             </CreditGroup>
           </dl>
         </div>
