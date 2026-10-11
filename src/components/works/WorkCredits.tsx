@@ -41,7 +41,8 @@ export default function WorkCredits({
               href={`/designers/${d.slug}/`}
               className="flex items-center transition-colors hover:text-fg-tertiary"
             >
-              <span className="whitespace-nowrap">{d.nameKo}</span>
+              {/* Figma: 화살표는 이름칸 48px 지점에 고정 — 짧은 이름도 화살표 열이 맞는다 */}
+              <span className="min-w-12 whitespace-nowrap">{d.nameKo}</span>
               <ArrowUpRight className="size-[19px] shrink-0" />
             </Link>
           </li>

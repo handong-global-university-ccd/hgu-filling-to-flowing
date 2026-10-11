@@ -115,7 +115,8 @@
   --text-kr-body-sm: 14px;
   --text-kr-body-sm--line-height: 20px;
   --text-kr-body-sm--font-weight: 400;
-  --text-kr-body-sm--letter-spacing: 2px;
+  /* Figma 의 letterSpacing 2 는 2% (14px × 0.02 = 0.28px) — px 가 아니다 */
+  --text-kr-body-sm--letter-spacing: 0.02em;
   --text-kr-label: 14px;
   --text-kr-label--line-height: 20px;
   --text-kr-label--font-weight: 600;
