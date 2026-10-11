@@ -46,8 +46,9 @@ export type Work = {
   designerSlugs: string[];
   /** 호버 시 A↔B 교차 */
   thumbnails: [string, string];
-  teamPhoto?: string;
-  /** PDF를 페이지별 webp로 변환한 경로들 */
+  /** 상세 좌측 타이틀 위 작품 사진 (338×225). 없으면 thumbnails[0] 을 쓴다 */
+  photo?: string;
+  /** 상세 우측 설명 이미지 — PDF를 페이지별 webp로 변환한 경로들 */
   pages: string[];
 };
 

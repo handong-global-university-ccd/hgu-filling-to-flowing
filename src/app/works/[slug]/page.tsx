@@ -27,7 +27,8 @@ export async function generateMetadata({ params }: PageProps<"/works/[slug]">): 
 
 /**
  * Figma Works 상세 (1807:14520)
- * - 본문은 헤더(110) 아래 46px, 좌측 정보 338px + 간격 16 + 작업물
+ * - 본문은 헤더(110) 아래 46px, 좌측 정보 338px + 간격 16 + 상세 설명 이미지
+ * - 좌측: 작품 사진(338×225) → 타이틀·부제 → 설명 → 크레딧
  * - 좌측 안쪽 간격: 정보 묶음 24 / 제목·설명 20 / 묶음과 Designers 104
  * - 작업물 아래 110 띄우고 Others, 제목 아래 16 에 352×222 썸네일 루프
  * - 마지막 콘텐츠와 푸터 사이 360
@@ -50,15 +51,15 @@ export default async function WorkDetailPage({ params }: PageProps<"/works/[slug
         {/* 좌측 정보 — 스크롤해도 고정 */}
         <div className="flex w-full flex-col gap-[104px] lg:sticky lg:top-[126px] lg:w-[338px] lg:shrink-0">
           <div className="flex flex-col gap-6">
-            {work.teamPhoto && (
-              <Image
-                src={asset(work.teamPhoto)}
-                alt=""
-                width={338}
-                height={225}
-                className="h-[225px] w-full object-cover"
-              />
-            )}
+            {/* 타이틀 위 작품 사진 — 따로 없으면 대표 썸네일 */}
+            <Image
+              src={asset(work.photo ?? work.thumbnails[0])}
+              alt={`${work.title} 작품 사진`}
+              width={338}
+              height={225}
+              priority
+              className="h-[225px] w-full object-cover"
+            />
             <div className="flex flex-col gap-5">
               <div className="flex flex-col">
                 <h1 className="font-kr text-kr-h4">{work.title}</h1>
@@ -74,7 +75,7 @@ export default async function WorkDetailPage({ params }: PageProps<"/works/[slug
           />
         </div>
 
-        {/* 우측 작업물 — PDF를 페이지별 webp로 변환해서 나열 */}
+        {/* 우측 상세 설명 이미지 — PDF를 페이지별 webp로 변환해서 나열 */}
         <div className="w-full min-w-0 space-y-4">
           {work.pages.length === 0 && (
             <div className="grid aspect-[1518/1000] place-items-center bg-bg-subtle text-fg-tertiary">
