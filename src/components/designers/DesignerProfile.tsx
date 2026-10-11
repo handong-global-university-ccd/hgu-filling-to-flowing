@@ -8,7 +8,6 @@ import ArrowUpRight from "@/components/icons/ArrowUpRight";
 import { useWorksFilter } from "@/components/works/works-filter";
 import type { FieldKey } from "@/data/types";
 import { asset } from "@/lib/asset";
-import { cn } from "@/lib/cn";
 
 export type ProfileWork = { slug: string; title: string };
 export type ProfileDesigner = {
@@ -107,7 +106,14 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
     let lastWheel = 0;
     let lockedUntil = 0;
     let accumulated = 0;
-    let consumed = false;
+    let gestureConsumed = false;
+    let lastDirection = 0;
+    // 최근 휠 세기 기록 — 관성(점점 약해짐)과 새 스와이프(다시 세짐)를 구분하는 데 쓴다
+    let history: number[] = [];
+    const average = (count: number) => {
+      const recent = history.slice(-count);
+      return recent.reduce((sum, value) => sum + value, 0) / recent.length;
+    };
     let touchY: number | null = null;
     let touchDelta = 0;
     const canMove = (direction: number) => (direction > 0 ? selected.current < last : selected.current > 0);
@@ -118,23 +124,35 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
     const wheel = (event: WheelEvent) => {
       if (event.ctrlKey || Math.abs(event.deltaX) > Math.abs(event.deltaY) || !event.deltaY) return;
       const now = performance.now();
-      if (now - lastWheel > 180 && now >= lockedUntil) {
-        consumed = false;
+      const direction = Math.sign(event.deltaY);
+      // 관성이 끝나거나 방향이 바뀌면 새 제스처다. 애니메이션 종료만으로 다시 열지 않는다.
+      if (now - lastWheel > 180 || direction !== lastDirection) {
+        gestureConsumed = false;
         accumulated = 0;
+        history = [];
       }
       lastWheel = now;
-      const direction = Math.sign(event.deltaY);
-      // 끝에 도달시킨 제스처의 관성은 흡수하고, 다음 제스처부터 페이지를 넘긴다.
-      if (!consumed && now >= lockedUntil && !canMove(direction)) return;
-      event.preventDefault();
-      event.stopPropagation();
-      if (consumed || now < lockedUntil) return;
+      lastDirection = direction;
       const delta =
         event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? element.clientHeight : 1);
+      history.push(Math.abs(delta));
+      if (history.length > 40) history.shift();
+      // 트랙패드·매직마우스는 관성 이벤트가 끊기지 않고 계속 들어와서 시간 간격만으로는
+      // 다음 스와이프를 못 알아챈다. 관성은 계속 약해지기만 하므로, 최근 세기가
+      // 평균보다 다시 커지면 손가락으로 새로 민 것으로 보고 다음 전환을 연다.
+      if (gestureConsumed && now >= lockedUntil && history.length > 5 && average(5) > average(40)) {
+        gestureConsumed = false;
+        accumulated = 0;
+      }
+      if (!gestureConsumed && now >= lockedUntil && !canMove(direction)) return;
+      event.preventDefault();
+      event.stopPropagation();
+      if (gestureConsumed || now < lockedUntil) return;
       if (Math.sign(accumulated) !== direction) accumulated = 0;
       accumulated += delta;
       if (Math.abs(accumulated) >= 24) {
-        consumed = true;
+        accumulated = 0;
+        gestureConsumed = true;
         move(direction);
       }
     };
@@ -260,14 +278,13 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
 
         {/* 우측 정보 — 좌측 리스트는 흑백, 이 프로필 사진만 컬러 (화면설명 1837:11750) */}
         <motion.div
-          key={d.slug}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
         >
           <div
-            className="absolute flex w-[338px] flex-col gap-10 py-8"
-            style={{ left: "calc(56.25% + 6px)", top: 48 }}
+            className="absolute top-12 flex w-[calc(18.75%-22px)] flex-col gap-10 py-8"
+            style={{ left: "calc(56.25% + 16px)" }}
           >
             <div className="flex flex-col gap-[2px]">
               <p className="font-kr text-kr-body-lg">{d.nameKo}</p>
@@ -316,13 +333,14 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
             </div>
           </div>
 
-          <div className="absolute h-[452px] w-[338px]" style={{ left: "calc(81.25% - 2px)", top: 48 }}>
+          {/* Figma: 1920px에서 338×452, 오른쪽 24px, 접힌 헤더 아래 48px. */}
+          <div className="absolute top-12 right-margin aspect-[338/452] w-[calc(18.75%-22px)] overflow-hidden">
             <Image
               src={asset(d.profile)}
               alt={`${d.nameKo} 프로필 사진`}
               width={338}
               height={452}
-              className={cn("size-full object-cover")}
+              className="size-full object-cover"
             />
           </div>
         </motion.div>
