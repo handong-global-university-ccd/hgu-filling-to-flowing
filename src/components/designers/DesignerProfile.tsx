@@ -8,10 +8,10 @@ import ArrowUpRight from "@/components/icons/ArrowUpRight";
 import { useWorksFilter } from "@/components/works/works-filter";
 import type { FieldKey } from "@/data/types";
 import { asset } from "@/lib/asset";
-import { useMediaQuery } from "@/hooks/useMediaQuery";
-import { HEADER_H, MOBILE_QUERY } from "@/lib/header";
+import { HEADER_H } from "@/lib/header";
+import DesignerProfileMobile from "./DesignerProfileMobile";
 
-export type ProfileWork = { slug: string; title: string };
+export type ProfileWork = { slug: string; title: string; thumbnail: string };
 export type ProfileDesigner = {
   slug: string;
   nameKo: string;
@@ -31,17 +31,6 @@ const DESKTOP = {
   itemH: 120,
   pitch: 120 + 36, // 사진 높이 + 간격
   railX: 24,
-};
-/**
- * 모바일(< 768px): 같은 구성을 좁게 — 좌측 레일 56×84, 우측에 컬러 사진 → 정보 순으로 쌓는다.
- * 레일 폭 = 16 + (6 + 10) + 56 = 88, 우측 영역은 104 부터.
- */
-const MOBILE = {
-  header: HEADER_H.mobile.filters.collapsed,
-  itemW: 56,
-  itemH: 84,
-  pitch: 84 + 20,
-  railX: 16,
 };
 const MARKER = 6;
 
@@ -78,12 +67,14 @@ export default function DesignerProfile({
 
   // 필터가 바뀌면 레일·스크롤 상태를 함께 초기화하고 첫 결과부터 보여준다.
   // 전체 목록으로 돌아오면 처음 진입했던 디자이너를 다시 보여준다.
+  const start = field === "all" && !query ? initialIndex : 0;
   return (
-    <ProfileStage
-      key={JSON.stringify([field, query])}
-      designers={filtered}
-      initialIndex={field === "all" && !query ? initialIndex : 0}
-    />
+    <>
+      {/* 데스크톱: 흑백 레일 + 프로필 (모바일에서는 숨긴다) */}
+      <ProfileStage key={JSON.stringify([field, query])} designers={filtered} initialIndex={start} />
+      {/* 모바일 (2491:3761): 한 명의 프로필을 세로로 — 분야·검색을 바꾸면 첫 결과를 보여준다 */}
+      <DesignerProfileMobile designer={filtered[start]} />
+    </>
   );
 }
 
@@ -91,9 +82,8 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
   const stage = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(initialIndex);
   const reduceMotion = useReducedMotion();
-  const isMobile = useMediaQuery(MOBILE_QUERY);
-  const size = isMobile ? MOBILE : DESKTOP;
-  const markerGap = isMobile ? 10 : 16;
+  const size = DESKTOP;
+  const markerGap = 16;
   const header = size.header;
   const d = designers[active];
   const last = designers.length - 1;
@@ -218,7 +208,7 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
 
   if (!d) {
     return (
-      <section className="px-margin" style={{ minHeight: `calc(100svh - ${header}px)` }}>
+      <section className="px-margin max-md:hidden" style={{ minHeight: `calc(100svh - ${header}px)` }}>
         <p role="status" className="py-20 text-center text-fg-tertiary">
           검색 결과가 없습니다.
         </p>
@@ -227,7 +217,7 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
   }
 
   return (
-    <section className="relative">
+    <section className="relative max-md:hidden">
       <div
         ref={stage}
         className="relative overflow-hidden"
@@ -257,7 +247,7 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
           style={{ left: size.railX, top: `calc(50% - ${MARKER / 2}px)`, width: MARKER, height: MARKER }}
         />
         <motion.ul
-          className="absolute inset-y-0 left-0 w-[102px] list-none max-md:w-[88px]"
+          className="absolute inset-y-0 left-0 w-[102px] list-none"
           initial={false}
           animate={{ y: -active * size.pitch }}
           transition={{ duration: reduceMotion ? 0 : 0.32, ease: [0.22, 1, 0.36, 1] }}
@@ -294,21 +284,19 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
         </motion.ul>
 
         {/* 우측 정보 — 좌측 리스트는 흑백, 이 프로필 사진만 컬러 (화면설명 1837:11750) */}
-        {/* 데스크톱: 정보·사진을 각각 절대 배치 / 모바일: 레일 오른쪽에 사진 → 정보로 쌓는다 */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-          className="max-md:absolute max-md:inset-y-4 max-md:right-margin max-md:left-[104px] max-md:flex max-md:flex-col max-md:gap-5 max-md:overflow-hidden"
         >
-          <div className="flex flex-col gap-10 max-md:gap-5 md:absolute md:top-12 md:left-[calc(56.25%+16px)] md:w-[calc(18.75%-22px)] md:py-8">
+          <div className="absolute top-12 left-[calc(56.25%+16px)] flex w-[calc(18.75%-22px)] flex-col gap-10 py-8">
             <div className="flex flex-col gap-[2px]">
               <p className="font-kr text-kr-body-lg">{d.nameKo}</p>
               <p className="text-body-lg text-fg-secondary">{d.nameEn}</p>
             </div>
 
             <div className="flex flex-col gap-6 text-body">
-              <div className="flex flex-col gap-[2px] md:w-[210px]">
+              <div className="flex w-[210px] flex-col gap-[2px]">
                 <p>Disciplines</p>
                 <p className="text-fg-secondary">{d.disciplines}</p>
               </div>
@@ -332,7 +320,7 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
 
               <div className="flex flex-col gap-[2px]">
                 <p>Work</p>
-                <ul className="md:w-[308px]">
+                <ul className="w-[308px]">
                   {d.works.map((w) => (
                     <li key={w.slug}>
                       <Link
@@ -350,7 +338,7 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
           </div>
 
           {/* Figma: 1920px에서 338×452, 오른쪽 24px, 접힌 헤더 아래 48px. */}
-          <div className="aspect-[338/452] overflow-hidden max-md:order-first max-md:h-[45%] max-md:max-w-full max-md:shrink-0 max-md:self-start md:absolute md:top-12 md:right-margin md:w-[calc(18.75%-22px)]">
+          <div className="absolute top-12 right-margin aspect-[338/452] w-[calc(18.75%-22px)] overflow-hidden">
             <Image
               src={asset(d.profile)}
               alt={`${d.nameKo} 프로필 사진`}

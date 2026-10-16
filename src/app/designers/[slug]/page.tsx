@@ -42,7 +42,7 @@ export default async function DesignerDetailPage({ params }: PageProps<"/designe
     works: d.workSlugs
       .map(getWork)
       .filter((w) => w !== undefined)
-      .map((w) => ({ slug: w.slug, title: w.title })),
+      .map((w) => ({ slug: w.slug, title: w.title, thumbnail: w.thumbnails[0] })),
   }));
 
   const initialIndex = list.findIndex((d) => d.slug === slug);
@@ -50,7 +50,7 @@ export default async function DesignerDetailPage({ params }: PageProps<"/designe
   // 헤더 둘째 줄(분야 탭·검색)이 Scroll 상태로 붙어 있어서 Provider 가 필요하다
   return (
     <WorksFilterProvider>
-      <PageShell filters compact>
+      <PageShell filters compact mobileTitle={{ title: "Designers", backHref: "/designers/" }}>
         <DesignerProfile designers={designers} initialIndex={initialIndex} />
         <div className="h-90" />
       </PageShell>

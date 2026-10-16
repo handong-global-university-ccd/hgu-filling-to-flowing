@@ -25,6 +25,7 @@ export default function PageShell({
   hideOnScroll = false,
   headerHeight = 110,
   fullscreen = false,
+  mobileTitle,
   className,
 }: {
   children: React.ReactNode;
@@ -38,6 +39,8 @@ export default function PageShell({
   /** 둘째 줄이 없는 단순 헤더의 높이(px) */
   headerHeight?: number;
   fullscreen?: boolean;
+  /** 모바일 헤더를 ← + 제목으로 (Header 의 mobileTitle). compact 와 같이 쓰면 모바일은 펼친 높이(141)로 시작한다 */
+  mobileTitle?: { title: string; backHref: string };
   className?: string;
 }) {
   const tall = (filters || Boolean(archive)) && !compact;
@@ -57,6 +60,7 @@ export default function PageShell({
         compact={compact}
         hideOnScroll={hideOnScroll}
         height={headerHeight}
+        mobileTitle={mobileTitle}
       />
       <main
         id="main"
@@ -66,10 +70,10 @@ export default function PageShell({
           padTop &&
             (tall
               ? filters
-                ? "pt-[166px] md:pt-[176px]"
+                ? "pt-[141px] md:pt-[176px]"
                 : "pt-[120px] md:pt-[176px]"
               : compact
-                ? "pt-[108px] md:pt-[74px]"
+                ? "pt-[141px] md:pt-[74px]"
                 : "pt-16 md:pt-(--header-h)"),
           className,
         )}

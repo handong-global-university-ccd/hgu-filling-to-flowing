@@ -12,6 +12,8 @@ import { useWorksFilter } from "@/components/works/works-filter";
 import { useHasFinePointer, useMediaQuery } from "@/hooks/useMediaQuery";
 import { HEADER_H, MOBILE_QUERY } from "@/lib/header";
 import Logo from "./Logo";
+import ArrowUpRight from "@/components/icons/ArrowUpRight";
+import SearchIcon from "@/components/icons/Search";
 
 export type ArchiveTab = "behind" | "exhibition";
 
@@ -24,9 +26,17 @@ const ARCHIVE_TABS = [
 ] as const;
 
 /** Figma Search (1893:1245) — 334×30, 아래 1px 밑줄, placeholder Neutral/500 */
-function SearchField({ value, onChange }: { value?: string; onChange?: (v: string) => void }) {
+function SearchField({
+  value,
+  onChange,
+  className,
+}: {
+  value?: string;
+  onChange?: (v: string) => void;
+  className?: string;
+}) {
   return (
-    <label className="h-[30px] w-full shrink-0 border-b border-border md:w-[334px]">
+    <label className={cn("h-[30px] w-full shrink-0 border-b border-border md:w-[334px]", className)}>
       <span className="sr-only">검색</span>
       <input
         type="search"
@@ -140,6 +150,7 @@ export default function Header({
   compact = false,
   hideOnScroll = false,
   height = 110,
+  mobileTitle,
 }: {
   inverse?: boolean;
   filters?: boolean;
@@ -153,6 +164,11 @@ export default function Header({
   hideOnScroll?: boolean;
   /** 둘째 줄이 없는 단순 헤더의 전체 높이(px). 위 여백 24px 을 포함한 값이다 */
   height?: number;
+  /**
+   * 모바일 전용: 로고 대신 ← 뒤로가기 + 가운데 제목 (디자이너 상세 2491:3761).
+   * 이때 모바일은 compact 여도 처음에 펼쳐진 상태로 시작한다.
+   */
+  mobileTitle?: { title: string; backHref: string };
 }) {
   const pathname = usePathname();
   const { scrollY } = useScroll();
@@ -165,6 +181,8 @@ export default function Header({
   const isMobile = useMediaQuery(MOBILE_QUERY);
   const finePointer = useHasFinePointer();
   const [menuOpen, setMenuOpen] = useState(false);
+  // 모바일 필터 헤더: 검색창은 돋보기를 눌러야 첫 줄 자리에 열린다
+  const [searchOpen, setSearchOpen] = useState(false);
   // 터치 기기는 커서로 헤더를 불러낼 수 없으니 위로 스크롤하면 다시 보여준다
   const [scrollingDown, setScrollingDown] = useState(false);
 
@@ -175,8 +193,11 @@ export default function Header({
   });
 
   // 페이지를 옮기면 메뉴를 닫는다
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => setMenuOpen(false), [pathname]);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMenuOpen(false);
+    setSearchOpen(false);
+  }, [pathname]);
 
   // 숨어 있는 동안에는 헤더가 포인터 이벤트를 못 받으니 화면 전체에서 커서 높이를 본다
   useEffect(() => {
@@ -199,27 +220,60 @@ export default function Header({
     ? hideOnScroll && !nearTop && !hovered && (!scrollable || !atTop)
     : hideOnScroll && scrollable && !atTop && scrollingDown && !menuOpen;
   // 둘째 줄이 있는 헤더는 통째로 숨지 않고 Scroll(74px) 로 접혀 둘째 줄(탭)만 남긴다
-  const expanded = compact ? hovered : (atTop || hovered) && !hidden;
+  const expanded =
+    compact && !(isMobile && mobileTitle) ? hovered : (atTop || hovered || searchOpen) && !hidden;
   const showFilterRow = filters && filter !== null;
 
   const brand = inverse ? "bg-bg-inverse text-fg-inverse" : "bg-bg text-fg";
 
   /* 로고 + 주요 내비 — Figma: 항목 폭 102px, 간격 16px, Body/Medium(16/26) */
+  const searchButton = showFilterRow && filter && (
+    <button
+      type="button"
+      onClick={() => setSearchOpen(true)}
+      aria-label="검색"
+      aria-expanded={searchOpen}
+      className="relative md:hidden"
+    >
+      <SearchIcon className="size-7" />
+      {/* 검색어가 걸려 있으면 작은 점으로 알려준다 */}
+      {filter.q.trim() && <span aria-hidden className="absolute top-0 right-0 size-1.5 bg-current" />}
+    </button>
+  );
+
   const topRow = (
     <div className="flex w-full items-start justify-between max-md:items-center">
-      <Link href="/" aria-label="홈으로">
-        <Logo width={187} className="max-md:!w-[109px]" />
-      </Link>
-      {/* 모바일: 내비 대신 메뉴 버튼 → 전체 화면 메뉴 */}
-      <button
-        type="button"
-        onClick={() => setMenuOpen(true)}
-        aria-expanded={menuOpen}
-        aria-controls="mobile-menu"
-        className="text-body-sm md:hidden"
-      >
-        Menu
-      </button>
+      {mobileTitle ? (
+        <>
+          {/* 모바일 디자이너 상세 — ← (arrow-up-right 를 -135° 돌린 것) + 가운데 제목 */}
+          <Link href={mobileTitle.backHref} aria-label="목록으로" className="-ml-[3px] md:hidden">
+            <ArrowUpRight className="size-8 -rotate-135" />
+          </Link>
+          <p className="absolute left-1/2 -translate-x-1/2 text-h4 md:hidden">{mobileTitle.title}</p>
+          <Link href="/" aria-label="홈으로" className="max-md:hidden">
+            <Logo width={187} />
+          </Link>
+        </>
+      ) : (
+        <Link href="/" aria-label="홈으로">
+          <Logo width={187} className="max-md:!w-[109px]" />
+        </Link>
+      )}
+      <div className="flex items-center gap-4 md:hidden">
+        {searchButton}
+        {/* 모바일: 내비 대신 메뉴 버튼 → 전체 화면 메뉴 */}
+        {!mobileTitle && (
+          <button
+            type="button"
+            onClick={() => setMenuOpen(true)}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+            className="text-body-sm"
+          >
+            Menu
+          </button>
+        )}
+      </div>
       <nav aria-label="주요 메뉴" className="max-md:hidden">
         <ul className="flex items-center gap-4 text-body">
           {NAV.map((item) => {
@@ -244,36 +298,70 @@ export default function Header({
     </div>
   );
 
+  /* 모바일 검색 — 돋보기를 누르면 첫 줄(로고 자리)이 검색창으로 바뀐다. 시안에 열린 상태가 없어 데스크톱 검색창 모양을 따른다 */
+  const firstRow =
+    searchOpen && filter ? (
+      <>
+        <div className="flex h-[34px] w-full items-center gap-4 md:hidden">
+          <label className="flex-1 border-b border-border">
+            <span className="sr-only">검색</span>
+            <input
+              type="search"
+              autoFocus
+              value={filter.q}
+              onChange={(e) => filter.setQ(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === "Escape") setSearchOpen(false);
+              }}
+              placeholder="Search"
+              className="w-full bg-transparent text-body outline-none placeholder:text-fg-tertiary"
+            />
+          </label>
+          <button type="button" onClick={() => setSearchOpen(false)} className="text-body-sm">
+            Close
+          </button>
+        </div>
+        <div className="max-md:hidden">{topRow}</div>
+      </>
+    ) : (
+      topRow
+    );
+
   /* 둘째 줄 — 탭 간격 12px, 비활성 Neutral/300, Body/Medium(16/26) */
   let secondRow: React.ReactNode = null;
 
-  if (showFilterRow) {
+  if (showFilterRow && filter) {
     const tabs = [{ key: "all" as const, label: "All" }, ...FIELDS];
+    const renderTab = (t: (typeof tabs)[number]) => (
+      <button
+        key={t.key}
+        type="button"
+        role="tab"
+        aria-selected={filter.field === t.key}
+        onClick={() => filter.setField(t.key)}
+        className={cn(
+          "w-fit whitespace-nowrap transition-colors",
+          filter.field === t.key ? "text-fg" : "text-neutral-300 hover:text-fg-secondary",
+        )}
+      >
+        {t.label}
+      </button>
+    );
     secondRow = (
-      <div className="mt-auto flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-6 md:px-1">
-        {/* 모바일은 탭이 한 줄을 넘치면 가로로 밀어서 본다 */}
+      <div className="mt-auto flex flex-col md:flex-row md:items-center md:justify-between md:gap-6 md:px-1">
+        {/* 모바일 (2403:3553): All 은 첫 줄에 따로, 분야는 둘째 줄에서 가로로 밀어서 본다 */}
         <div
           role="tablist"
           aria-label="분야"
-          className="-mx-margin flex [scrollbar-width:none] gap-3 overflow-x-auto px-margin text-body md:mx-0 md:flex-wrap md:overflow-visible md:px-0 [&::-webkit-scrollbar]:hidden"
+          className="flex flex-col gap-0.5 text-body md:flex-row md:flex-wrap md:gap-3"
         >
-          {tabs.map((t) => (
-            <button
-              key={t.key}
-              type="button"
-              role="tab"
-              aria-selected={filter.field === t.key}
-              onClick={() => filter.setField(t.key)}
-              className={cn(
-                "whitespace-nowrap transition-colors",
-                filter.field === t.key ? "text-fg" : "text-neutral-300 hover:text-fg-secondary",
-              )}
-            >
-              {t.label}
-            </button>
-          ))}
+          {tabs.slice(0, 1).map(renderTab)}
+          <div className="-mx-margin flex [scrollbar-width:none] gap-3 overflow-x-auto px-margin md:contents [&::-webkit-scrollbar]:hidden">
+            {tabs.slice(1).map(renderTab)}
+          </div>
         </div>
-        <SearchField value={filter.q} onChange={filter.setQ} />
+        {/* 모바일은 돋보기 버튼으로 연다 */}
+        <SearchField value={filter.q} onChange={filter.setQ} className="max-md:hidden" />
       </div>
     );
   } else if (archive) {
@@ -332,7 +420,8 @@ export default function Header({
         animate={{ height: expanded ? rowH.expanded : rowH.collapsed }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         className={cn(
-          "fixed inset-x-0 top-0 z-50 flex flex-col overflow-hidden px-margin py-6 max-md:pt-4 max-md:pb-5",
+          "fixed inset-x-0 top-0 z-50 flex flex-col overflow-hidden px-margin py-6 max-md:pt-4",
+          showFilterRow ? "max-md:pb-1" : "max-md:pb-5",
           brand,
         )}
       >
@@ -345,7 +434,7 @@ export default function Header({
           aria-hidden={!expanded}
           className="shrink-0 overflow-hidden"
         >
-          {topRow}
+          {firstRow}
         </motion.div>
 
         {secondRow}
