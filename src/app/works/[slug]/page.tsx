@@ -47,11 +47,12 @@ export default async function WorkDetailPage({ params }: PageProps<"/works/[slug
 
   return (
     <PageShell>
-      <article className="flex flex-col gap-4 px-margin pt-[46px] max-lg:gap-10 max-md:pt-6 lg:flex-row lg:items-start">
+      <article className="flex flex-col gap-4 px-margin pt-[46px] max-lg:gap-10 max-md:gap-4 max-md:pt-3 lg:flex-row lg:items-start">
         {/* 좌측 정보 — 스크롤해도 고정 */}
         {/* Figma: 좌측 열 높이 890, 크레딧은 열 맨 아래 (justify-between). 화면이 낮으면 줄어들고 최소 간격 104 */}
-        <div className="flex w-full flex-col justify-between gap-10 lg:sticky lg:top-[126px] lg:min-h-[min(890px,calc(100svh-160px))] lg:w-[338px] lg:shrink-0 lg:gap-[104px]">
-          <div className="flex flex-col gap-6">
+        <div className="flex w-full flex-col justify-between gap-10 max-md:gap-[60px] lg:sticky lg:top-[126px] lg:min-h-[min(890px,calc(100svh-160px))] lg:w-[338px] lg:shrink-0 lg:gap-[104px]">
+          {/* 모바일(2499:4351): 사진 358×239 → 16 → 제목 16/30 · 부제 14/20 → 16 → 설명 12/18 → 60 → 크레딧 */}
+          <div className="flex flex-col gap-6 max-md:gap-4">
             {/* 타이틀 위 작품 사진 — 따로 없으면 대표 썸네일 */}
             <Image
               src={asset(work.photo ?? work.thumbnails[0])}
@@ -59,14 +60,18 @@ export default async function WorkDetailPage({ params }: PageProps<"/works/[slug
               width={338}
               height={225}
               priority
-              className="h-[225px] w-full object-cover"
+              className="h-[225px] w-full object-cover max-md:aspect-[358/239] max-md:h-auto"
             />
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-5 max-md:gap-4">
               <div className="flex flex-col">
-                <h1 className="font-kr text-kr-h4">{work.title}</h1>
-                {work.subtitle && <p className="font-kr text-kr-body-lg">{work.subtitle}</p>}
+                <h1 className="font-kr text-kr-h4 max-md:text-[16px] max-md:leading-[30px]">{work.title}</h1>
+                {work.subtitle && (
+                  <p className="font-kr text-kr-body-lg max-md:text-kr-body-sm">{work.subtitle}</p>
+                )}
               </div>
-              <p className="font-kr text-kr-body-sm">{work.description}</p>
+              <p className="font-kr text-kr-body-sm max-md:text-[12px] max-md:leading-[18px]">
+                {work.description}
+              </p>
             </div>
           </div>
 

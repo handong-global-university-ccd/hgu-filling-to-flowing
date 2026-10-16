@@ -87,9 +87,9 @@ function MobileMenu({
         >
           <div className="flex items-start justify-between">
             <Link href="/" aria-label="홈으로" onClick={onClose}>
-              <Logo width={120} />
+              <Logo width={109} />
             </Link>
-            <button type="button" onClick={onClose} className="text-body" autoFocus>
+            <button type="button" onClick={onClose} className="text-body-sm" autoFocus>
               Close
             </button>
           </div>
@@ -206,9 +206,9 @@ export default function Header({
 
   /* 로고 + 주요 내비 — Figma: 항목 폭 102px, 간격 16px, Body/Medium(16/26) */
   const topRow = (
-    <div className="flex w-full items-start justify-between">
+    <div className="flex w-full items-start justify-between max-md:items-center">
       <Link href="/" aria-label="홈으로">
-        <Logo width={187} className="max-md:!w-[120px]" />
+        <Logo width={187} className="max-md:!w-[109px]" />
       </Link>
       {/* 모바일: 내비 대신 메뉴 버튼 → 전체 화면 메뉴 */}
       <button
@@ -216,7 +216,7 @@ export default function Header({
         onClick={() => setMenuOpen(true)}
         aria-expanded={menuOpen}
         aria-controls="mobile-menu"
-        className="text-body md:hidden"
+        className="text-body-sm md:hidden"
       >
         Menu
       </button>
