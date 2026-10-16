@@ -11,7 +11,7 @@ import FooterMarble from "@/components/footer/FooterMarble";
  * - 외부 링크 : left 81.25%-2, top 21, 폭 163, 글자 바로 뒤에 20px 화살표
  * - 서브비주얼: 마블 인터랙션 (Footer 2378:5073) — 푸터 아래로 잘려 나간다. 위치는 FooterMarble 참고
  * - 높이: 1920 에서 346, 화면 폭에 비례해 줄되 최소 200 (모바일은 260)
- *   위쪽은 물감이 넘쳐 흐를 수 있게 열어 두고(clip-path 위 200px 여유) 양옆·아래만 자른다
+ *   위쪽은 물감이 넘쳐 흐를 수 있게 200px 열어 두고 양옆·아래만 자른다 (FooterMarble 의 overflow 래퍼)
  * 두 변형 모두 저작권 문구는 없다.
  */
 export default function Footer({ inverse = true }: { inverse?: boolean }) {
@@ -23,7 +23,7 @@ export default function Footer({ inverse = true }: { inverse?: boolean }) {
   return (
     <footer
       className={cn(
-        "relative h-[260px] [clip-path:inset(-200px_0_0_0)] md:h-[max(calc(100vw*346/1920),200px)]",
+        "relative h-[260px] md:h-[max(calc(100vw*346/1920),200px)]",
         inverse ? "bg-bg-inverse text-fg-inverse" : "bg-bg text-fg",
       )}
     >

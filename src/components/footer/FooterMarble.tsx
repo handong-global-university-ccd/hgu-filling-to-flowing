@@ -17,13 +17,18 @@ export default function FooterMarble() {
   const isMobile = useMediaQuery(MOBILE_QUERY);
 
   return (
-    <div className="pointer-events-none absolute top-[100px] left-[-188px] w-[1000px] max-w-none md:top-[1.854vw] md:left-0 md:w-[105.94%]">
-      <MarbleFooter
-        src="/brand/footer/marble-footer@2560.webp"
-        alt=""
-        aspectRatio={2560 / 834}
-        interactionRadius={isMobile ? 110 : 160}
-      />
+    // 푸터 아래·양옆으로 넘치는 부분은 잘라야 페이지 끝에 빈 스크롤 공간이 생기지 않는다.
+    // clip-path 는 그림만 자르고 스크롤 영역은 그대로 남아서, 위로 200px 더 깔린 overflow 래퍼로 자른다
+    // (물감이 위로 넘쳐 흐르는 bleedTop 120 은 이 안에 들어온다)
+    <div className="pointer-events-none absolute inset-x-0 -top-[200px] bottom-0 overflow-hidden">
+      <div className="absolute top-[300px] left-[-188px] w-[1000px] max-w-none md:top-[calc(1.854vw+200px)] md:left-0 md:w-[105.94%]">
+        <MarbleFooter
+          src="/brand/footer/marble-footer@2560.webp"
+          alt=""
+          aspectRatio={2560 / 834}
+          interactionRadius={isMobile ? 110 : 160}
+        />
+      </div>
     </div>
   );
 }
