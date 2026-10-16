@@ -10,7 +10,7 @@ import FooterMarble from "@/components/footer/FooterMarble";
  * - 메뉴      : left 25, top 21, 폭 143, 줄간격 2, Caption(12/18)
  * - 외부 링크 : left 81.25%-2, top 21, 폭 163, 글자 바로 뒤에 20px 화살표
  * - 서브비주얼: 마블 인터랙션 (Footer 2378:5073) — 푸터 아래로 잘려 나간다. 위치는 FooterMarble 참고
- * - 높이: 1920 에서 346, 화면 폭에 비례해 줄되 최소 200 (모바일은 260)
+ * - 높이: 웹 350 고정 (Figma 346 → 350 으로 맞춤), 모바일 260
  *   위쪽은 물감이 넘쳐 흐를 수 있게 200px 열어 두고 양옆·아래만 자른다 (FooterMarble 의 overflow 래퍼)
  * 두 변형 모두 저작권 문구는 없다.
  */
@@ -23,7 +23,7 @@ export default function Footer({ inverse = true }: { inverse?: boolean }) {
   return (
     <footer
       className={cn(
-        "relative h-[260px] md:h-[max(calc(100vw*346/1920),200px)]",
+        "relative h-[260px] md:h-[350px]",
         inverse ? "bg-bg-inverse text-fg-inverse" : "bg-bg text-fg",
       )}
     >
@@ -43,8 +43,8 @@ export default function Footer({ inverse = true }: { inverse?: boolean }) {
         ))}
       </nav>
 
-      {/* 모바일은 81.25% 지점이 화면 밖으로 넘쳐서 오른쪽 마진에 붙인다 */}
-      <ul className="absolute top-[21px] left-[calc(81.25%-2px)] z-10 w-[163px] text-caption max-md:right-margin max-md:left-auto max-md:w-auto">
+      {/* 모바일은 81.25% 지점이 화면 밖으로 넘쳐서 오른쪽 마진에 붙인다. 태블릿 폭에서도 화면 끝을 넘지 않게 max-w */}
+      <ul className="absolute top-[21px] left-[calc(81.25%-2px)] z-10 w-[163px] max-w-[calc(18.75%+2px)] text-caption max-md:right-margin max-md:left-auto max-md:w-auto max-md:max-w-none">
         {links.map((l) => (
           <li key={l.label}>
             <a

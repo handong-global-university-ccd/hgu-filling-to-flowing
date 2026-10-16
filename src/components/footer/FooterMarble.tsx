@@ -9,7 +9,9 @@ import { MOBILE_QUERY } from "@/lib/header";
  * 커서·손가락으로 물감 결을 밀 수 있는 WebGL 컴포넌트(MarbleFooter) 를 푸터 자리에 맞춰 둔다.
  *
  * 위치는 Figma 렌더와 실루엣을 맞춰 잰 값이다.
- *   1920 기준: 폭 2034(=105.94%), 위 35.6(=1.854vw), 왼쪽 0 — 푸터 높이 346 에서 아래가 잘린다
+ *   1920 기준: 폭 2034(=화면 폭 × 2034/1920), 위 35.6(= 폭 × 35.6/2034), 왼쪽 0 — 푸터(350) 아래로 잘린다
+ *   웹 푸터는 350 고정이라, 화면이 좁아져도 그림 아래 끝이 푸터 바닥 위로 올라오지 않게 폭은 최소 1020
+ *   (1020 × 834/2560 + 위 여백 18 ≈ 350) — 그보다 좁은 화면에서는 오른쪽이 잘린다
  *   모바일   : 폭 1000, 위 100, 왼쪽 -188 — 산마루가 화면 가운데, 메뉴 글자와 안 겹치게 (시안 없음)
  * 이미지는 3840×1250 누끼를 2560 으로 줄인 투명 WebP — 흰/검정 푸터 모두에 그대로 쓴다.
  */
@@ -21,7 +23,7 @@ export default function FooterMarble() {
     // clip-path 는 그림만 자르고 스크롤 영역은 그대로 남아서, 위로 200px 더 깔린 overflow 래퍼로 자른다
     // (물감이 위로 넘쳐 흐르는 bleedTop 120 은 이 안에 들어온다)
     <div className="pointer-events-none absolute inset-x-0 -top-[200px] bottom-0 overflow-hidden">
-      <div className="absolute top-[300px] left-[-188px] w-[1000px] max-w-none md:top-[calc(1.854vw+200px)] md:left-0 md:w-[105.94%]">
+      <div className="absolute top-[300px] left-[-188px] w-[1000px] max-w-none [--w:max(calc(100vw*2034/1920),1020px)] md:top-[calc(var(--w)*35.6/2034+200px)] md:left-0 md:w-(--w)">
         <MarbleFooter
           src="/brand/footer/marble-footer@2560.webp"
           alt=""
