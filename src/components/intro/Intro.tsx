@@ -1,121 +1,97 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { useRef } from "react";
+import { motion } from "motion/react";
 import ResponsiveVideo from "@/components/media/ResponsiveVideo";
+import { ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { INTRO_SEEN_KEY } from "@/lib/intro";
 import { SITE } from "@/lib/site";
 
-const KEY = "degree2026:intro-seen";
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 /**
  * Figma 01. 인트로 (1807:14129)
  * - 진입 시 FILLING / TO FLOWING 이 좌우에서 들어오고 키 비주얼 영상 재생
  * - 글자는 mix-blend-difference 로 배경에 따라 흑백 반전
- * - 클릭·스크롤·키 입력 → 홈으로 전환
- *
- * TODO(WebGL): 지금 전환은 clip-path 로 임시 구현.
- *   Liquid Distortion 전환은 components/intro/LiquidTransition.tsx 로 분리해서 교체.
+ * - 스크롤하면 홈이 아래에서 레이어처럼 올라와 인트로를 덮는다
+ *   (GSAP Layered pinning — 인트로를 top 에 pin, pinSpacing: false)
+ *   홈 쪽 레이어는 page.tsx 에서 relative z-10 + 배경색으로 감싼다
+ * - 인트로를 다 덮고 지나가면 이번 세션에는 다시 보여주지 않는다 (INTRO_SEEN_SCRIPT)
  */
 export default function Intro() {
-  const [open, setOpen] = useState<boolean | null>(null);
+  const ref = useRef<HTMLElement>(null);
 
-  useEffect(() => {
-    let seen = false;
-    try {
-      seen = sessionStorage.getItem(KEY) === "1";
-    } catch {}
-    // 세션당 한 번만 보여준다
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setOpen(!seen);
-  }, []);
-
-  const close = useCallback(() => {
-    setOpen(false);
-    try {
-      sessionStorage.setItem(KEY, "1");
-    } catch {}
-  }, []);
-
-  useEffect(() => {
-    if (!open) return;
-    document.documentElement.style.overflow = "hidden";
-    const opts = { once: true, passive: true } as const;
-    window.addEventListener("wheel", close, opts);
-    window.addEventListener("touchmove", close, opts);
-    window.addEventListener("keydown", close, { once: true });
-    return () => {
-      document.documentElement.style.overflow = "";
-      window.removeEventListener("wheel", close);
-      window.removeEventListener("touchmove", close);
-      window.removeEventListener("keydown", close);
-    };
-  }, [open, close]);
+  useGSAP(
+    () => {
+      if (document.documentElement.classList.contains("intro-seen")) return;
+      ScrollTrigger.create({
+        trigger: ref.current,
+        start: "top top",
+        end: "bottom top",
+        pin: true,
+        pinSpacing: false,
+        onLeave: () => {
+          try {
+            sessionStorage.setItem(INTRO_SEEN_KEY, "1");
+          } catch {}
+        },
+      });
+    },
+    { scope: ref },
+  );
 
   return (
-    <AnimatePresence>
-      {open && (
-        <motion.section
-          key="intro"
-          aria-label="인트로"
-          onClick={close}
-          className="fixed inset-0 z-[60] h-svh overflow-hidden bg-bg"
-          initial={{ clipPath: "inset(0% 0% 0% 0%)" }}
-          exit={{ clipPath: "inset(0% 0% 100% 0%)" }}
-          transition={{ duration: 1.1, ease: EASE }}
+    <section ref={ref} data-intro aria-label="인트로" className="relative h-svh overflow-hidden bg-bg">
+      {/* TODO: 실제 영상이 R2 에 올라가면 /media/intro/bg-*.mp4 · bg-*.webp 로 교체 */}
+      <ResponsiveVideo
+        landscape={{
+          src: "/placeholder/dummy/intro/bg-landscape.mp4",
+          poster: "/placeholder/dummy/intro/bg-landscape.webp",
+        }}
+        portrait={{
+          src: "/placeholder/dummy/intro/bg-portrait.mp4",
+          poster: "/placeholder/dummy/intro/bg-portrait.webp",
+        }}
+        focus="65% 50%"
+      />
+
+      <div className="relative h-full text-white mix-blend-difference">
+        <h1 className="sr-only">{SITE.title}</h1>
+        <motion.p
+          aria-hidden
+          className="absolute top-[8%] left-margin text-[clamp(56px,10vw,190px)] leading-none font-semibold uppercase"
+          initial={{ x: "-110%" }}
+          animate={{ x: 0 }}
+          transition={{ duration: 1.4, ease: EASE, delay: 0.2 }}
         >
-          {/* TODO: 실제 영상이 R2 에 올라가면 /media/intro/bg-*.mp4 · bg-*.webp 로 교체 */}
-          <ResponsiveVideo
-            landscape={{
-              src: "/placeholder/dummy/intro/bg-landscape.mp4",
-              poster: "/placeholder/dummy/intro/bg-landscape.webp",
-            }}
-            portrait={{
-              src: "/placeholder/dummy/intro/bg-portrait.mp4",
-              poster: "/placeholder/dummy/intro/bg-portrait.webp",
-            }}
-            focus="65% 50%"
-          />
+          Filling
+        </motion.p>
+        <motion.p
+          aria-hidden
+          className="absolute top-[24%] right-margin text-[clamp(56px,10vw,190px)] leading-none font-semibold uppercase"
+          initial={{ x: "110%" }}
+          animate={{ x: 0 }}
+          transition={{ duration: 1.4, ease: EASE, delay: 0.35 }}
+        >
+          To Flowing
+        </motion.p>
 
-          <div className="relative h-full text-white mix-blend-difference">
-            <h1 className="sr-only">{SITE.title}</h1>
-            <motion.p
-              aria-hidden
-              className="absolute top-[8%] left-margin text-[clamp(56px,10vw,190px)] leading-none font-semibold uppercase"
-              initial={{ x: "-110%" }}
-              animate={{ x: 0 }}
-              transition={{ duration: 1.4, ease: EASE, delay: 0.2 }}
-            >
-              Filling
-            </motion.p>
-            <motion.p
-              aria-hidden
-              className="absolute top-[24%] right-margin text-[clamp(56px,10vw,190px)] leading-none font-semibold uppercase"
-              initial={{ x: "110%" }}
-              animate={{ x: 0 }}
-              transition={{ duration: 1.4, ease: EASE, delay: 0.35 }}
-            >
-              To Flowing
-            </motion.p>
+        <div className="absolute top-[57%] left-[38%] text-body">
+          <p>2026</p>
+          <p>{SITE.subtitle.replace("2026 ", "")}</p>
+        </div>
+        <div className="absolute top-[72%] left-[56%] text-body">
+          <p>{SITE.periodShort.start}</p>
+          <p>- {SITE.periodShort.end}</p>
+        </div>
+        <div className="absolute bottom-margin left-margin text-body">
+          {SITE.org.map((line) => (
+            <p key={line}>{line}</p>
+          ))}
+        </div>
+      </div>
 
-            <div className="absolute top-[57%] left-[38%] text-body">
-              <p>2026</p>
-              <p>{SITE.subtitle.replace("2026 ", "")}</p>
-            </div>
-            <div className="absolute top-[72%] left-[56%] text-body">
-              <p>{SITE.periodShort.start}</p>
-              <p>- {SITE.periodShort.end}</p>
-            </div>
-            <div className="absolute bottom-margin left-margin text-body">
-              {SITE.org.map((line) => (
-                <p key={line}>{line}</p>
-              ))}
-            </div>
-          </div>
-
-          <p className="sr-only">화면을 클릭하거나 스크롤하면 메인으로 이동합니다.</p>
-        </motion.section>
-      )}
-    </AnimatePresence>
+      <p className="sr-only">스크롤하면 메인 화면이 올라옵니다.</p>
+    </section>
   );
 }

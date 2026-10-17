@@ -38,7 +38,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="ko" className={`${jakarta.variable} ${pretendard.variable}`}>
+    <html lang="ko" className={`${jakarta.variable} ${pretendard.variable}`} suppressHydrationWarning>
       <body className="min-h-svh">
         <SmoothScroll>{children}</SmoothScroll>
         <CrosshairCursor />

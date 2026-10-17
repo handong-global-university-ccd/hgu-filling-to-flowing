@@ -153,10 +153,20 @@
     }
   }
 
+  /* 이번 세션에 인트로를 이미 지나쳤으면 숨긴다 (lib/intro.ts) */
+  html.intro-seen [data-intro] {
+    display: none;
+  }
+
   :focus-visible {
     outline: 2px solid var(--color-brand);
     outline-offset: 2px;
   }
+}
+
+/* 1920 시안 기준 1px — 화면 폭에 비례해 커지고 작아지는 값 (홈 상단 문구 등). calc(24 * var(--u)) 처럼 쓴다 */
+:root {
+  --u: calc(100vw / 1920);
 }
 
 /* 모바일(< 768px) 그리드 — Figma Mobile Grid(2365:20239): 마진 16 / 거터 14 */
