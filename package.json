@@ -12,7 +12,8 @@
     "format:check": "prettier --check .",
     "check": "npm run typecheck && npm run lint && npm run format:check",
     "encode:video": "bash scripts/encode-video.sh",
-    "upload:media": "bash scripts/upload-media.sh"
+    "upload:media": "bash scripts/upload-media.sh",
+    "pull:drive": "node --experimental-strip-types --no-warnings scripts/pull-drive.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

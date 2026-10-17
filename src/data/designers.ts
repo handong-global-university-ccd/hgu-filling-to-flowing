@@ -1,9 +1,10 @@
 import type { Designer } from "./types";
+import media from "./media-manifest.json" with { type: "json" };
 
 // 명단: '2026 졸업전시 웹사이트 정보 취합' 시트(디자이너 정보·시각·제품 탭) 기준.
 // TODO: nameEn 은 시트에 영문명이 들어온 사람 외엔 로마자 자동 표기(임시). 시트 작성되면 교체
 // TODO: email·instagram·프로필 사진은 시트/촬영본 들어오면 채우고 경로를 /media/designers/<slug>/... 로 바꿀 것
-export const DESIGNERS: Designer[] = [
+const RAW_DESIGNERS: Designer[] = [
   {
     slug: "jaehyeon-ko",
     nameKo: "고재현",
@@ -416,7 +417,7 @@ export const DESIGNERS: Designer[] = [
     slug: "noeun-ki",
     nameKo: "기노은",
     nameEn: "Noeun Ki",
-    fields: ["ux-product"],
+    fields: ["ux-product", "ux-space"],
     profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["ux-06", "ux-08"],
   },
@@ -424,7 +425,7 @@ export const DESIGNERS: Designer[] = [
     slug: "sarang-kim",
     nameKo: "김사랑",
     nameEn: "Sarang Kim",
-    fields: ["ux-product"],
+    fields: ["ux-product", "ux-space"],
     profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["ux-05", "ux-08"],
   },
@@ -480,7 +481,7 @@ export const DESIGNERS: Designer[] = [
     slug: "hagyeong-kim",
     nameKo: "김하경",
     nameEn: "Hagyeong Kim",
-    fields: ["ux-product"],
+    fields: ["ux-product", "ux-space"],
     profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["ux-06", "ux-10"],
   },
@@ -592,7 +593,7 @@ export const DESIGNERS: Designer[] = [
     slug: "juhyang-lee",
     nameKo: "이주향",
     nameEn: "Juhyang Lee",
-    fields: ["ux-product"],
+    fields: ["ux-product", "ux-space"],
     profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["ux-02", "ux-10"],
   },
@@ -632,7 +633,7 @@ export const DESIGNERS: Designer[] = [
     slug: "seongeun-jung",
     nameKo: "정성은",
     nameEn: "Seongeun Jung",
-    fields: ["ux-product"],
+    fields: ["ux-product", "ux-space"],
     profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["ux-05", "ux-09"],
   },
@@ -656,7 +657,7 @@ export const DESIGNERS: Designer[] = [
     slug: "juyeon-jung",
     nameKo: "정주연",
     nameEn: "Juyeon Jung",
-    fields: ["ux-product"],
+    fields: ["ux-product", "ux-space"],
     profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["ux-02", "ux-08"],
   },
@@ -672,7 +673,7 @@ export const DESIGNERS: Designer[] = [
     slug: "suwon-choi",
     nameKo: "최수원",
     nameEn: "Suwon Choi",
-    fields: ["ux-product"],
+    fields: ["ux-product", "ux-space"],
     profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: ["ux-03", "ux-09"],
   },
@@ -680,7 +681,7 @@ export const DESIGNERS: Designer[] = [
     slug: "yeongeun-choi",
     nameKo: "최영은",
     nameEn: "Yeongeun Choi",
-    fields: ["ux-product"],
+    fields: ["ux-product", "ux-space"],
     profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["ux-03", "ux-09"],
   },
@@ -696,11 +697,21 @@ export const DESIGNERS: Designer[] = [
     slug: "yewon-han",
     nameKo: "한예원",
     nameEn: "Yewon Han",
-    fields: ["ux-product"],
+    fields: ["ux-product", "ux-space"],
     profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: ["ux-03", "ux-10"],
   },
 ];
+
+/**
+ * 구글 드라이브에서 받아 R2 로 올린 프로필 사진이 있으면 그걸 쓴다.
+ * media-manifest.json 은 `npm run pull:drive` 가 public/media 를 훑어 다시 쓴다 — 손으로 고치지 말 것.
+ */
+const MEDIA_DESIGNERS = (media as { designers: Record<string, string> }).designers;
+export const DESIGNERS: Designer[] = RAW_DESIGNERS.map((x) => ({
+  ...x,
+  profile: MEDIA_DESIGNERS[x.slug] ?? x.profile,
+}));
 
 /** Designers 목록: 이름 가나다순 */
 export const getDesigners = () => [...DESIGNERS].sort((a, b) => a.nameKo.localeCompare(b.nameKo, "ko"));

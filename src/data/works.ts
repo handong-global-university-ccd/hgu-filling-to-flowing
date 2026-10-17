@@ -1,14 +1,13 @@
 import type { FieldKey, Work } from "./types";
+import media from "./media-manifest.json" with { type: "json" };
 
 // 팀·참여자: '2026 졸업전시 웹사이트 정보 취합' 시트(시각·제품 탭) 기준.
 // 시트 트랙 → 분야: AX Product → ax-product, Communication → communication, Service → service,
 //                   UX Product → ux-product, UX Space → ux-space
-// TODO: ux-* 작품은 예전에 UX Product·UX Space 를 한 분야(ux)로 묶어 두었던 것 — 지금은 전부 ux-product.
-//       시트에서 UX Space 팀을 확인해 field 를 "ux-space" 로 옮길 것 (designers.ts 의 fields 도 같이)
 // TODO: 작품명·소제목·소개글이 아직 미작성 — title 은 임시로 팀 이름(개인은 디자이너 이름).
 //       이미지는 드라이브 '디그리 웹사이트' 더미(public/placeholder/dummy). pages 는 아직 SVG.
 //       실제 작품이 들어오면 /media/works/<slug>/... 로 바꿀 것
-export const WORKS: Work[] = [
+const RAW_WORKS: Work[] = [
   {
     slug: "communication-01",
     field: "communication",
@@ -349,11 +348,11 @@ export const WORKS: Work[] = [
   {
     slug: "industrial-02",
     field: "ax-product",
-    title: "도라에몽",
-    subtitle: "서브 타이틀",
+    title: "빵꾸떵꾸",
+    subtitle: "빵꾸떵꾸",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
-    teamName: "도라에몽",
+    teamName: "빵꾸떵꾸",
     designerSlugs: ["sojeong-kim", "juhyeon-bang"],
     thumbnails: ["/placeholder/dummy/works/work-3.webp", "/placeholder/dummy/works/work-4.webp"],
     photo: "/placeholder/dummy/works/team-photo.webp",
@@ -362,11 +361,11 @@ export const WORKS: Work[] = [
   {
     slug: "industrial-03",
     field: "ax-product",
-    title: "그래핀스퀘어_키친웨어",
-    subtitle: "서브 타이틀",
+    title: "ReadyCook",
+    subtitle: "ReadyCook",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
-    teamName: "그래핀스퀘어_키친웨어",
+    teamName: "ReadyCook",
     designerSlugs: ["yeongchae-kim", "yebin-park"],
     thumbnails: ["/placeholder/dummy/works/work-4.webp", "/placeholder/dummy/works/work-1.webp"],
     photo: "/placeholder/dummy/works/team-photo.webp",
@@ -388,11 +387,11 @@ export const WORKS: Work[] = [
   {
     slug: "industrial-05",
     field: "ax-product",
-    title: "Tic:ON",
-    subtitle: "서브 타이틀",
+    title: "Tic:OFF",
+    subtitle: "Tic:OFF",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
-    teamName: "Tic:ON",
+    teamName: "Tic:OFF",
     designerSlugs: ["chaeeun-kim", "seohyeon-lee"],
     thumbnails: ["/placeholder/dummy/works/work-2.webp", "/placeholder/dummy/works/work-3.webp"],
     photo: "/placeholder/dummy/works/team-photo.webp",
@@ -401,11 +400,11 @@ export const WORKS: Work[] = [
   {
     slug: "industrial-06",
     field: "ax-product",
-    title: "그래핀스퀘어_키친웨어",
-    subtitle: "서브 타이틀",
+    title: "Packook",
+    subtitle: "Packook",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
-    teamName: "그래핀스퀘어_키친웨어",
+    teamName: "Packook",
     designerSlugs: ["seyun-park", "hyeyeon-yoo"],
     thumbnails: ["/placeholder/dummy/works/work-3.webp", "/placeholder/dummy/works/work-4.webp"],
     photo: "/placeholder/dummy/works/team-photo.webp",
@@ -427,11 +426,11 @@ export const WORKS: Work[] = [
   {
     slug: "industrial-08",
     field: "ax-product",
-    title: "이모코그_ 코그테라",
-    subtitle: "서브 타이틀",
+    title: "CoCare",
+    subtitle: "CoCare",
     description:
       "본 작품은 일상 속에서 무심코 지나치는 감정과 장면을 새로운 시선으로 재해석한 프로젝트입니다. (더미 데이터 — 실제 작품 소개로 교체 예정)",
-    teamName: "이모코그_ 코그테라",
+    teamName: "CoCare",
     designerSlugs: ["hagyeong-kim-2", "yunseo-lee", "jiwon-jang"],
     thumbnails: ["/placeholder/dummy/works/work-1.webp", "/placeholder/dummy/works/work-2.webp"],
     photo: "/placeholder/dummy/works/team-photo.webp",
@@ -541,7 +540,7 @@ export const WORKS: Work[] = [
   },
   {
     slug: "ux-08",
-    field: "ux-product",
+    field: "ux-space",
     title: "OB",
     subtitle: "서브 타이틀",
     description:
@@ -554,7 +553,7 @@ export const WORKS: Work[] = [
   },
   {
     slug: "ux-09",
-    field: "ux-product",
+    field: "ux-space",
     title: "동그리",
     subtitle: "서브 타이틀",
     description:
@@ -567,7 +566,7 @@ export const WORKS: Work[] = [
   },
   {
     slug: "ux-10",
-    field: "ux-product",
+    field: "ux-space",
     title: "공3즈",
     subtitle: "서브 타이틀",
     description:
@@ -579,6 +578,13 @@ export const WORKS: Work[] = [
     pages: ["/placeholder/thumb-05a.svg", "/placeholder/thumb-06a.svg", "/placeholder/thumb-07a.svg"],
   },
 ];
+
+/**
+ * 구글 드라이브에서 받아 R2 로 올린 팀 사진(작품 상세 타이틀 위)이 있으면 그걸 쓴다.
+ * media-manifest.json 은 `npm run pull:drive` 가 public/media 를 훑어 다시 쓴다 — 손으로 고치지 말 것.
+ */
+const MEDIA_WORKS = (media as { works: Record<string, string> }).works;
+export const WORKS: Work[] = RAW_WORKS.map((x) => ({ ...x, photo: MEDIA_WORKS[x.slug] ?? x.photo }));
 
 const byTitle = (a: Work, b: Work) => a.title.localeCompare(b.title, "ko");
 

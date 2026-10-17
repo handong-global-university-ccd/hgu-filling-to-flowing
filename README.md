@@ -22,6 +22,7 @@ npm run dev        # http://localhost:3000
 | `npm run check`                                | 타입 + 린트 + 포맷 검사                        |
 | `npm run format`                               | Prettier 자동 정렬 (Tailwind 클래스 순서 포함) |
 | `npm run encode:video -- <가로> <세로> <이름>` | 에펙 원본 → 웹용 mp4·포스터 (ffmpeg 필요)      |
+| `npm run pull:drive`                           | 구글 드라이브 프로필·팀 사진 → `public/media/` |
 | `npm run upload:media`                         | `public/media/` → Cloudflare R2 (rclone 필요)  |
 
 ## 스택
@@ -124,6 +125,25 @@ thumbnails: ["/media/works/generative-future/thumb-a.webp", "..."];
 4. R2 → Manage API tokens 에서 토큰 발급 → `rclone config` 에 등록
    (자세한 절차는 `scripts/upload-media.sh` 주석 참고)
 5. `.env.local` 의 `NEXT_PUBLIC_ASSET_URL` 에 `https://cdn.<도메인>` 입력
+
+### 구글 드라이브 사진
+
+디자인팀이 드라이브 `프로필 to 개발자` 폴더에 올린 사진을 받아 웹용 webp 로 줄이고 slug 에 맞춰 넣는다.
+
+1. (최초 1회) `rclone config` → 새 리모트 `gdrive`, storage `drive`, scope `2`(읽기 전용), 브라우저 로그인
+2. `npm run pull:drive` — 받기 → 변환 → `src/data/media-manifest.json` 갱신 (manifest 는 커밋한다)
+3. 결과에 나온 "건너뜀"·"사진 없음" 목록 확인 → `npm run upload:media`
+
+드라이브 파일명 규칙 ('2026 졸업전시 웹사이트 정보 취합' 시트의 이름·팀명 그대로)
+
+| 드라이브                     | 들어가는 곳                                             |
+| ---------------------------- | ------------------------------------------------------- |
+| `개인사진/<이름>.jpg`        | `public/media/designers/<slug>/profile.webp`            |
+| `개인사진/<이름>_<팀명>.jpg` | 동명이인 구분 (예: `김시은_쩜오`, `김지민_섭이스`)      |
+| `팀사진/<팀명>.jpg`          | `public/media/works/<slug>/photo.webp` (팀의 작품 전부) |
+
+원본은 `media-src/drive/` 에 남는다 (git 제외). 사진을 바꾸면 다시 `pull:drive` → `upload:media`.
+manifest 주소 끝에 내용 해시(`?v=`)가 붙어서, 같은 파일명으로 바꿔도 캐시된 옛 사진이 보이지 않는다.
 
 ### 도메인
 
