@@ -1,7 +1,10 @@
 /** Figma 홈 (2564:5091) 의 문구. 배열은 Figma 시안의 줄바꿈 그대로다 */
 
-/** 상단 키비주얼 — 원본 3085×4096 을 Figma 크롭 영역(1812×468)대로 잘라 둔 것. R2 로 올린다 */
-export const HOME_HERO = "/media/home/hero.webp";
+/**
+ * 상단 키비주얼 — 받은 원본(hero.jpg, 2223×564)을 다시 압축하지 않고 그대로 쓴다. R2 로 올린다.
+ * 화면 표시 폭이 1872 라 레티나에서 선명하려면 가로 3744px(2배) 원본이 필요하다.
+ */
+export const HOME_HERO = "/media/home/hero.jpg";
 
 export const HOME_TAGLINE = ": 채우심으로 말미암아";
 

@@ -4,7 +4,7 @@ import { cn } from "@/lib/cn";
 import FooterMarble from "@/components/footer/FooterMarble";
 
 /**
- * Figma Footer (2573:23106 Black / 2573:27019 White) — 1924×285, 웹은 290 고정, 모바일 260
+ * Figma Footer (2573:23106 Black / 2573:27019 White) — 1924×285, 웹 285 고정, 모바일 260
  *
  * - 메뉴      : left 25, top 21, 폭 143, Body/Medium(16/26), 줄간격 없음
  * - 외부 링크 : left 81.25%-2, top 21, 폭 163, Body/Medium — INSTAGRAM · BEHANCE · (빈 줄) · 메일
@@ -22,7 +22,7 @@ export default function Footer({ inverse = true }: { inverse?: boolean }) {
   return (
     <footer
       className={cn(
-        "relative h-[260px] text-body md:h-[290px]",
+        "relative h-[260px] text-body md:h-[285px]",
         inverse ? "bg-bg-inverse text-fg-inverse" : "bg-bg text-fg",
       )}
     >
