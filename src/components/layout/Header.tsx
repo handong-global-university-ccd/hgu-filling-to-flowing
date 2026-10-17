@@ -20,12 +20,17 @@ export type ArchiveTab = "behind" | "exhibition";
 /** 숨은 헤더를 다시 불러내는 화면 상단 영역(px) */
 const REVEAL_ZONE = 120;
 
+/** 헤더 내비 순서는 Figma 헤더(1696:14396) 기준 — 푸터·모바일 메뉴(NAV)와 순서가 다르다 */
+const HEADER_NAV = (["/works", "/designers", "/about", "/archive"] as const).map((href) =>
+  NAV.find((item) => item.href === href)!,
+);
+
 const ARCHIVE_TABS = [
   { key: "behind", label: "Behind", href: "/archive/" },
   { key: "exhibition", label: "Exhibition View", href: "/archive/exhibition/" },
 ] as const;
 
-/** Figma Search (1893:1245) — 334×30, 아래 1px 밑줄, placeholder Neutral/500 */
+/** Figma Search (2357:18591) — 298×30, 아래 0.5px Neutral/500 밑줄, placeholder Neutral/500 */
 function SearchField({
   value,
   onChange,
@@ -36,7 +41,9 @@ function SearchField({
   className?: string;
 }) {
   return (
-    <label className={cn("h-[30px] w-full shrink-0 border-b border-border md:w-[334px]", className)}>
+    <label
+      className={cn("h-[30px] w-full shrink-0 border-b-[0.5px] border-border-strong md:w-[298px]", className)}
+    >
       <span className="sr-only">검색</span>
       <input
         type="search"
@@ -132,7 +139,7 @@ function MobileMenu({
 }
 
 /**
- * Figma 헤더 컴포넌트 (1893:2320 Default / 1893:2360 Scroll / 1696:14396 White·Black)
+ * Figma 헤더 컴포넌트 (1696:14396 — Default 1752:13601 / Scroll 2357:17939 / White 1721:12663 · Black 1721:12723)
  *
  * - 둘째 줄 없음 : 110px 고정. 로고 + 우측 내비.  inverse 면 Black 변형
  * - 둘째 줄 있음 : Default 176px ↔ Scroll 74px. (padding 24, 두 줄 사이 44)
@@ -226,7 +233,7 @@ export default function Header({
 
   const brand = inverse ? "bg-bg-inverse text-fg-inverse" : "bg-bg text-fg";
 
-  /* 로고 + 주요 내비 — Figma: 항목 폭 102px, 간격 16px, Body/Medium(16/26) */
+  /* 로고(190×58.5) + 주요 내비 — Figma: 항목 간격 57px, 오른쪽 끝은 마진 안쪽 8px(행 폭 1864), Body/Medium(16/26) */
   const searchButton = showFilterRow && filter && (
     <button
       type="button"
@@ -251,12 +258,12 @@ export default function Header({
           </Link>
           <p className="absolute left-1/2 -translate-x-1/2 text-h4 md:hidden">{mobileTitle.title}</p>
           <Link href="/" aria-label="홈으로" className="max-md:hidden">
-            <Logo width={187} />
+            <Logo width={190} />
           </Link>
         </>
       ) : (
         <Link href="/" aria-label="홈으로">
-          <Logo width={187} className="max-md:!w-[109px]" />
+          <Logo width={190} className="max-md:!w-[109px]" />
         </Link>
       )}
       <div className="flex items-center gap-4 md:hidden">
@@ -274,25 +281,19 @@ export default function Header({
           </button>
         )}
       </div>
-      <nav aria-label="주요 메뉴" className="max-md:hidden">
-        <ul className="flex items-center gap-4 text-body">
-          {NAV.map((item) => {
-            const active = pathname.startsWith(item.href);
-            return (
-              <li key={item.href} className="w-[102px]">
-                <Link
-                  href={item.href}
-                  aria-current={active ? "page" : undefined}
-                  className={cn(
-                    "transition-opacity hover:opacity-100",
-                    active ? "opacity-100" : "opacity-70",
-                  )}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            );
-          })}
+      <nav aria-label="주요 메뉴" className="pr-2 max-md:hidden">
+        <ul className="flex items-center gap-[57px] text-right text-body">
+          {HEADER_NAV.map((item) => (
+            <li key={item.href}>
+              <Link
+                href={item.href}
+                aria-current={pathname.startsWith(item.href) ? "page" : undefined}
+                className="transition-opacity hover:opacity-60"
+              >
+                {item.label}
+              </Link>
+            </li>
+          ))}
         </ul>
       </nav>
     </div>
