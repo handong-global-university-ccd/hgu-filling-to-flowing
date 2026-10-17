@@ -77,4 +77,4 @@ export default function CrosshairCursor() {
       <div className="absolute top-0 left-0 size-1.5 translate-x-[calc(var(--x)-3px)] translate-y-[calc(var(--y)-3px)] bg-white" />
     </div>
   );
-}
+} 
