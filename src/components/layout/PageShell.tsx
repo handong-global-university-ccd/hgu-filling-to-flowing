@@ -23,6 +23,7 @@ export default function PageShell({
   archive,
   compact = false,
   hideOnScroll = false,
+  overlayHeader = false,
   headerHeight = 110,
   fullscreen = false,
   mobileTitle,
@@ -36,6 +37,11 @@ export default function PageShell({
   compact?: boolean;
   /** 아래로 스크롤하면 헤더를 숨기고, 마우스를 화면 위로 올리면 다시 보여준다 */
   hideOnScroll?: boolean;
+  /**
+   * 헤더를 본문 위에 띄운다 (홈). 데스크톱은 본문을 헤더 높이만큼 내리지 않고,
+   * 헤더는 커서를 화면 위쪽으로 올렸을 때만 내려온다. 모바일은 평소처럼 내린다
+   */
+  overlayHeader?: boolean;
   /** 둘째 줄이 없는 단순 헤더의 높이(px) */
   headerHeight?: number;
   fullscreen?: boolean;
@@ -58,7 +64,8 @@ export default function PageShell({
         filters={filters}
         archive={archive}
         compact={compact}
-        hideOnScroll={hideOnScroll}
+        hideOnScroll={hideOnScroll || overlayHeader}
+        overlay={overlayHeader}
         height={headerHeight}
         mobileTitle={mobileTitle}
       />
@@ -74,7 +81,9 @@ export default function PageShell({
                 : "pt-[120px] md:pt-[176px]"
               : compact
                 ? "pt-[141px] md:pt-[74px]"
-                : "pt-16 md:pt-(--header-h)"),
+                : overlayHeader
+                  ? "pt-16 md:pt-0"
+                  : "pt-16 md:pt-(--header-h)"),
           className,
         )}
         style={

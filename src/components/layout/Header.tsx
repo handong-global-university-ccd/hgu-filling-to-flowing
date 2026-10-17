@@ -156,6 +156,7 @@ export default function Header({
   archive,
   compact = false,
   hideOnScroll = false,
+  overlay = false,
   height = 110,
   mobileTitle,
 }: {
@@ -169,6 +170,11 @@ export default function Header({
    * 스크롤이 없는 화면에서는 커서가 위쪽을 벗어나기만 해도 숨는다.
    */
   hideOnScroll?: boolean;
+  /**
+   * 본문 위에 떠 있는 헤더 (홈 2564:5091 — 시안에 헤더가 없고 키비주얼이 맨 위에서 시작한다).
+   * 마우스 기기에서는 최상단에서도 숨어 있다가 커서를 화면 위쪽으로 올리면 내려온다. hideOnScroll 과 같이 쓴다
+   */
+  overlay?: boolean;
   /** 둘째 줄이 없는 단순 헤더의 전체 높이(px). 위 여백 24px 을 포함한 값이다 */
   height?: number;
   /**
@@ -182,7 +188,7 @@ export default function Header({
   const [atTop, setAtTop] = useState(true);
   const [hovered, setHovered] = useState(false);
   // 처음에는 보인 상태로 둔다 — 커서를 한 번이라도 아래로 내려야 숨는다
-  const [nearTop, setNearTop] = useState(true);
+  const [nearTop, setNearTop] = useState(!overlay);
   const [scrollable, setScrollable] = useState(true);
   const filter = useWorksFilter();
   const isMobile = useMediaQuery(MOBILE_QUERY);
@@ -224,7 +230,7 @@ export default function Header({
   }, [hideOnScroll]);
 
   const hidden = finePointer
-    ? hideOnScroll && !nearTop && !hovered && (!scrollable || !atTop)
+    ? hideOnScroll && !nearTop && !hovered && (overlay || !scrollable || !atTop)
     : hideOnScroll && scrollable && !atTop && scrollingDown && !menuOpen;
   // 둘째 줄이 있는 헤더는 통째로 숨지 않고 Scroll(74px) 로 접혀 둘째 줄(탭)만 남긴다
   const expanded =

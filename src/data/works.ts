@@ -1,8 +1,10 @@
 import type { FieldKey, Work } from "./types";
 
 // 팀·참여자: '2026 졸업전시 웹사이트 정보 취합' 시트(시각·제품 탭) 기준.
-// 시트 트랙 → 분야: Communication → communication, Service → service,
-//                   AX Product → industrial, UX Product·UX Space → ux
+// 시트 트랙 → 분야: AX Product → ax-product, Communication → communication, Service → service,
+//                   UX Product → ux-product, UX Space → ux-space
+// TODO: ux-* 작품은 예전에 UX Product·UX Space 를 한 분야(ux)로 묶어 두었던 것 — 지금은 전부 ux-product.
+//       시트에서 UX Space 팀을 확인해 field 를 "ux-space" 로 옮길 것 (designers.ts 의 fields 도 같이)
 // TODO: 작품명·소제목·소개글이 아직 미작성 — title 은 임시로 팀 이름(개인은 디자이너 이름).
 //       이미지는 드라이브 '디그리 웹사이트' 더미(public/placeholder/dummy). pages 는 아직 SVG.
 //       실제 작품이 들어오면 /media/works/<slug>/... 로 바꿀 것
@@ -333,7 +335,7 @@ export const WORKS: Work[] = [
   },
   {
     slug: "industrial-01",
-    field: "industrial",
+    field: "ax-product",
     title: "TETÉ",
     subtitle: "서브 타이틀",
     description:
@@ -346,7 +348,7 @@ export const WORKS: Work[] = [
   },
   {
     slug: "industrial-02",
-    field: "industrial",
+    field: "ax-product",
     title: "도라에몽",
     subtitle: "서브 타이틀",
     description:
@@ -359,7 +361,7 @@ export const WORKS: Work[] = [
   },
   {
     slug: "industrial-03",
-    field: "industrial",
+    field: "ax-product",
     title: "그래핀스퀘어_키친웨어",
     subtitle: "서브 타이틀",
     description:
@@ -372,7 +374,7 @@ export const WORKS: Work[] = [
   },
   {
     slug: "industrial-04",
-    field: "industrial",
+    field: "ax-product",
     title: "SK한동닉스",
     subtitle: "서브 타이틀",
     description:
@@ -385,7 +387,7 @@ export const WORKS: Work[] = [
   },
   {
     slug: "industrial-05",
-    field: "industrial",
+    field: "ax-product",
     title: "Tic:ON",
     subtitle: "서브 타이틀",
     description:
@@ -398,7 +400,7 @@ export const WORKS: Work[] = [
   },
   {
     slug: "industrial-06",
-    field: "industrial",
+    field: "ax-product",
     title: "그래핀스퀘어_키친웨어",
     subtitle: "서브 타이틀",
     description:
@@ -411,7 +413,7 @@ export const WORKS: Work[] = [
   },
   {
     slug: "industrial-07",
-    field: "industrial",
+    field: "ax-product",
     title: "CHAYOO",
     subtitle: "서브 타이틀",
     description:
@@ -424,7 +426,7 @@ export const WORKS: Work[] = [
   },
   {
     slug: "industrial-08",
-    field: "industrial",
+    field: "ax-product",
     title: "이모코그_ 코그테라",
     subtitle: "서브 타이틀",
     description:
@@ -437,7 +439,7 @@ export const WORKS: Work[] = [
   },
   {
     slug: "industrial-09",
-    field: "industrial",
+    field: "ax-product",
     title: "공신영",
     subtitle: "서브 타이틀",
     description:
@@ -449,7 +451,7 @@ export const WORKS: Work[] = [
   },
   {
     slug: "ux-01",
-    field: "ux",
+    field: "ux-product",
     title: "Forky",
     subtitle: "서브 타이틀",
     description:
@@ -462,7 +464,7 @@ export const WORKS: Work[] = [
   },
   {
     slug: "ux-02",
-    field: "ux",
+    field: "ux-product",
     title: "F4",
     subtitle: "서브 타이틀",
     description:
@@ -475,7 +477,7 @@ export const WORKS: Work[] = [
   },
   {
     slug: "ux-03",
-    field: "ux",
+    field: "ux-product",
     title: "J House",
     subtitle: "서브 타이틀",
     description:
@@ -488,7 +490,7 @@ export const WORKS: Work[] = [
   },
   {
     slug: "ux-04",
-    field: "ux",
+    field: "ux-product",
     title: "한",
     subtitle: "서브 타이틀",
     description:
@@ -501,7 +503,7 @@ export const WORKS: Work[] = [
   },
   {
     slug: "ux-05",
-    field: "ux",
+    field: "ux-product",
     title: "푸딩그리",
     subtitle: "서브 타이틀",
     description:
@@ -514,7 +516,7 @@ export const WORKS: Work[] = [
   },
   {
     slug: "ux-06",
-    field: "ux",
+    field: "ux-product",
     title: "FiveGuys",
     subtitle: "서브 타이틀",
     description:
@@ -527,7 +529,7 @@ export const WORKS: Work[] = [
   },
   {
     slug: "ux-07",
-    field: "ux",
+    field: "ux-product",
     title: "김은진",
     subtitle: "서브 타이틀",
     description:
@@ -539,7 +541,7 @@ export const WORKS: Work[] = [
   },
   {
     slug: "ux-08",
-    field: "ux",
+    field: "ux-product",
     title: "OB",
     subtitle: "서브 타이틀",
     description:
@@ -552,7 +554,7 @@ export const WORKS: Work[] = [
   },
   {
     slug: "ux-09",
-    field: "ux",
+    field: "ux-product",
     title: "동그리",
     subtitle: "서브 타이틀",
     description:
@@ -565,7 +567,7 @@ export const WORKS: Work[] = [
   },
   {
     slug: "ux-10",
-    field: "ux",
+    field: "ux-product",
     title: "공3즈",
     subtitle: "서브 타이틀",
     description:

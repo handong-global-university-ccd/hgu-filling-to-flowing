@@ -41,10 +41,12 @@ function fillLoop<T>(items: T[], min: number): T[] {
 }
 
 /**
- * Figma 홈 분야 아코디언 (1696:16987)
- * - 접힘: 높이 74px. 썸네일이 opacity 50% 로 가로 루프하고 그 위에 분야명(32/40)
- * - 펼침: 좌측에 분야명 + 소개 문구(456px, Pretendard 18/26),
- *         우측 37.5% 지점부터 썸네일 그리드(높이 112px, 간격 16px)
+ * Figma 홈화면 썸네일 (2573:21293 — Default / 분야별 펼침 5종)
+ * - 접힘: 높이 74px. 썸네일(120×74)이 opacity 50% 로 가로 루프하고 그 위에 분야명(H2 32/40, left 24)
+ *         행 사이: 아래 16 · 흰 1px 선 · 16
+ * - 펼침: 흰 배경 패널 1920×540. 좌측 위(24, 30)에 분야명 + 소개 문구(Pretendard 18/26, 검정, 시안 줄바꿈)
+ *         우측(right 24, top 22)에 썸네일 그리드 8열 131×112, 간격 16 (폭 1160 = 화면 폭 60.42%)
+ *         패널 아래에는 선 없이 16 띄우고 다음 행
  */
 export default function FieldAccordion({ worksByField }: { worksByField: Record<FieldKey, Work[]> }) {
   const [active, setActive] = useState<FieldKey | null>(null);
@@ -79,7 +81,11 @@ export default function FieldAccordion({ worksByField }: { worksByField: Record<
             onPointerMove={(e) => e.pointerType === "mouse" && hoverTo(field.key, e.timeStamp)}
             onFocusCapture={() => setActive(field.key)}
             /* 아코디언 사이 흰색 구분선 — 선 위아래로 16px 씩 여백 */
-            className={cn("border-fg-inverse", i > 0 && "mt-4 border-t pt-4")}
+            /* 펼친 패널 바로 다음 행은 선 없이 16 만 띄운다 (흰 패널이 구분선 역할) */
+            className={cn(
+              "border-fg-inverse",
+              i > 0 && (active === FIELDS[i - 1].key ? "mt-4" : "mt-4 border-t pt-4"),
+            )}
           >
             {/* ───── 접힌 행 ───── */}
             <button
@@ -100,8 +106,8 @@ export default function FieldAccordion({ worksByField }: { worksByField: Record<
                   </div>
                 ))}
               </Marquee>
-              <span className="pointer-events-none absolute top-1/2 left-6 -translate-y-1/2 text-[32px] leading-[40px] font-medium max-md:left-margin max-md:text-[28px] max-md:leading-[36px]">
-                {field.short}
+              <span className="pointer-events-none absolute top-1/2 left-6 -translate-y-1/2 text-h2 whitespace-nowrap max-md:left-margin max-md:text-[28px] max-md:leading-[36px]">
+                {field.label}
               </span>
             </button>
 
@@ -122,38 +128,29 @@ export default function FieldAccordion({ worksByField }: { worksByField: Record<
                   }}
                   className="overflow-hidden"
                 >
-                  {/* Figma: 좌측 카피 456px(left 24), 썸네일 그리드는 37.5%+4px 지점부터 */}
                   {/* 모바일: 카피 위, 썸네일 아래로 쌓는다 */}
-                  {/* 모바일: 구분선→제목, 마지막 사진→다음 구분선 간격을 같게 (각 16 + 24 = 40) */}
-                  <div className="flex pt-[18px] pb-10 max-md:flex-col max-md:gap-6 max-md:pt-6 max-md:pb-6">
-                    <div className="w-[calc(37.5%+4px)] shrink-0 pl-6 max-md:w-full max-md:px-margin">
-                      <h3 className="text-[32px] leading-[40px] font-medium max-md:text-[28px] max-md:leading-[36px]">
-                        {field.short}
-                      </h3>
-                      <p className="mt-2 max-w-[456px] font-kr text-[18px] leading-[26px] text-neutral-300 max-md:text-[16px] max-md:leading-[24px]">
+                  <div className="flex min-h-[540px] justify-between gap-10 bg-bg text-fg max-md:min-h-0 max-md:flex-col max-md:gap-6 max-md:py-6">
+                    <div className="pt-[30px] pl-6 max-md:px-margin max-md:pt-0">
+                      <h3 className="text-h2 max-md:text-[28px] max-md:leading-[36px]">{field.label}</h3>
+                      <p className="mt-2 font-kr text-kr-body-lg whitespace-pre-line max-md:text-kr-body max-md:whitespace-normal">
                         {field.intro}
                       </p>
-                      {/* <Link
-                        href="/works/"
-                        className="mt-6 inline-block text-caption uppercase underline underline-offset-4 hover:opacity-70"
-                      >
-                        View all {works.length} works
-                      </Link> */}
                     </div>
 
-                    <ul className="flex flex-1 flex-wrap content-start gap-4 pr-6 max-md:grid max-md:grid-cols-2 max-md:gap-(--spacing-gutter) max-md:px-margin">
+                    <ul className="grid w-[calc(60.42%+24px)] shrink-0 grid-cols-8 content-start gap-4 py-[22px] pr-6 max-md:w-full max-md:grid-cols-2 max-md:gap-(--spacing-gutter) max-md:px-margin max-md:py-0">
                       {works.map((w) => (
                         <li key={w.slug}>
                           <Link
                             href={`/works/${w.slug}/`}
-                            className="group block h-[112px] w-[157px] overflow-hidden max-md:aspect-[157/112] max-md:h-auto max-md:w-full"
+                            className="group block aspect-[131/112] overflow-hidden"
                             title={w.title}
                           >
                             <Image
                               src={asset(w.thumbnails[0])}
                               alt={w.title}
-                              width={157}
-                              height={112}
+                              width={262}
+                              height={224}
+                              sizes="(max-width: 767px) 50vw, 131px"
                               className="h-full w-full object-cover transition-opacity group-hover:opacity-70"
                             />
                           </Link>

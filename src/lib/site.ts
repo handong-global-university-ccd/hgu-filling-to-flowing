@@ -31,7 +31,8 @@ export const FIGMA = {
   fileKey: "QYS6YS5oAMvL2KRLItS10p",
   nodes: {
     intro: "1807:14129",
-    home: "1807:14128",
+    home: "2564:5091",
+    homeFields: "2573:21293",
     works: "1807:14578",
     workDetail: "1807:14520",
     designers: "1807:15014",
