@@ -76,7 +76,7 @@ export const WORK_PROJECTS: WorkProject[] = [
   {
     key: "ai-defined-vehicle",
     field: "ux-product",
-    label: "AI-Defined Vehicle",
+    label: "AIDV",
     team: true,
     title: "AI-Defined Vehicle 기반 모빌리티 UX",
     advisor: "이은종",
