@@ -7,8 +7,8 @@ import type { Work } from "@/data/types";
 import { asset } from "@/lib/asset";
 
 /**
- * Figma Works 카드 (1807:14582) — 썸네일 456×270, 아래로 16px, 캡션 줄간격 8
- * 인터렉션(1801:15055): 호버하면 1.5초 간격으로 썸네일 A↔B 무한 교차
+ * Figma Works 카드 (2564:9047) — 썸네일 456×270, 아래로 16px, 제목 KR Body/Large · 이름 KR Body/Small, 사이 2px
+ * 인터렉션(1801:15055): 호버하면 1.5초 간격으로 썸네일 A↔B 무한 교차 + 20% 검정 덮개 (2564:9048)
  */
 export default function WorkCard({ work, designerName }: { work: Work; designerName: string }) {
   const [hover, setHover] = useState(false);
@@ -41,15 +41,19 @@ export default function WorkCard({ work, designerName }: { work: Work; designerN
             src={asset(src)}
             alt={i === 0 ? work.title : ""}
             fill
-            sizes="(min-width: 1024px) 25vw, 50vw"
+            sizes="(min-width: 1024px) 24vw, 50vw"
             className="object-cover transition-opacity duration-500"
             style={{ opacity: (i === 1) === showB ? 1 : 0 }}
           />
         ))}
+        <span
+          aria-hidden
+          className="absolute inset-0 bg-bg-inverse/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100"
+        />
       </div>
-      <div className="mt-4 flex flex-col gap-2 max-md:mt-2 max-md:gap-1">
-        <p className="font-kr text-kr-body-lg max-md:text-kr-body">{work.title}</p>
-        <p className="text-body-sm max-md:text-caption">{designerName}</p>
+      <div className="mt-4 flex flex-col gap-0.5 font-kr max-md:mt-2">
+        <p className="text-kr-body-lg max-md:text-kr-body">{work.title}</p>
+        <p className="text-kr-body-sm">{designerName}</p>
       </div>
     </Link>
   );
