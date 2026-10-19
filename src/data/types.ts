@@ -40,7 +40,9 @@ export type FieldKey = (typeof FIELDS)[number]["key"];
 export type Work = {
   slug: string;
   field: FieldKey;
-  title: string; // 한글 타이틀
+  title: string; // 한글 타이틀 (상세 좌측 제목)
+  /** Works 목록 카드의 작품명 — 시트 'work 메인 페이지' 열. 없으면 title */
+  cardTitle?: string;
   subtitle?: string;
   description: string;
   /** 팀 작품의 팀 이름. 개인 작품은 없음 (Figma 2243:14655~) */

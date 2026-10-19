@@ -1,18 +1,28 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 /**
  * Lenis 부드러운 스크롤 + GSAP ScrollTrigger 동기화.
  * 모션 줄이기 설정이면 Lenis를 켜지 않는다.
+ *
+ * 페이지가 열릴 때마다(새로고침·링크 이동·뒤로가기 모두) 맨 위에서 시작한다.
+ * 브라우저의 스크롤 위치 복원을 끄고, 경로가 바뀌면 Lenis 와 창을 함께 0 으로 보낸다.
+ * 같은 페이지 안에서 분야만 바꾸는 경우(?field=…)는 경로가 그대로라 여기서 건드리지 않는다.
  */
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
+  const lenisRef = useRef<Lenis | null>(null);
+  const pathname = usePathname();
+
   useEffect(() => {
+    window.history.scrollRestoration = "manual";
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const lenis = new Lenis({ lerp: 0.1 });
+    lenisRef.current = lenis;
     lenis.on("scroll", ScrollTrigger.update);
 
     const tick = (time: number) => lenis.raf(time * 1000);
@@ -22,8 +32,14 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     return () => {
       gsap.ticker.remove(tick);
       lenis.destroy();
+      lenisRef.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    lenisRef.current?.scrollTo(0, { immediate: true, force: true });
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   return <>{children}</>;
 }

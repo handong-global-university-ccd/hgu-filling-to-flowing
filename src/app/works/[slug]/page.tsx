@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: PageProps<"/works/[slug]">): 
 /**
  * Figma Works 상세 (1807:14520)
  * - 본문은 헤더(110) 아래 46px, 좌측 정보 338px + 간격 16 + 상세 설명 이미지
- * - 좌측: 작품 사진(338×225) → 타이틀·부제 → 설명 → 크레딧
+ * - 좌측: 작품 사진(338×225, 개인 작품은 디자이너 프로필 338×224) → 타이틀·부제 → 설명 → 크레딧
  * - 좌측 안쪽 간격: 정보 묶음 24 / 제목·설명 20 / 크레딧은 890 높이 열의 맨 아래
  * - 작업물 아래 110 띄우고 Others, 제목 아래 16 에 352×222 썸네일 루프
  * - 마지막 콘텐츠와 푸터 사이 360
@@ -39,6 +39,8 @@ export default async function WorkDetailPage({ params }: PageProps<"/works/[slug
   if (!work) notFound();
 
   const designers = work.designerSlugs.map(getDesigner).filter((d) => d !== undefined);
+  // 팀 이름이 없는 1인 작품 = 개인 작품
+  const solo = !work.teamName && designers.length === 1 ? designers[0] : undefined;
   const others = getOtherWorks(slug).map((w) => ({
     slug: w.slug,
     title: w.title,
@@ -49,19 +51,34 @@ export default async function WorkDetailPage({ params }: PageProps<"/works/[slug
     <PageShell>
       <article className="flex flex-col gap-4 px-margin pt-[46px] max-lg:gap-10 max-md:gap-4 max-md:pt-3 lg:flex-row lg:items-start">
         {/* 좌측 정보 — 스크롤해도 고정 */}
-        {/* Figma: 좌측 열 높이 890, 크레딧은 열 맨 아래 (justify-between). 화면이 낮으면 줄어들고 최소 간격 104 */}
-        <div className="flex w-full flex-col justify-between gap-10 max-md:gap-[60px] lg:sticky lg:top-[126px] lg:min-h-[min(890px,calc(100svh-160px))] lg:w-[338px] lg:shrink-0 lg:gap-[104px]">
+        {/* Figma: 좌측 열 높이 890 고정, 크레딧은 열 맨 아래 (justify-between) */}
+        <div className="flex w-full flex-col justify-between gap-10 max-md:gap-[60px] lg:sticky lg:top-[126px] lg:h-[890px] lg:w-[338px] lg:shrink-0 lg:gap-[104px]">
           {/* 모바일(2499:4351): 사진 358×239 → 16 → 제목 16/30 · 부제 14/20 → 16 → 설명 12/18 → 60 → 크레딧 */}
           <div className="flex flex-col gap-6 max-md:gap-4">
-            {/* 타이틀 위 작품 사진 — 따로 없으면 대표 썸네일 */}
-            <Image
-              src={asset(work.photo ?? work.thumbnails[0])}
-              alt={`${work.title} 작품 사진`}
-              width={338}
-              height={225}
-              priority
-              className="h-[225px] w-full object-cover max-md:aspect-[358/239] max-md:h-auto"
-            />
+            {solo ? (
+              /* 개인 작품 (2252:15830): 작품 사진 대신 디자이너 프로필. 338×224 칸 안에
+                 193×290 사진을 왼쪽 -22 · 위 -33 으로 놓아 상반신만 보이게 자른다 */
+              <div className="relative h-[224px] w-full overflow-hidden max-md:h-[239px]">
+                <Image
+                  src={asset(solo.profile)}
+                  alt={`${solo.nameKo} 프로필 사진`}
+                  width={193}
+                  height={290}
+                  priority
+                  className="absolute top-[-33px] left-[-22px] h-[290px] w-[193px] max-w-none object-cover"
+                />
+              </div>
+            ) : (
+              /* 팀 작품: 타이틀 위 팀 사진 — 따로 없으면 대표 썸네일 */
+              <Image
+                src={asset(work.photo ?? work.thumbnails[0])}
+                alt={`${work.title} 작품 사진`}
+                width={338}
+                height={225}
+                priority
+                className="h-[225px] w-full object-cover max-md:aspect-[358/239] max-md:h-auto"
+              />
+            )}
             <div className="flex flex-col gap-5 max-md:gap-4">
               <div className="flex flex-col">
                 <h1 className="font-kr text-kr-h4 max-md:text-[16px] max-md:leading-[30px]">{work.title}</h1>
@@ -69,7 +86,7 @@ export default async function WorkDetailPage({ params }: PageProps<"/works/[slug
                   <p className="font-kr text-kr-body-lg max-md:text-kr-body-sm">{work.subtitle}</p>
                 )}
               </div>
-              <p className="font-kr text-kr-body-sm max-md:text-[12px] max-md:leading-[18px]">
+              <p className="font-kr text-kr-body-sm whitespace-pre-line max-md:text-[12px] max-md:leading-[18px]">
                 {work.description}
               </p>
             </div>

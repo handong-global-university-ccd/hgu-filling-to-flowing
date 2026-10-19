@@ -52,7 +52,7 @@ export default function WorkCard({ work, designerName }: { work: Work; designerN
         />
       </div>
       <div className="mt-4 flex flex-col gap-0.5 font-kr max-md:mt-2">
-        <p className="text-kr-body-lg max-md:text-kr-body">{work.title}</p>
+        <p className="text-kr-body-lg max-md:text-kr-body">{work.cardTitle ?? work.title}</p>
         <p className="text-kr-body-sm">{designerName}</p>
       </div>
     </Link>

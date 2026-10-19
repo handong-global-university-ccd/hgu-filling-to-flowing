@@ -29,7 +29,7 @@ const THUMBS = { left: 944, w: 280, h: 165, gap: 16 };
  * 모바일 (2403:3553 디폴트 / 2491:3260 활성): 이름만 보이고 분야·대표 썸네일은 숨긴다.
  * 활성 행의 프로필 사진은 오른쪽 끝에 111×148 (행보다 13 위). 위 상수는 데스크톱 전용이라 md: 클래스로만 쓴다.
  *
- * Figma 디자이너 리스트 (1807:15014 디폴트 / 1893:2000 hover)
+ * Figma 디자이너 리스트 (1807:15014 디폴트 / 1893:2000 hover) — 이름·분야 모두 Medium(500) 14/20
  *
  * 인터렉션 설명 (1837:11706)
  * - Scroll : 스크롤하면 다음 디자이너가 활성화되고 프로필·썸네일이 함께 바뀐다
@@ -128,7 +128,7 @@ export default function DesignerList({ designers }: { designers: DesignerRow[] }
                 onPointerEnter={(e) => e.pointerType === "mouse" && setHovered(i)}
               >
                 <Link
-                  href={`/designers/${d.slug}/`}
+                  href={`/designers/${d.slug}/${filter?.query ?? ""}`}
                   className={cn(
                     "flex w-fit items-center transition-colors md:gap-[488px]",
                     on ? "text-fg" : "text-neutral-300",
@@ -136,9 +136,11 @@ export default function DesignerList({ designers }: { designers: DesignerRow[] }
                 >
                   <span className="flex w-20 shrink-0 items-center gap-2 md:w-[102px]">
                     {on && <span aria-hidden className="size-1.5 shrink-0 bg-current" />}
-                    <span className="font-kr text-kr-label whitespace-nowrap">{d.nameKo}</span>
+                    <span className="font-kr text-kr-label font-medium whitespace-nowrap">{d.nameKo}</span>
                   </span>
-                  <span className="w-[338px] shrink-0 text-label max-md:hidden">{d.disciplines}</span>
+                  <span className="w-[338px] shrink-0 text-label font-medium max-md:hidden">
+                    {d.disciplines}
+                  </span>
                 </Link>
 
                 <AnimatePresence>

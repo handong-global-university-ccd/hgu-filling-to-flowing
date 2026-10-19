@@ -34,7 +34,10 @@ export default function WorksBrowser({ items }: { items: Item[] }) {
     return items.filter(({ work, designerNames }) => {
       if (project && !inProject(work, project)) return false;
       if (!query) return true;
-      return work.title.toLowerCase().includes(query) || designerNames.toLowerCase().includes(query);
+      return (
+        (work.cardTitle ?? work.title).toLowerCase().includes(query) ||
+        designerNames.toLowerCase().includes(query)
+      );
     });
   }, [items, project, q]);
 

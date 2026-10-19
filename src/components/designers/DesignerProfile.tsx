@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import ArrowUpRight from "@/components/icons/ArrowUpRight";
 import { useWorksFilter } from "@/components/works/works-filter";
 import type { FieldKey } from "@/data/types";
@@ -24,15 +24,23 @@ export type ProfileDesigner = {
   works: ProfileWork[];
 };
 
-/** Figma 디자이너 상세 (1807:15093 / 1807:15124 / 1807:15169) */
+/**
+ * Figma 디자이너 상세 (1807:15093 / 1807:15124 / 1807:15169) — 1920×1080 기준.
+ *
+ * 헤더의 검색창(298px)처럼 사진·글자는 px 고정이다. 화면 폭에 비례시키면 좁은 화면에서
+ * 사진만 작아져 검색창과 어긋난다 (시안: 사진 338 이 검색창보다 40 넓고 오른쪽 끝이 같다).
+ * 오른쪽 정보 묶음은 사진 기준으로 붙인다 — 사진 왼쪽에서 124 띄운 338 폭 (1920 에서 left 1096).
+ */
 const DESKTOP = {
   header: HEADER_H.desktop.collapsed,
   itemW: 80,
   itemH: 120,
   pitch: 120 + 36, // 사진 높이 + 간격
-  railX: 24,
+  /** ■ 중심의 화면 높이 비율 — 1080 시안에서 552 */
+  markerY: 552 / 1080,
 };
 const MARKER = 6;
+const MARKER_GAP = 16;
 
 /**
  * 인터렉션 설명 (1841:11720)
@@ -65,9 +73,16 @@ export default function DesignerProfile({
     [designers, field, query],
   );
 
-  // 필터가 바뀌면 레일·스크롤 상태를 함께 초기화하고 첫 결과부터 보여준다.
-  // 전체 목록으로 돌아오면 처음 진입했던 디자이너를 다시 보여준다.
-  const start = field === "all" && !query ? initialIndex : 0;
+  // 필터가 바뀌면 레일·스크롤 상태를 함께 초기화한다.
+  // 처음 진입한 디자이너가 결과에 있으면 그 사람부터 (목록에서 분야를 고르고 들어온 경우 — 주소의 ?field),
+  // 없거나 검색 중이면 첫 결과부터 보여준다.
+  const entered = designers[initialIndex]?.slug;
+  const start = query
+    ? 0
+    : Math.max(
+        0,
+        filtered.findIndex((x) => x.slug === entered),
+      );
   return (
     <>
       {/* 데스크톱: 흑백 레일 + 프로필 (모바일에서는 숨긴다) */}
@@ -81,10 +96,10 @@ export default function DesignerProfile({
 function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[]; initialIndex: number }) {
   const stage = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(initialIndex);
-  const reduceMotion = useReducedMotion();
   const size = DESKTOP;
-  const markerGap = 16;
   const header = size.header;
+  // 레일 안에서 ■ 중심의 높이 — 스테이지는 접힌 헤더 아래에서 시작한다
+  const markerTop = `(${size.markerY * 100}svh - ${header}px)`;
   const d = designers[active];
   const last = designers.length - 1;
   const selected = useRef(initialIndex);
@@ -200,10 +215,11 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
     };
   }, [goTo, last]);
 
-  // 주소만 바꾼다 — 페이지를 다시 그리지 않고 공유·새로고침만 맞춰준다
+  // 주소만 바꾼다 — 페이지를 다시 그리지 않고 공유·새로고침만 맞춰준다. 분야(?field)는 그대로 둔다
   const activeSlug = d?.slug;
   useEffect(() => {
-    if (activeSlug) history.replaceState(null, "", `/designers/${activeSlug}/`);
+    if (activeSlug)
+      history.replaceState(history.state, "", `/designers/${activeSlug}/${window.location.search}`);
   }, [activeSlug]);
 
   if (!d) {
@@ -244,24 +260,27 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
         <div
           aria-hidden
           className="absolute bg-fg"
-          style={{ left: size.railX, top: `calc(50% - ${MARKER / 2}px)`, width: MARKER, height: MARKER }}
+          style={{
+            left: "var(--spacing-margin)",
+            top: `calc(${markerTop} - ${MARKER / 2}px)`,
+            width: MARKER,
+            height: MARKER,
+          }}
         />
-        <motion.ul
-          className="absolute inset-y-0 left-0 w-[102px] list-none"
-          initial={false}
-          animate={{ y: -active * size.pitch }}
-          transition={{ duration: reduceMotion ? 0 : 0.32, ease: [0.22, 1, 0.36, 1] }}
+        <ul
+          className="absolute inset-y-0 left-0 w-[calc(var(--spacing-margin)+110px)] list-none transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
+          style={{ transform: `translateY(${-active * size.pitch}px)` }}
         >
           {designers.map((o, i) => (
             <li
               key={o.slug}
               className="absolute transition-transform duration-300 ease-out"
               style={{
-                left: size.railX,
-                top: `calc(50% - ${size.itemH / 2}px + ${i * size.pitch}px)`,
+                left: "var(--spacing-margin)",
+                top: `calc(${markerTop} - ${size.itemH / 2}px + ${i * size.pitch}px)`,
                 width: size.itemW,
                 height: size.itemH,
-                transform: i === active ? `translateX(${MARKER + markerGap}px)` : undefined,
+                transform: i === active ? `translateX(${MARKER + MARKER_GAP}px)` : undefined,
               }}
             >
               <button
@@ -274,14 +293,14 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
                 <Image
                   src={asset(o.profileMono ?? o.profile)}
                   alt=""
-                  width={DESKTOP.itemW}
-                  height={DESKTOP.itemH}
+                  width={DESKTOP.itemW * 2}
+                  height={DESKTOP.itemH * 2}
                   className="size-full object-cover grayscale"
                 />
               </button>
             </li>
           ))}
-        </motion.ul>
+        </ul>
 
         {/* 우측 정보 — 좌측 리스트는 흑백, 이 프로필 사진만 컬러 (화면설명 1837:11750) */}
         <motion.div
@@ -289,7 +308,7 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
           animate={{ opacity: 1 }}
           transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="absolute top-12 left-[calc(56.25%+16px)] flex w-[calc(18.75%-22px)] flex-col gap-10 py-8">
+          <div className="absolute top-12 right-[calc(var(--spacing-margin)+462px)] flex w-[338px] flex-col gap-10 py-8">
             <div className="flex flex-col gap-[2px]">
               <p className="font-kr text-kr-body-lg">{d.nameKo}</p>
               <p className="text-body-lg text-fg-secondary">{d.nameEn}</p>
@@ -337,13 +356,14 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
             </div>
           </div>
 
-          {/* Figma: 1920px에서 338×452, 오른쪽 24px, 접힌 헤더 아래 48px. */}
-          <div className="absolute top-12 right-margin aspect-[338/452] w-[calc(18.75%-22px)] overflow-hidden">
+          {/* Figma: 338×452, 오른쪽 24, 접힌 헤더 아래 48 — 검색창(298)보다 40 넓고 오른쪽 끝이 맞는다 */}
+          <div className="absolute top-12 right-margin h-[452px] w-[338px] overflow-hidden">
             <Image
               src={asset(d.profile)}
               alt={`${d.nameKo} 프로필 사진`}
-              width={338}
-              height={452}
+              width={676}
+              height={904}
+              priority
               className="size-full object-cover"
             />
           </div>

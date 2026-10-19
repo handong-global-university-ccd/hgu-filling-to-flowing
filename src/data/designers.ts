@@ -1,5 +1,6 @@
 import type { Designer } from "./types";
 import media from "./media-manifest.json" with { type: "json" };
+import { WORKS } from "./works";
 
 // 명단: '2026 졸업전시 웹사이트 정보 취합' 시트(디자이너 정보·시각·제품 탭) 기준.
 // TODO: nameEn 은 시트에 영문명이 들어온 사람 외엔 로마자 자동 표기(임시). 시트 작성되면 교체
@@ -708,9 +709,13 @@ const RAW_DESIGNERS: Designer[] = [
  * media-manifest.json 은 `npm run pull:drive` 가 public/media 를 훑어 다시 쓴다 — 손으로 고치지 말 것.
  */
 const MEDIA_DESIGNERS = (media as { designers: Record<string, string> }).designers;
+// 작품 데이터에 참여자로 올라 있으면 workSlugs 에도 넣는다 (개인 작품은 works.ts 에서 명단으로 만든다)
 export const DESIGNERS: Designer[] = RAW_DESIGNERS.map((x) => ({
   ...x,
   profile: MEDIA_DESIGNERS[x.slug] ?? x.profile,
+  workSlugs: [
+    ...new Set([...x.workSlugs, ...WORKS.filter((w) => w.designerSlugs.includes(x.slug)).map((w) => w.slug)]),
+  ],
 }));
 
 /** Designers 목록: 이름 가나다순 */
