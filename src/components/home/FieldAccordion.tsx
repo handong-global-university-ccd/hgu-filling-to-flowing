@@ -16,21 +16,21 @@ const EASE = [0.22, 1, 0.36, 1] as const;
  * 펼칠 때는 천천히, 접을 때는 조금 빠르게 (초).
  * 펼침은 처음부터 확 벌어지지 않도록 가속·감속이 고른 커브를 쓴다.
  */
-const OPEN_DURATION = 1.2;
-const CLOSE_DURATION = 0.7;
+const OPEN_DURATION = 0.8;
+const CLOSE_DURATION = 0.45;
 const OPEN_EASE = [0.4, 0, 0.2, 1] as const;
 
 /**
  * 패널이 들어오고 나가는 모션 (레퍼런스: rbp-agency-template 의 Services 목록 호버).
  * - 커서가 들어온 가장자리(위/아래)에서 판이 밀려 들어오고, 안쪽 내용은 반대로 같은 거리만큼 움직여
  *   제자리에 서 있는 것처럼 보인다 → 판의 경계가 먼저 훑고 지나가며 내용이 드러난다
- * - 분야명·소개 문구는 홈 전시 소개처럼 줄마다 아래에서 천천히 올라온다 (RevealLines 와 같은 값)
+ * - 분야명·소개 문구는 한 줄씩 차례로 아래에서 올라온다 (분야명 → 소개 첫 줄 → 다음 줄)
  * - 나갈 때는 커서가 빠져나간 쪽으로 판이 빠진다
- * 레퍼런스(0.6s)보다 천천히 — 0.9s expo.out
+ * 레퍼런스 값: 0.6s expo.out
  */
 type Edge = "top" | "bottom";
 const SHEET_EASE = [0.16, 1, 0.3, 1] as const; // GSAP expo.out
-const SHEET_DURATION = 0.9;
+const SHEET_DURATION = 0.6;
 const off = (edge: Edge, flip = false) => ((edge === "top") !== flip ? "-101%" : "101%");
 
 const sheetVariants: Variants = {
@@ -53,10 +53,10 @@ function nearestEdge(el: Element, clientY: number): Edge {
   return clientY - r.top < r.bottom - clientY ? "top" : "bottom";
 }
 
-/** RevealLines 와 같은 등장 — 1.4s power3.out, 줄 간격 0.12s */
+/** 줄 등장 — 한 줄씩 차례로 (앞 줄이 거의 다 올라온 뒤 다음 줄). power3.out */
 const RISE_EASE = [0.215, 0.61, 0.355, 1] as const;
-const RISE_DURATION = 1.4;
-const RISE_STAGGER = 0.12;
+const RISE_DURATION = 0.6;
+const RISE_STAGGER = 0.18;
 
 /**
  * 줄마다 overflow-hidden 마스크 안에서 110% 아래 → 제자리로 올라온다.
@@ -94,10 +94,8 @@ function RiseLines({
 
 /** 접힌 행 높이. 펼침 패널이 0 이 아니라 이 높이에서 시작해야 행이 순간적으로 줄어들지 않는다 */
 const ROW_H = 74;
-/** 펼친 패널의 썸네일 수 — 시안 그리드 8열 × 4줄(높이 496). 개인 작품까지 들어와 분야당 작품이 많아서 자른다 */
-const PANEL_MAX = 32;
 /** 행이 바뀐 직후 호버를 무시하는 시간 (ms) */
-const HOVER_LOCK_MS = 350;
+const HOVER_LOCK_MS = 250;
 
 /** 줄마다 흐르는 방향·속도를 다르게 (한 방향으로만 흐르면 단조로워서) */
 const MARQUEE = [
@@ -265,13 +263,13 @@ export default function FieldAccordion({ worksByField }: { worksByField: Record<
                           <RiseLines
                             lines={field.intro.split("\n").map((l) => l.trim())}
                             still={!!reduce}
-                            delay={0.15}
+                            delay={RISE_STAGGER}
                           />
                         </p>
                       </div>
 
                       <ul className="pointer-events-auto relative grid w-[calc(60.42%+24px)] shrink-0 grid-cols-8 content-start gap-4 py-[22px] pr-6 max-md:w-full max-md:grid-cols-2 max-md:gap-(--spacing-gutter) max-md:px-margin max-md:py-0">
-                        {works.slice(0, PANEL_MAX).map((w) => (
+                        {works.map((w) => (
                           <li key={w.slug}>
                             <Link
                               href={`/works/${w.slug}/`}
