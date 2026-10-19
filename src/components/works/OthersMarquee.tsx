@@ -6,12 +6,13 @@ import { useEffect, useRef, useState } from "react";
 import ArrowUpRight from "@/components/icons/ArrowUpRight";
 import { asset } from "@/lib/asset";
 import { pageZoom } from "@/lib/zoom";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { MOBILE_QUERY } from "@/lib/header";
 
 export type OtherItem = { slug: string; title: string; thumbnail: string };
 
-/** Figma Works 상세 Others (1807:14543~) — 352×222, 간격 0, 화면 전체 폭으로 흐른다 */
-const TILE_W = 352;
-const TILE_H = 222;
+/** Figma Works 상세 Others (1807:14543~) — 352×222, 간격 0, 화면 전체 폭으로 흐른다. 모바일(2563:7046)은 173×102 */
+const TILE = { desktop: { w: 352, h: 222 }, mobile: { w: 173, h: 102 } } as const;
 /** 썸네일 한 세트가 한 바퀴 도는 시간(초) */
 const LOOP_SECONDS = 60;
 /** 이만큼 넘게 끌면 드래그로 보고 링크 클릭을 막는다 */
@@ -35,6 +36,7 @@ const USER_SCROLL_IDLE = 150;
  */
 export default function OthersMarquee({ items }: { items: OtherItem[] }) {
   const scroller = useRef<HTMLDivElement>(null);
+  const { w: TILE_W, h: TILE_H } = TILE[useMediaQuery(MOBILE_QUERY) ? "mobile" : "desktop"];
   const setWidth = items.length * TILE_W;
   // 앞쪽 한 세트 + 화면 폭 + 뒤쪽 여유가 늘 채워지도록 복제 개수를 정한다
   const [copies, setCopies] = useState(4);

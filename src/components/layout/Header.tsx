@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
@@ -264,10 +264,7 @@ export default function Header({
       {mobileTitle ? (
         <>
           {/* 모바일 디자이너 상세 — ← (arrow-up-right 를 -135° 돌린 것) + 가운데 제목 */}
-          <Link href={mobileTitle.backHref} aria-label="목록으로" className="-ml-[3px] md:hidden">
-            <ArrowUpRight className="size-8 -rotate-135" />
-          </Link>
-          <p className="absolute left-1/2 -translate-x-1/2 text-h4 md:hidden">{mobileTitle.title}</p>
+          <BackLink href={mobileTitle.backHref} />
           <Link href="/" aria-label="홈으로" className="max-md:hidden">
             <Logo width={190} />
           </Link>
@@ -402,6 +399,15 @@ export default function Header({
     <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} inverse={inverse} pathname={pathname} />
   );
 
+  // 모바일 상세 (2563:7046 작품 · 2573:10650 디자이너): 로고·메뉴 없이 ← 하나만. 높이 46 (위 16 + 18 + 12)
+  if (isMobile && mobileTitle) {
+    return (
+      <header className={cn("fixed inset-x-0 top-0 z-50 h-[46px] px-margin pt-4", brand)}>
+        <BackLink href={mobileTitle.backHref} />
+      </header>
+    );
+  }
+
   if (!secondRow) {
     return (
       <>
@@ -458,5 +464,28 @@ export default function Header({
       </motion.header>
       {menu}
     </>
+  );
+}
+
+/**
+ * 모바일 상세의 ← (akar arrow-left 18). 목록에서 들어왔으면 브라우저 뒤로가기로 돌아가
+ * 고른 분야·스크롤 위치가 그대로 남게 하고, 주소로 바로 들어왔으면 목록 주소로 간다.
+ */
+function BackLink({ href }: { href: string }) {
+  const router = useRouter();
+  return (
+    <Link
+      href={href}
+      aria-label="목록으로"
+      className="block size-[18px] md:hidden"
+      onClick={(e) => {
+        if (document.referrer.startsWith(window.location.origin) && window.history.length > 1) {
+          e.preventDefault();
+          router.back();
+        }
+      }}
+    >
+      <ArrowUpRight className="size-[18px] -rotate-135" />
+    </Link>
   );
 }

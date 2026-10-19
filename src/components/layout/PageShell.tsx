@@ -46,7 +46,7 @@ export default function PageShell({
   /** 둘째 줄이 없는 단순 헤더의 높이(px) */
   headerHeight?: number;
   fullscreen?: boolean;
-  /** 모바일 헤더를 ← + 제목으로 (Header 의 mobileTitle). compact 와 같이 쓰면 모바일은 펼친 높이(100)로 시작한다 */
+  /** 모바일 헤더를 ← 하나로 (Header 의 mobileTitle) — 높이 46. title 은 지금 시안에서는 보이지 않는다 */
   mobileTitle?: { title: string; backHref: string };
   className?: string;
 }) {
@@ -85,6 +85,8 @@ export default function PageShell({
                 : overlayHeader
                   ? "pt-0"
                   : "pt-16 md:pt-(--header-h)"),
+          // 모바일 상세는 ← 만 있는 46px 헤더 (Header 의 mobileTitle)
+          padTop && mobileTitle && "max-md:pt-[46px]",
           className,
         )}
         style={
