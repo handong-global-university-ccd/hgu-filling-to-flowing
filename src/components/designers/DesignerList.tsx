@@ -26,8 +26,8 @@ const PROFILE = { left: 119, top: -8, w: 102, h: 136 };
 const THUMBS = { left: 944, w: 280, h: 165, gap: 16 };
 
 /**
- * 모바일 (2403:3553 디폴트 / 2491:3260 활성): 이름만 보이고 분야·대표 썸네일은 숨긴다.
- * 활성 행의 프로필 사진은 오른쪽 끝에 111×148 (행보다 13 위). 위 상수는 데스크톱 전용이라 md: 클래스로만 쓴다.
+ * 모바일 (2573:10604): 헤더 아래 17 부터 이름만 14/20 Regular, 사이 16. 분야·대표 썸네일·Name 머리글은 숨긴다.
+ * 활성 행의 프로필 사진은 오른쪽 끝에 111×148 (행 위쪽에 맞춤). 위 상수는 데스크톱 전용이라 md: 클래스로만 쓴다.
  *
  * Figma 디자이너 리스트 (1807:15014 디폴트 / 1893:2000 hover) — 이름·분야 모두 Medium(500) 14/20
  *
@@ -107,9 +107,9 @@ export default function DesignerList({ designers }: { designers: DesignerRow[] }
 
   return (
     // 대표 썸네일 3장은 1920 기준 위치라 그보다 좁은 화면에선 오른쪽으로 넘친다 — 가로 스크롤이 생기지 않게 자른다
-    <div className="overflow-x-clip px-margin pt-[81px] pb-75 max-md:pt-[13px]">
-      <div className="flex flex-col gap-6 max-md:gap-[11px]">
-        <div className="flex text-body-sm text-neutral-300 opacity-[0.88] max-md:gap-3">
+    <div className="overflow-x-clip px-margin pt-[81px] pb-75 max-md:pt-[17px] max-md:pb-[86px]">
+      <div className="flex flex-col gap-6">
+        <div className="flex text-body-sm text-neutral-300 opacity-[0.88] max-md:hidden">
           <span className="w-20 shrink-0 md:w-[102px]">Name</span>
           <span className="max-md:hidden md:ml-[488px]">Disciplines</span>
         </div>
@@ -136,7 +136,9 @@ export default function DesignerList({ designers }: { designers: DesignerRow[] }
                 >
                   <span className="flex w-20 shrink-0 items-center gap-2 md:w-[102px]">
                     {on && <span aria-hidden className="size-1.5 shrink-0 bg-current" />}
-                    <span className="font-kr text-kr-label font-medium whitespace-nowrap">{d.nameKo}</span>
+                    <span className="font-kr text-kr-label font-medium whitespace-nowrap max-md:font-normal">
+                      {d.nameKo}
+                    </span>
                   </span>
                   <span className="w-[338px] shrink-0 text-label font-medium max-md:hidden">
                     {d.disciplines}
@@ -158,7 +160,7 @@ export default function DesignerList({ designers }: { designers: DesignerRow[] }
                         alt=""
                         width={PROFILE.w}
                         height={PROFILE.h}
-                        className="absolute top-[-13px] right-0 h-[148px] w-[111px] max-w-none object-cover md:top-(--top) md:right-auto md:left-(--left) md:h-(--h) md:w-(--w)"
+                        className="absolute top-0 right-0 h-[148px] w-[111px] max-w-none object-cover md:top-(--top) md:right-auto md:left-(--left) md:h-(--h) md:w-(--w)"
                         style={
                           {
                             "--left": `${PROFILE.left}px`,
@@ -172,9 +174,9 @@ export default function DesignerList({ designers }: { designers: DesignerRow[] }
                         className="absolute top-0 flex max-md:hidden"
                         style={{ left: THUMBS.left, gap: THUMBS.gap }}
                       >
-                        {d.thumbnails.map((src) => (
+                        {d.thumbnails.map((src, i) => (
                           <Image
-                            key={src}
+                            key={`${i}-${src}`}
                             src={asset(src)}
                             alt=""
                             width={THUMBS.w}
