@@ -102,8 +102,8 @@ export default function HomePage() {
           <div className="mt-[calc(194*var(--u))] max-md:mt-20">
             <FieldAccordion worksByField={worksByField} />
           </div>
-          {/* 아코디언과 푸터 사이 300px */}
-          <div className="h-[calc(300*var(--u))] max-md:h-40" />
+          {/* 아코디언과 푸터 사이 300px — 모든 페이지 공통 (본문 끝 → 푸터 300) */}
+          <div className="h-75 max-md:h-40" />
         </PageShell>
       </div>
       <script dangerouslySetInnerHTML={{ __html: INTRO_SKIP_SCRIPT }} />

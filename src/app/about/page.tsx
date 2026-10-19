@@ -85,7 +85,7 @@ export default function AboutPage() {
 
   return (
     <PageShell hideOnScroll headerHeight={84}>
-      <div className="grid gap-y-16 pt-[118px] pb-90 max-md:gap-y-10 max-md:pt-3 lg:grid-cols-[43.75%_1fr]">
+      <div className="grid gap-y-16 pt-[118px] pb-75 max-md:gap-y-10 max-md:pt-3 lg:grid-cols-[43.75%_1fr]">
         {/* ───── 좌측: 전시 개요 ───── */}
         <div className="px-margin lg:pr-0">
           <div className="max-w-[529px]">

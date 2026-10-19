@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: PageProps<"/works/[slug]">): 
  * - 좌측: 작품 사진(338×225, 개인 작품은 디자이너 프로필 338×224) → 타이틀·부제 → 설명 → 크레딧
  * - 좌측 안쪽 간격: 정보 묶음 24 / 제목·설명 20 / 크레딧은 890 높이 열의 맨 아래
  * - 작업물 아래 110 띄우고 Others, 제목 아래 16 에 352×222 썸네일 루프
- * - 마지막 콘텐츠와 푸터 사이 360
+ * - 마지막 콘텐츠와 푸터 사이 300 (모든 페이지 공통)
  */
 export default async function WorkDetailPage({ params }: PageProps<"/works/[slug]">) {
   const { slug } = await params;
@@ -119,12 +119,12 @@ export default async function WorkDetailPage({ params }: PageProps<"/works/[slug
       </article>
 
       {others.length > 0 && (
-        <section className="pb-90" aria-label="같은 분야의 다른 작품">
+        <section className="pb-75" aria-label="같은 분야의 다른 작품">
           <h2 className="mt-[110px] mb-4 px-margin text-body-xl max-md:mt-16">Others</h2>
           <OthersMarquee items={others} />
         </section>
       )}
-      {others.length === 0 && <div className="h-90" />}
+      {others.length === 0 && <div className="h-75" />}
     </PageShell>
   );
 }

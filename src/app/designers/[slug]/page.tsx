@@ -52,7 +52,7 @@ export default async function DesignerDetailPage({ params }: PageProps<"/designe
     <WorksFilterProvider>
       <PageShell filters compact mobileTitle={{ title: "Designers", backHref: "/designers/" }}>
         <DesignerProfile designers={designers} initialIndex={initialIndex} />
-        <div className="h-90" />
+        <div className="h-75" />
       </PageShell>
     </WorksFilterProvider>
   );

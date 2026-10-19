@@ -66,7 +66,7 @@ export default function WorksBrowser({ items }: { items: Item[] }) {
         }));
 
   return (
-    <div className="pb-90 max-lg:px-margin lg:page-grid lg:pt-[49px]">
+    <div className="pb-75 max-lg:px-margin lg:page-grid lg:pt-[49px]">
       {/* 왼쪽 칸 — 모바일은 위쪽에 가로로 */}
       <nav
         aria-label={field === "all" ? "분야" : "전시"}

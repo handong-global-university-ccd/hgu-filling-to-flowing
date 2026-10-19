@@ -107,7 +107,7 @@ export default function DesignerList({ designers }: { designers: DesignerRow[] }
 
   return (
     // 대표 썸네일 3장은 1920 기준 위치라 그보다 좁은 화면에선 오른쪽으로 넘친다 — 가로 스크롤이 생기지 않게 자른다
-    <div className="overflow-x-clip px-margin pt-[81px] pb-90 max-md:pt-[13px]">
+    <div className="overflow-x-clip px-margin pt-[81px] pb-75 max-md:pt-[13px]">
       <div className="flex flex-col gap-6 max-md:gap-[11px]">
         <div className="flex text-body-sm text-neutral-300 opacity-[0.88] max-md:gap-3">
           <span className="w-20 shrink-0 md:w-[102px]">Name</span>
