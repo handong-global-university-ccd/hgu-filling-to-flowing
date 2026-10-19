@@ -54,12 +54,12 @@ export default function HomePage() {
       <div className="relative z-10">
         <PageShell inverse overlayHeader>
           {/* ───── 모바일 (2624:5445) ─────
-              시안 y 에서 상태 표시줄 54 를 뺀 값. 세로 키비주얼 430×686 이 위로 63 넘쳐 있고 아래 52 는 검정으로 흐려진다
-              로고 327 (left 16, top 28) · 크레딧 16/22 (left 21, top 155) · 날짜 18/25.6 (232/454, 313/477)
-              소개 12/20 가운데 정렬 폭 352 (top 667, 말씀과 본문 사이 44) · 분야 목록 top 1011 · 푸터까지 86 */}
+              시안 y 에서 상태 표시줄 62 를 뺀 값. 세로 키비주얼 430×686 이 위로 71 넘쳐 있고 아래 52 는 검정으로 흐려진다
+              로고 327 (left 16, top 20) · 크레딧 16/22 (left 21, top 147) · 날짜 18/25.6 (232/446, 313/469)
+              소개 12/20 가운데 정렬 폭 352 (top 659, 말씀과 본문 사이 44) · 분야 목록 top 1003 · 푸터까지 86 */}
           <section className="relative md:hidden">
-            <div className="relative h-[624px] overflow-hidden">
-              <div className="absolute top-[-63px] left-1/2 h-[686px] w-[430px] -translate-x-1/2">
+            <div className="relative h-[615px] overflow-hidden">
+              <div className="absolute top-[-71px] left-1/2 h-[686px] w-[430px] -translate-x-1/2">
                 <Image
                   src={asset(HOME_MOBILE.hero)}
                   alt=""
@@ -72,24 +72,24 @@ export default function HomePage() {
               <div className="absolute inset-x-0 bottom-0 h-[53px] bg-linear-to-b from-transparent to-bg-inverse" />
             </div>
 
-            <h1 className="absolute top-[28px] left-4 w-[327px]">
+            <h1 className="absolute top-5 left-4 w-[327px]">
               <HomeTitle />
             </h1>
-            <p className="absolute top-[155px] left-[21px] text-[16px] leading-[22px] font-medium">
+            <p className="absolute top-[147px] left-[21px] text-[16px] leading-[22px] font-medium">
               {HOME_MOBILE.credit.map((line) => (
                 <span key={line} className="block">
                   {line}
                 </span>
               ))}
             </p>
-            <p className="absolute top-[454px] left-[232px] text-[18px] leading-[25.6px] font-medium">
+            <p className="absolute top-[446px] left-[232px] text-[18px] leading-[25.6px] font-medium">
               {HOME_MOBILE.date[0]}
             </p>
-            <p className="absolute top-[477px] left-[calc(313/390*100%)] text-[18px] leading-[25.6px] font-medium">
+            <p className="absolute top-[469px] left-[calc(313/390*100%)] text-[18px] leading-[25.6px] font-medium">
               {HOME_MOBILE.date[1]}
             </p>
 
-            <div className="mx-auto mt-[43px] flex w-[352px] max-w-[calc(100%-32px)] flex-col gap-11 text-center font-kr text-[12px] leading-[20px]">
+            <div className="mx-auto mt-[44px] flex w-[352px] max-w-[calc(100%-32px)] flex-col gap-11 text-center font-kr text-[12px] leading-[20px]">
               <RevealLines lines={HOME_MOBILE.verse} />
               <RevealLines lines={HOME_MOBILE.intro} delay={0.15} />
             </div>
