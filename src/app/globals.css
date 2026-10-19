@@ -153,11 +153,6 @@
     }
   }
 
-  /* 이번 세션에 인트로를 이미 지나쳤으면 숨긴다 (lib/intro.ts) */
-  html.intro-seen [data-intro] {
-    display: none;
-  }
-
   :focus-visible {
     outline: 2px solid var(--color-brand);
     outline-offset: 2px;

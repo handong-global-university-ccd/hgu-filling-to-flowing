@@ -17,7 +17,7 @@ const EASE = [0.22, 1, 0.36, 1] as const;
  *   (GSAP Layered pinning 과 같은 효과 — 인트로를 CSS sticky 로 top 에 붙여 두고 홈이 그 위로 지나간다.
  *    GSAP pin 은 화면 px 로 높이를 고정해서 노트북 폭 zoom(lib/zoom.ts) 에서 인트로가 짧아진다)
  *   홈 쪽 레이어는 page.tsx 에서 relative z-10 + 배경색으로 감싼다
- * - 인트로를 다 덮고 지나가면 이번 세션에는 다시 보여주지 않는다 (INTRO_SEEN_SCRIPT)
+ * - 인트로를 다 덮고 지나가면 이번 세션에는 홈을 인트로 아래에서 시작한다. 위로 스크롤하면 인트로가 다시 보인다 (lib/intro.ts)
  */
 export default function Intro() {
   const ref = useRef<HTMLElement>(null);
@@ -34,6 +34,8 @@ export default function Intro() {
           try {
             sessionStorage.setItem(INTRO_SEEN_KEY, "1");
           } catch {}
+          // 같은 세션에서 다른 페이지에 갔다가 홈으로 돌아와도 인트로 아래에서 시작하게
+          document.documentElement.classList.add("intro-seen");
         },
       });
     },

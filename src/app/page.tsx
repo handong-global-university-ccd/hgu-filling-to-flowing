@@ -9,7 +9,7 @@ import { FIELDS, type FieldKey, type Work } from "@/data/types";
 import { getWorks } from "@/data/works";
 import { HOME_HERO, HOME_INTRO, HOME_TAGLINE, HOME_TITLE, HOME_VERSE } from "@/data/home";
 import { asset } from "@/lib/asset";
-import { INTRO_SEEN_SCRIPT } from "@/lib/intro";
+import { INTRO_SEEN_SCRIPT, INTRO_SKIP_SCRIPT } from "@/lib/intro";
 
 /** 시안 줄바꿈 — 데스크톱에서만 지킨다. 모바일은 폭이 좁아 자연스럽게 흐르게 둔다 */
 function Lines({ lines }: { lines: readonly string[] }) {
@@ -40,7 +40,7 @@ function Lines({ lines }: { lines: readonly string[] }) {
  * 헤더는 시안에 없다 — 본문 위에 숨어 있다가 커서를 화면 위쪽으로 올리면 내려온다 (overlayHeader).
  *
  * 인터랙션
- * - 인트로 → 홈: 홈 전체가 레이어로 아래에서 올라와 고정된 인트로를 덮는다 (Intro 참고)
+ * - 인트로 → 홈: 홈 전체가 레이어로 아래에서 올라와 고정된 인트로를 덮는다. 다시 올리면 인트로가 보인다 (Intro 참고)
  * - 로고타입: 커서를 올리면 글자가 순서대로 굴러 바뀐다 (HomeTitle)
  * - 전시 소개: 줄마다 아래에서 천천히 올라온다 (RevealLines)
  */
@@ -94,6 +94,7 @@ export default function HomePage() {
           <div className="h-[calc(421*var(--u))] max-md:h-40" />
         </PageShell>
       </div>
+      <script dangerouslySetInnerHTML={{ __html: INTRO_SKIP_SCRIPT }} />
     </>
   );
 }
