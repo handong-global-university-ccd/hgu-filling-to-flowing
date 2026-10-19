@@ -7,11 +7,11 @@
 export const HOME_HERO = "/media/home/hero.jpg";
 
 /**
- * 로고타입 등장 — 글자 16개가 stagger 간격으로 촤르륵 (HomeTitle).
- * 말씀 두 줄은 마지막 글자가 출발하는 시점(VERSE_DELAY)부터 이어서 한 줄씩 올라온다 (page.tsx)
+ * 로고타입 등장 — 전시 소개(RevealLines)와 같은 값으로 한 줄씩: 1.4s power3.out, 줄 간격 0.12s.
+ * FILLING → TO FLOWING → 말씀 첫 줄 → 둘째 줄이 한 흐름으로 이어진다 (HomeTitle · page.tsx)
  */
-export const TITLE_REVEAL = { duration: 1, stagger: 0.03, letters: 16 } as const;
-export const VERSE_DELAY = (TITLE_REVEAL.letters - 1) * TITLE_REVEAL.stagger;
+export const TITLE_REVEAL = { duration: 1.4, stagger: 0.12, rows: 2 } as const;
+export const VERSE_DELAY = TITLE_REVEAL.rows * TITLE_REVEAL.stagger;
 
 /** 로고타입 아래 말씀 */
 export const HOME_VERSE = [

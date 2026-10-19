@@ -9,8 +9,8 @@ import { TITLE_REVEAL } from "@/data/home";
 const TRAVEL = 30;
 
 /**
- * 홈 로고타입 (Figma 2573:20767) — 화면에 들어오면 글자가 읽는 순서대로 아래에서 촤르륵 올라오고,
- * 아래 말씀 두 줄이 이어서 한 줄씩 올라온다 (page.tsx, RevealLines).
+ * 홈 로고타입 (Figma 2573:20767) — 화면에 들어오면 전시 소개(RevealLines)와 같은 모션으로 한 줄씩 아래에서 올라오고,
+ * 아래 말씀 두 줄이 이어서 같은 간격으로 올라온다 (page.tsx).
  *
  * 글자 묶음을 TRAVEL 만큼 내려 두면 줄 clipPath 밖이라 보이지 않는다 → 0 으로 올린다.
  * 모션 줄이기 설정이면 처음부터 보인다.
@@ -22,18 +22,20 @@ export default function HomeTitle({ className }: { className?: string }) {
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-      // 등장 — 읽는 순서대로 글자가 촤르륵 (글자 간격 0.03s). 말씀은 page.tsx 에서 이 뒤로 이어 붙인다 (TITLE_REVEAL)
-      gsap.fromTo(
-        gsap.utils.toArray<SVGGElement>("[data-letter]", svgRef.current),
-        { y: TRAVEL },
-        {
-          y: 0,
-          duration: TITLE_REVEAL.duration,
-          ease: "power3.out",
-          stagger: TITLE_REVEAL.stagger,
-          scrollTrigger: { trigger: svgRef.current, start: "top 85%", once: true },
-        },
-      );
+      // 등장 — 전시 소개처럼 줄 단위로 (FILLING → TO FLOWING). 말씀은 page.tsx 에서 이 뒤로 이어 붙인다
+      LOGO_ROWS.forEach((_, row) => {
+        gsap.fromTo(
+          gsap.utils.toArray<SVGGElement>(`[data-row="${row}"] [data-letter]`, svgRef.current),
+          { y: TRAVEL },
+          {
+            y: 0,
+            duration: TITLE_REVEAL.duration,
+            ease: "power3.out",
+            delay: row * TITLE_REVEAL.stagger,
+            scrollTrigger: { trigger: svgRef.current, start: "top 85%", once: true },
+          },
+        );
+      });
     },
     { scope: svgRef },
   );

@@ -27,7 +27,7 @@ import { INTRO_SEEN_SCRIPT, INTRO_SKIP_SCRIPT } from "@/lib/intro";
  *
  * 인터랙션
  * - 인트로 → 홈: 홈 전체가 레이어로 아래에서 올라와 고정된 인트로를 덮는다. 다시 올리면 인트로가 보인다 (Intro 참고)
- * - 로고타입 → 말씀: 화면에 들어오면 로고 글자가 순서대로 촤르륵 올라오고, 이어서 말씀이 한 줄씩 올라온다 (HomeTitle)
+ * - 로고타입 → 말씀: 전시 소개와 같은 모션으로 FILLING → TO FLOWING → 말씀 두 줄이 한 줄씩 올라온다 (HomeTitle)
  * - 전시 소개: 줄마다 아래에서 천천히 올라온다 (RevealLines)
  */
 export default function HomePage() {
@@ -53,7 +53,7 @@ export default function HomePage() {
               <HomeTitle />
             </h1>
 
-            {/* 로고 글자가 다 출발하면 이어서 한 줄씩 올라온다 */}
+            {/* 로고 두 줄 다음으로 이어서 한 줄씩 올라온다 */}
             <RevealLines
               lines={HOME_VERSE}
               delay={VERSE_DELAY}
