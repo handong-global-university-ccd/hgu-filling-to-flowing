@@ -111,9 +111,10 @@ function MobileMenu({
             </button>
           </div>
           <nav aria-label="주요 메뉴" className="mt-auto">
-            <ul className="flex flex-col gap-2 text-h2">
+            {/* Figma 목차 (2573:20747) — Medium 20/27, 간격 12, 왼쪽 25. 지금 페이지만 글자색 그대로·나머지 Neutral/500 */}
+            <ul className="flex flex-col gap-3 pl-[9px] text-[20px] leading-[27px] font-medium">
               <li>
-                <Link href="/" onClick={onClose} className={pathname === "/" ? "" : "opacity-50"}>
+                <Link href="/" onClick={onClose} className={pathname === "/" ? "" : "text-fg-tertiary"}>
                   Home
                 </Link>
               </li>
@@ -123,7 +124,7 @@ function MobileMenu({
                     href={item.href}
                     onClick={onClose}
                     aria-current={pathname.startsWith(item.href) ? "page" : undefined}
-                    className={pathname.startsWith(item.href) ? "" : "opacity-50"}
+                    className={pathname.startsWith(item.href) ? "" : "text-fg-tertiary"}
                   >
                     {item.label}
                   </Link>
