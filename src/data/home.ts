@@ -1,4 +1,4 @@
-/** Figma 홈 (2564:5091) 의 문구. 배열은 Figma 시안의 줄바꿈 그대로다 */
+/** Figma 홈 (2698:15669) 의 문구. 배열은 Figma 시안의 줄바꿈 그대로다 */
 
 /**
  * 상단 키비주얼 — 받은 원본(hero.jpg, 2223×564)을 다시 압축하지 않고 그대로 쓴다. R2 로 올린다.
@@ -6,11 +6,17 @@
  */
 export const HOME_HERO = "/media/home/hero.jpg";
 
-export const HOME_TAGLINE = ": 채우심으로 말미암아";
-
+/** 로고타입 아래 말씀 */
 export const HOME_VERSE = [
-  "그에게 하나님의 영을 채워주어,",
+  "채우심으로 말미암아 그에게 하나님의 영을 채워주어,",
   "지혜와 총명과 지식과 온갖 기술을 갖추게 하겠다. (출 31:3)",
+] as const;
+
+/** 왼쪽 아래 전시 정보 — 시안 문구 그대로 (SITE.period·place 와 표기가 다르다) */
+export const HOME_INFO = [
+  { label: "Date", value: "2026.11.04 - 11.08" },
+  { label: "Time", value: "09:00 AM - 07:00 PM" },
+  { label: "Venue", value: "한동대학교 제네시스랩" },
 ] as const;
 
 export const HOME_TITLE = "2026 한동대학교 | 콘텐츠융합디자인학부 졸업작품전";
