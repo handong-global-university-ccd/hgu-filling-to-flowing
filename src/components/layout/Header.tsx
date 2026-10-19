@@ -253,7 +253,7 @@ export default function Header({
       aria-expanded={searchOpen}
       className="relative md:hidden"
     >
-      <SearchIcon className="size-7" />
+      <SearchIcon className="size-4" />
       {/* 검색어가 걸려 있으면 작은 점으로 알려준다 */}
       {filter.q.trim() && <span aria-hidden className="absolute top-0 right-0 size-1.5 bg-current" />}
     </button>
@@ -277,7 +277,8 @@ export default function Header({
           <Logo width={190} className="max-md:!w-[109px]" />
         </Link>
       )}
-      <div className="flex items-center gap-4 md:hidden">
+      {/* 모바일 (2573:10142): 돋보기 16 · 간격 20 · Menu 12/22 */}
+      <div className="flex items-center gap-5 md:hidden">
         {searchButton}
         {/* 모바일: 내비 대신 메뉴 버튼 → 전체 화면 메뉴 */}
         {!mobileTitle && (
@@ -286,7 +287,7 @@ export default function Header({
             onClick={() => setMenuOpen(true)}
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
-            className="text-body-sm"
+            className="text-[12px] leading-[22px]"
           >
             Menu
           </button>
@@ -356,21 +357,20 @@ export default function Header({
           filter.field === t.key ? "text-fg" : "text-neutral-300 hover:text-fg-secondary",
         )}
       >
-        {t.label}
+        {/* 모바일 탭은 "Design" 을 뺀 짧은 이름 (2573:10142) */}
+        <span className="md:hidden">{t.label.replace(/ Design$/, "")}</span>
+        <span className="max-md:hidden">{t.label}</span>
       </button>
     );
     secondRow = (
       <div className="mt-auto flex flex-col md:flex-row md:items-center md:justify-between md:gap-6 md:px-1">
-        {/* 모바일 (2403:3553): All 은 첫 줄에 따로, 분야는 둘째 줄에서 가로로 밀어서 본다 */}
+        {/* 모바일 (2573:10142): All 과 분야를 한 줄에 12/26 — 넘치면 가로로 밀어서 본다 */}
         <div
           role="tablist"
           aria-label="분야"
-          className="flex flex-col gap-0.5 text-body md:flex-row md:flex-wrap md:gap-3"
+          className="-mx-margin flex [scrollbar-width:none] gap-3 overflow-x-auto px-margin text-[12px] leading-[26px] md:mx-0 md:flex-wrap md:overflow-visible md:px-0 md:text-body [&::-webkit-scrollbar]:hidden"
         >
-          {tabs.slice(0, 1).map(renderTab)}
-          <div className="-mx-margin flex [scrollbar-width:none] gap-3 overflow-x-auto px-margin md:contents [&::-webkit-scrollbar]:hidden">
-            {tabs.slice(1).map(renderTab)}
-          </div>
+          {tabs.map(renderTab)}
         </div>
         {/* 모바일은 돋보기 버튼으로 연다 */}
         <SearchField value={filter.q} onChange={filter.setQ} className="max-md:hidden" />
@@ -437,8 +437,8 @@ export default function Header({
         animate={{ height: expanded ? rowH.expanded : rowH.collapsed }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         className={cn(
-          "fixed inset-x-0 top-0 z-50 flex flex-col overflow-hidden px-margin py-6 max-md:pt-4",
-          showFilterRow ? "max-md:pb-1" : "max-md:pb-5",
+          "fixed inset-x-0 top-0 z-50 flex flex-col overflow-hidden px-margin py-6 max-md:pt-[15px]",
+          showFilterRow ? "max-md:pb-1.5" : "max-md:pb-5",
           brand,
         )}
       >

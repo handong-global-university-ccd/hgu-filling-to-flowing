@@ -46,7 +46,7 @@ export default function PageShell({
   /** 둘째 줄이 없는 단순 헤더의 높이(px) */
   headerHeight?: number;
   fullscreen?: boolean;
-  /** 모바일 헤더를 ← + 제목으로 (Header 의 mobileTitle). compact 와 같이 쓰면 모바일은 펼친 높이(141)로 시작한다 */
+  /** 모바일 헤더를 ← + 제목으로 (Header 의 mobileTitle). compact 와 같이 쓰면 모바일은 펼친 높이(100)로 시작한다 */
   mobileTitle?: { title: string; backHref: string };
   className?: string;
 }) {
@@ -78,10 +78,10 @@ export default function PageShell({
           padTop &&
             (tall
               ? filters
-                ? "pt-[141px] md:pt-[176px]"
+                ? "pt-[100px] md:pt-[176px]"
                 : "pt-[120px] md:pt-[176px]"
               : compact
-                ? "pt-[141px] md:pt-[74px]"
+                ? "pt-[100px] md:pt-[74px]"
                 : overlayHeader
                   ? "pt-0"
                   : "pt-16 md:pt-(--header-h)"),

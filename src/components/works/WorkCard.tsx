@@ -51,9 +51,15 @@ export default function WorkCard({ work, designerName }: { work: Work; designerN
           className="absolute inset-0 bg-bg-inverse/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100"
         />
       </div>
-      <div className="mt-4 flex flex-col gap-0.5 font-kr max-md:mt-2">
-        <p className="text-kr-body-lg max-md:text-kr-body">{work.cardTitle ?? work.title}</p>
-        <p className="text-kr-body-sm">{designerName}</p>
+      {/* 모바일 (2573:10142): 아래 8, 제목 12/18 Neutral/700 · 4 · 팀 이름(개인은 디자이너) 11/17 Neutral/500 */}
+      <div className="mt-4 flex flex-col gap-0.5 font-kr max-md:mt-2 max-md:gap-1">
+        <p className="text-kr-body-lg max-md:text-[12px] max-md:leading-[18px] max-md:text-fg-secondary">
+          {work.cardTitle ?? work.title}
+        </p>
+        <p className="text-kr-body-sm max-md:hidden">{designerName}</p>
+        <p className="text-[11px] leading-[17px] text-fg-tertiary md:hidden">
+          {work.teamName ?? designerName}
+        </p>
       </div>
     </Link>
   );

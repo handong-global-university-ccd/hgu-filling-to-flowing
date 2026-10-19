@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import WorkCard from "./WorkCard";
 import { useWorksFilter } from "./works-filter";
@@ -66,13 +66,16 @@ export default function WorksBrowser({ items }: { items: Item[] }) {
         }));
 
   return (
-    <div className="pb-75 max-lg:px-margin lg:page-grid lg:pt-[49px]">
-      {/* 왼쪽 칸 — 모바일은 위쪽에 가로로 */}
+    <div className="pb-75 max-lg:px-margin max-lg:pb-[86px] lg:page-grid lg:pt-[49px]">
+      {/* 왼쪽 칸 — 모바일(2573:9729)은 헤더 아래 6 에 세로 목록 12/18, 사이 4. All 에서는 숨긴다 (분야 탭이 헤더에 있다) */}
       <nav
         aria-label={field === "all" ? "분야" : "전시"}
-        className="self-start max-lg:pt-4 lg:sticky lg:top-[122px] lg:col-span-3 lg:pl-1"
+        className={cn(
+          "self-start max-lg:pt-1.5 lg:sticky lg:top-[122px] lg:col-span-3 lg:pl-1",
+          field === "all" && "max-lg:hidden",
+        )}
       >
-        <ul className="flex text-body max-lg:flex-wrap max-lg:gap-x-4 lg:flex-col">
+        <ul className="flex flex-col text-body max-lg:gap-1 max-lg:font-kr max-lg:text-[12px] max-lg:leading-[18px]">
           {nav.map((n) => (
             <li key={n.key}>
               <button
@@ -80,7 +83,7 @@ export default function WorksBrowser({ items }: { items: Item[] }) {
                 onClick={n.select}
                 aria-current={n.active ? "true" : undefined}
                 className={cn(
-                  "flex items-center gap-[11px] text-left transition-colors",
+                  "flex items-center gap-[11px] text-left transition-colors max-lg:gap-2",
                   n.active ? "text-fg" : "text-neutral-300 hover:text-fg-secondary",
                 )}
               >
@@ -97,23 +100,30 @@ export default function WorksBrowser({ items }: { items: Item[] }) {
         initial={reduce ? false : { opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="max-lg:mt-8 lg:col-span-9"
+        className={cn("lg:col-span-9", project ? "max-lg:mt-7" : "max-lg:mt-[11px]")}
       >
         {project && (
-          <header className="mb-12 font-kr text-fg-secondary">
-            {project.title && <h1 className="text-body-lg">{project.title}</h1>}
-            <p className="mt-1 text-kr-body leading-[1.7]">지도교수 | {project.advisor}</p>
+          <header className="mb-12 font-kr text-fg-secondary max-lg:mb-2">
+            {project.title && (
+              <h1 className="text-body-lg max-lg:text-[14px] max-lg:leading-[22px]">{project.title}</h1>
+            )}
+            <p className="mt-1 text-kr-body leading-[1.7] max-lg:hidden">지도교수 | {project.advisor}</p>
+            {/* 모바일은 "지도교수: 이름" 10/16 */}
+            <p className="mt-1 text-[10px] leading-4 lg:hidden">지도교수: {project.advisor}</p>
             {project.intro.length > 0 && (
-              <div className="mt-6 flex max-w-[1046px] flex-col gap-2 text-kr-body leading-[1.7] break-keep lg:whitespace-pre-line">
-                {project.intro.map((para) => (
-                  <p key={para.slice(0, 24)}>{para}</p>
-                ))}
-              </div>
+              <>
+                <div className="mt-6 flex max-w-[1046px] flex-col gap-2 text-kr-body leading-[1.7] break-keep max-lg:hidden lg:whitespace-pre-line">
+                  {project.intro.map((para) => (
+                    <p key={para.slice(0, 24)}>{para}</p>
+                  ))}
+                </div>
+                <MobileIntro key={project.key} paragraphs={project.intro} />
+              </>
             )}
           </header>
         )}
 
-        <ul className="grid grid-cols-2 gap-x-gutter gap-y-8 md:gap-y-16 lg:grid-cols-3">
+        <ul className="grid grid-cols-2 gap-x-gutter gap-y-8 max-lg:gap-3 md:gap-y-16 lg:grid-cols-3">
           {filtered.map(({ work, designerNames }) => (
             <li key={work.slug}>
               <WorkCard work={work} designerName={designerNames} />
@@ -126,6 +136,33 @@ export default function WorksBrowser({ items }: { items: Item[] }) {
           </p>
         )}
       </motion.div>
+    </div>
+  );
+}
+
+/**
+ * 모바일 전시 소개 (2573:9729 접힘 / 2573:9849 펼침) — 12/1.5, 위 16.
+ * 접힌 상태는 5줄까지, 오른쪽 아래 "더보기"(10px 밑줄). 누르면 전체 + 문단 사이 한 줄 띄움, "닫기"
+ */
+function MobileIntro({ paragraphs }: { paragraphs: string[] }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="mt-4 text-[12px] leading-[1.5] lg:hidden">
+      <div className={open ? "flex flex-col gap-[18px]" : "line-clamp-5"}>
+        {paragraphs.map((para) => (
+          <p key={para.slice(0, 24)} className={cn(!open && "inline")}>
+            {para.replace(/\n/g, " ")}{" "}
+          </p>
+        ))}
+      </div>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="mt-0.5 ml-auto block text-[10px] leading-[1.5] tracking-[0.02em] text-fg-tertiary underline"
+      >
+        {open ? "닫기" : "더보기"}
+      </button>
     </div>
   );
 }
