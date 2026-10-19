@@ -24,8 +24,8 @@ export default function FooterMarble() {
     // 푸터 아래·양옆으로 넘치는 부분은 잘라야 페이지 끝에 빈 스크롤 공간이 생기지 않는다.
     // clip-path 는 그림만 자르고 스크롤 영역은 그대로 남아서, 위로 200px 더 깔린 overflow 래퍼로 자른다
     // (물감이 위로 넘쳐 흐르는 bleedTop 120 은 이 안에 들어온다)
-    <div className="pointer-events-none absolute inset-x-0 -top-[200px] bottom-0 overflow-hidden md:[mask-image:linear-gradient(to_right,transparent_9vw,black_20vw)]">
-      <div className="absolute top-[300px] left-[-188px] w-[1000px] max-w-none [--w:max(calc(100vw*1922/1920),860px)] md:top-[calc(var(--w)*24/1922+200px)] md:left-[calc(var(--w)*24/1922)] md:w-(--w)">
+    <div className="pointer-events-none absolute inset-x-0 -top-[200px] bottom-0 overflow-hidden md:[mask-image:linear-gradient(to_right,transparent_calc(var(--vw)*0.09),black_calc(var(--vw)*0.2))]">
+      <div className="absolute top-[300px] left-[-188px] w-[1000px] max-w-none [--w:max(calc(var(--vw)*1922/1920),860px)] md:top-[calc(var(--w)*24/1922+200px)] md:left-[calc(var(--w)*24/1922)] md:w-(--w)">
         <MarbleFooter
           src="/brand/footer/marble-footer@2560.webp"
           alt=""

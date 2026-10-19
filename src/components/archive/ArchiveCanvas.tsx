@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { asset } from "@/lib/asset";
 import { GAP, GRID_X, GRID_Y, PLATE_H, PLATE_W, TILE_H, TILE_W } from "@/data/archive-layout";
+import { pageZoom } from "@/lib/zoom";
 
 export type Photo = { src: string; alt: string; col: number; row: number };
 
@@ -60,11 +61,13 @@ export default function ArchiveCanvas({ photos }: { photos: Photo[] }) {
       let slackX = 0;
       let slackY = 0;
       const measure = () => {
+        // 화면 좌표 → 페이지 px (노트북 폭 zoom, lib/zoom.ts)
+        const z = pageZoom();
         const r = vp.getBoundingClientRect();
-        left = r.left;
-        top = r.top;
-        width = r.width || 1;
-        height = r.height || 1;
+        left = r.left / z;
+        top = r.top / z;
+        width = r.width / z || 1;
+        height = r.height / z || 1;
         slackX = Math.max(0, PLATE_W - width);
         slackY = Math.max(0, PLATE_H - height);
         gsap.set(pl, { x: -slackX / 2, y: -slackY / 2 });
@@ -74,8 +77,9 @@ export default function ArchiveCanvas({ photos }: { photos: Photo[] }) {
       let py = -1e4;
 
       const onMove = (e: PointerEvent) => {
-        px = e.clientX;
-        py = e.clientY;
+        const z = pageZoom();
+        px = e.clientX / z;
+        py = e.clientY / z;
         // 커서가 헤더 위로 올라가도 판은 계속 따라온다 (양 끝까지 밀 수 있게)
         const nx = Math.min(0.5, Math.max(-0.5, (px - left) / width - 0.5));
         const ny = Math.min(0.5, Math.max(-0.5, (py - top) / height - 0.5));

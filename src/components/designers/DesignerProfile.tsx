@@ -9,6 +9,7 @@ import { useWorksFilter } from "@/components/works/works-filter";
 import type { FieldKey } from "@/data/types";
 import { asset } from "@/lib/asset";
 import { HEADER_H } from "@/lib/header";
+import { pageZoom } from "@/lib/zoom";
 import DesignerProfileMobile from "./DesignerProfileMobile";
 
 export type ProfileWork = { slug: string; title: string; thumbnail: string };
@@ -99,7 +100,7 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
   const size = DESKTOP;
   const header = size.header;
   // 레일 안에서 ■ 중심의 높이 — 스테이지는 접힌 헤더 아래에서 시작한다
-  const markerTop = `(${size.markerY * 100}svh - ${header}px)`;
+  const markerTop = `(${size.markerY} * var(--svh) - ${header}px)`;
   const d = designers[active];
   const last = designers.length - 1;
   const selected = useRef(initialIndex);
@@ -107,7 +108,7 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
     const element = stage.current;
     if (element) {
       window.scrollTo({
-        top: window.scrollY + element.getBoundingClientRect().top - header,
+        top: window.scrollY + element.getBoundingClientRect().top - header * pageZoom(),
         behavior: "instant",
       });
     }
@@ -224,7 +225,7 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
 
   if (!d) {
     return (
-      <section className="px-margin max-md:hidden" style={{ minHeight: `calc(100svh - ${header}px)` }}>
+      <section className="px-margin max-md:hidden" style={{ minHeight: `calc(var(--svh) - ${header}px)` }}>
         <p role="status" className="py-20 text-center text-fg-tertiary">
           검색 결과가 없습니다.
         </p>
@@ -237,7 +238,7 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
       <div
         ref={stage}
         className="relative overflow-hidden"
-        style={{ height: `calc(100svh - ${header}px)` }}
+        style={{ height: `calc(var(--svh) - ${header}px)` }}
         tabIndex={0}
         aria-label="디자이너 프로필. 위아래 방향키로 이전 또는 다음 프로필 보기"
         onKeyDown={(event) => {

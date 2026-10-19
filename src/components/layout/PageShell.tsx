@@ -55,7 +55,7 @@ export default function PageShell({
   return (
     <div
       className={cn(
-        fullscreen && "h-svh overflow-hidden",
+        fullscreen && "h-(--svh) overflow-hidden",
         inverse ? "bg-bg-inverse text-fg-inverse" : "bg-bg text-fg",
       )}
     >
@@ -72,7 +72,7 @@ export default function PageShell({
       <main
         id="main"
         className={cn(
-          fullscreen ? "flex h-svh flex-col" : "min-h-svh",
+          fullscreen ? "flex h-(--svh) flex-col" : "min-h-(--svh)",
           // 모바일 값은 lib/header.ts 의 HEADER_H.mobile 과 같아야 한다
           padTop &&
             (tall

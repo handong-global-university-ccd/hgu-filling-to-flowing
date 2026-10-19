@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useHasFinePointer } from "@/hooks/useMediaQuery";
+import { pageZoom } from "@/lib/zoom";
 
 /**
  * Figma 마우스 포인트 (1860:11931 화이트배경 / 1901:1376 블랙배경)
@@ -33,8 +34,10 @@ export default function CrosshairCursor() {
     let raf = 0;
 
     const onMove = (e: PointerEvent) => {
-      target.x = e.clientX;
-      target.y = e.clientY;
+      // 페이지에 zoom 이 걸려 있으면 화면 좌표를 zoom 으로 나눠야 커서 위치에 맞는다 (lib/zoom.ts)
+      const z = pageZoom();
+      target.x = e.clientX / z;
+      target.y = e.clientY / z;
       root.style.opacity = "1";
     };
     const onLeave = () => (root.style.opacity = "0");
@@ -77,4 +80,4 @@ export default function CrosshairCursor() {
       <div className="absolute top-0 left-0 size-1.5 translate-x-[calc(var(--x)-3px)] translate-y-[calc(var(--y)-3px)] bg-white" />
     </div>
   );
-} 
+}

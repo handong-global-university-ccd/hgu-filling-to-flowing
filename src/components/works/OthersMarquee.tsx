@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import ArrowUpRight from "@/components/icons/ArrowUpRight";
 import { asset } from "@/lib/asset";
+import { pageZoom } from "@/lib/zoom";
 
 export type OtherItem = { slug: string; title: string; thumbnail: string };
 
@@ -112,7 +113,8 @@ export default function OthersMarquee({ items }: { items: OtherItem[] }) {
     };
     const onMove = (event: PointerEvent) => {
       if (!drag || event.pointerId !== drag.id) return;
-      const dx = event.clientX - drag.startX;
+      // zoom 이 걸린 화면에서도 손가락·커서만큼 움직이게 화면 px → 페이지 px
+      const dx = (event.clientX - drag.startX) / pageZoom();
       if (!drag.moved && Math.abs(dx) > DRAG_THRESHOLD) {
         drag.moved = true;
         suppressClick.current = true;
