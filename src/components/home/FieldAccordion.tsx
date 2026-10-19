@@ -120,7 +120,7 @@ function fillLoop<T>(items: T[], min: number): T[] {
  * - 펼침: #333(Neutral/700) 패널 폭 1920, 글자 흰색. 좌측 위(24, 30)에 분야명 + 소개 문구(Pretendard 18/26, 시안 줄바꿈)
  *         우측(right 24, top 22)에 썸네일 그리드 8열 131×112, 간격 16 (폭 1160 = 화면 폭 60.42%)
  *         패널 높이는 썸네일 수에 맞춘다 — 썸네일 위아래 22 (고정 540 이면 작품이 적을 때 아래가 빈다)
- *         패널은 위 선 바로 아래에 붙고(검은 여백 없음), 아래는 16 · 흰 선 · 16
+ *         패널은 위아래 흰 선에 바로 붙는다 (검은 여백 없음)
  * - 클릭: 분야명·패널을 누르면 Works 의 그 분야로 간다 (/works/?field=…). 썸네일은 그 작품으로.
  *         터치 기기는 첫 탭에 펼치고, 펼친 패널을 누르면 이동한다
  */
@@ -188,10 +188,11 @@ export default function FieldAccordion({ worksByField }: { worksByField: Record<
             onPointerMove={(e) => e.pointerType === "mouse" && hoverTo(field.key, e)}
             onFocusCapture={() => active !== field.key && open(field.key)}
             /* 행 사이 흰색 구분선 — 선 위아래로 16px (선 1px 포함 106 간격).
-               펼친 패널은 선 바로 아래에 붙인다 (선과 패널 사이 검은 여백 없음). 패널 아래는 16 · 선 */
+               펼친 패널은 위아래 선에 바로 붙인다 (선과 패널 사이 검은 여백 없음) */
             className={cn(
-              "border-fg-inverse transition-[padding] duration-300",
-              i > 0 && "mt-4 border-t",
+              "border-fg-inverse transition-[padding,margin] duration-300",
+              i > 0 && "border-t",
+              i > 0 && active !== FIELDS[i - 1].key && "mt-4",
               i > 0 && !isOpen && "pt-[15px]",
             )}
           >
