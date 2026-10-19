@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import Image from "next/image";
 import Intro from "@/components/intro/Intro";
 import PageShell from "@/components/layout/PageShell";
@@ -7,24 +6,9 @@ import RevealLines from "@/components/home/RevealLines";
 import FieldAccordion from "@/components/home/FieldAccordion";
 import { FIELDS, type FieldKey, type Work } from "@/data/types";
 import { getWorks } from "@/data/works";
-import { HOME_HERO, HOME_INFO, HOME_INTRO, HOME_TITLE, HOME_VERSE } from "@/data/home";
+import { HOME_HERO, HOME_INFO, HOME_INTRO, HOME_TITLE, HOME_VERSE, VERSE_DELAY } from "@/data/home";
 import { asset } from "@/lib/asset";
 import { INTRO_SEEN_SCRIPT, INTRO_SKIP_SCRIPT } from "@/lib/intro";
-
-/** 시안 줄바꿈 — 데스크톱에서만 지킨다. 모바일은 폭이 좁아 자연스럽게 흐르게 둔다 */
-function Lines({ lines }: { lines: readonly string[] }) {
-  return lines.map((line, i) => (
-    <Fragment key={line}>
-      {i > 0 && (
-        <>
-          {" "}
-          <br className="max-md:hidden" />
-        </>
-      )}
-      {line}
-    </Fragment>
-  ));
-}
 
 /**
  * Figma 홈 (2698:15669 기본 / 2573:23209 · 23559 · 24156 분야 펼침) — 1920 기준, 배경 검정
@@ -43,7 +27,7 @@ function Lines({ lines }: { lines: readonly string[] }) {
  *
  * 인터랙션
  * - 인트로 → 홈: 홈 전체가 레이어로 아래에서 올라와 고정된 인트로를 덮는다. 다시 올리면 인트로가 보인다 (Intro 참고)
- * - 로고타입: 화면에 들어오면 줄마다 아래에서 올라오고, 커서를 올리면 글자가 순서대로 굴러 바뀐다 (HomeTitle)
+ * - 로고타입 → 말씀: 화면에 들어오면 로고 글자가 순서대로 촤르륵 올라오고, 이어서 말씀이 한 줄씩 올라온다 (HomeTitle)
  * - 전시 소개: 줄마다 아래에서 천천히 올라온다 (RevealLines)
  */
 export default function HomePage() {
@@ -69,9 +53,12 @@ export default function HomePage() {
               <HomeTitle />
             </h1>
 
-            <p className="mt-[calc(36*var(--u))] pl-px font-kr text-[calc(20*var(--u))] leading-[1.5] font-medium max-md:mt-6 max-md:text-[16px]">
-              <Lines lines={HOME_VERSE} />
-            </p>
+            {/* 로고 글자가 다 출발하면 이어서 한 줄씩 올라온다 */}
+            <RevealLines
+              lines={HOME_VERSE}
+              delay={VERSE_DELAY}
+              className="mt-[calc(36*var(--u))] pl-px font-kr text-[calc(20*var(--u))] leading-[1.5] font-medium max-md:mt-6 max-md:text-[16px]"
+            />
 
             <div className="mt-[calc(132*var(--u))] flex items-start justify-between gap-10 pl-px font-kr max-md:mt-16 max-md:flex-col max-md:gap-12">
               {/* 전시 정보 */}
