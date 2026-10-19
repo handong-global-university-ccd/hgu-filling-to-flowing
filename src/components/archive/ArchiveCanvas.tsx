@@ -6,6 +6,7 @@ import { gsap, useGSAP } from "@/lib/gsap";
 import { asset } from "@/lib/asset";
 import { GAP, GRID_X, GRID_Y, PLATE_H, PLATE_W, TILE_H, TILE_W } from "@/data/archive-layout";
 import { pageZoom } from "@/lib/zoom";
+import { HEADER_H, MOBILE_QUERY } from "@/lib/header";
 
 export type Photo = { src: string; alt: string; col: number; row: number };
 
@@ -60,6 +61,9 @@ export default function ArchiveCanvas({ photos }: { photos: Photo[] }) {
       let height = 1;
       let slackX = 0;
       let slackY = 0;
+      // 판 맨 위가 펼친 헤더 아래에서 끝나게 — 커서를 위로 올리면 헤더가 내려오므로,
+      // 그때 맨 윗줄 사진이 헤더에 가려지지 않도록 헤더 높이만큼 더 내려올 수 있게 한다
+      let inset = 0;
       const measure = () => {
         // 화면 좌표 → 페이지 px (노트북 폭 zoom, lib/zoom.ts)
         const z = pageZoom();
@@ -69,8 +73,11 @@ export default function ArchiveCanvas({ photos }: { photos: Photo[] }) {
         width = r.width / z || 1;
         height = r.height / z || 1;
         slackX = Math.max(0, PLATE_W - width);
-        slackY = Math.max(0, PLATE_H - height);
-        gsap.set(pl, { x: -slackX / 2, y: -slackY / 2 });
+        inset = window.matchMedia(MOBILE_QUERY).matches
+          ? HEADER_H.mobile.archive.expanded
+          : HEADER_H.desktop.expanded;
+        slackY = Math.max(0, PLATE_H - height) + inset;
+        gsap.set(pl, { x: -slackX / 2, y: inset - slackY / 2 });
       };
 
       let px = -1e4;
@@ -84,7 +91,7 @@ export default function ArchiveCanvas({ photos }: { photos: Photo[] }) {
         const nx = Math.min(0.5, Math.max(-0.5, (px - left) / width - 0.5));
         const ny = Math.min(0.5, Math.max(-0.5, (py - top) / height - 0.5));
         moveX(-slackX / 2 - nx * slackX);
-        moveY(-slackY / 2 - ny * slackY);
+        moveY(inset - slackY / 2 - ny * slackY);
       };
 
       // 확대는 매 프레임 다시 계산한다 — 판이 1.2초 동안 계속 미끄러지므로
