@@ -12,7 +12,7 @@ export const SITE = {
   },
   contact: {
     email: "CCD@handong.ac.kr",
-    instagram: "",
+    instagram: "https://www.instagram.com/hgu.exhibition_2026/",
     behance: "",
     /** Figma 푸터의 "CCD 홈페이지 예정" 링크 */
     ccd: "",

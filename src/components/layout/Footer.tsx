@@ -8,7 +8,8 @@ import FooterMarble from "@/components/footer/FooterMarble";
  *
  * - 메뉴      : left 25, top 21, 폭 143, Body/Medium(16/26), 줄간격 없음
  * - 외부 링크 : left 81.25%-2, top 21, 폭 163, Body/Medium — INSTAGRAM · BEHANCE · (빈 줄) · 메일
- * - 학교 로고 : left 25, 150×24 (CCD + 한동대학교). Black 은 흰색, White 는 Figma #3C3C3C → fg-secondary
+ * - 학교 로고 : 외부 링크와 같은 열(오른쪽), 아래 30, 150×24 (CCD + 한동대학교). Black 은 흰색, White 는 Figma #3C3C3C → fg-secondary
+ * - 링크 호버 : 글자 아래 밑줄 (페이지 이동·외부 링크 모두)
  * - 서브비주얼: 마블 인터랙션 — 푸터 아래로 잘려 나간다. 위치는 FooterMarble 참고
  *   위쪽은 물감이 넘쳐 흐를 수 있게 200px 열어 두고 양옆·아래만 자른다 (FooterMarble 의 overflow 래퍼)
  * 두 변형 모두 저작권 문구는 없다.
@@ -32,11 +33,15 @@ export default function Footer({ inverse = true }: { inverse?: boolean }) {
         aria-label="푸터 메뉴"
         className="absolute top-[21px] left-[25px] z-10 w-[143px] max-md:left-margin"
       >
-        <Link href="/" className="block hover:opacity-70">
+        <Link href="/" className="block w-fit underline-offset-4 hover:underline">
           HOME
         </Link>
         {NAV.map((item) => (
-          <Link key={item.href} href={item.href} className="block uppercase hover:opacity-70">
+          <Link
+            key={item.href}
+            href={item.href}
+            className="block w-fit uppercase underline-offset-4 hover:underline"
+          >
             {item.label}
           </Link>
         ))}
@@ -48,7 +53,12 @@ export default function Footer({ inverse = true }: { inverse?: boolean }) {
           <li key={l.label}>
             {/* 주소가 정해지기 전에는 글자만 둔다 */}
             {l.href ? (
-              <a href={l.href} target="_blank" rel="noreferrer" className="hover:opacity-70">
+              <a
+                href={l.href}
+                target="_blank"
+                rel="noreferrer"
+                className="underline-offset-4 hover:underline"
+              >
                 {l.label}
               </a>
             ) : (
@@ -57,7 +67,10 @@ export default function Footer({ inverse = true }: { inverse?: boolean }) {
           </li>
         ))}
         <li className="mt-[26px]">
-          <a href={`mailto:${SITE.contact.email}`} className="whitespace-nowrap hover:opacity-70">
+          <a
+            href={`mailto:${SITE.contact.email}`}
+            className="whitespace-nowrap underline-offset-4 hover:underline"
+          >
             {SITE.contact.email}
           </a>
         </li>
@@ -68,7 +81,8 @@ export default function Footer({ inverse = true }: { inverse?: boolean }) {
         role="img"
         aria-label="한동대학교 콘텐츠융합디자인학부"
         className={cn(
-          "absolute bottom-[30px] left-[25px] z-10 h-6 w-[151px] bg-current max-md:left-margin",
+          // Figma Footer=Black(2573:23106): 외부 링크 열과 같은 x(1561), 아래 30
+          "absolute bottom-[30px] left-[calc(81.25%-2px)] z-10 h-6 w-[151px] bg-current max-md:right-margin max-md:left-auto",
           "[mask:url(/brand/footer/ccd-hgu-logo.svg)_no-repeat_center/contain]",
           !inverse && "text-fg-secondary",
         )}
