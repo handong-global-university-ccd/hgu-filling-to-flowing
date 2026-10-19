@@ -1,38 +1,37 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { LOGO_LETTERS, LOGO_ROWS, LOGO_VIEWBOX } from "@/components/layout/Logo";
-import { useHasFinePointer } from "@/hooks/useMediaQuery";
 
 /** 글자가 위로 빠지고 같은 글자가 아래에서 올라오는 거리 (viewBox 단위, 줄 높이보다 조금 크게) */
 const TRAVEL = 30;
 
+/** 이만큼(ms) 스크롤이 멈췄다가 다시 시작하면 새 스크롤로 보고 한 번 더 굴린다 */
+const GESTURE_GAP = 200;
+
 /**
- * 홈 로고타입 (Figma 2573:20767) — 커서를 올리면 글자가 읽는 순서대로 하나씩
- * 위로 빠지고, 같은 글자가 아래에서 올라와 제자리를 채운다 (레퍼런스: rbp-agency-template 순차 호버).
+ * 홈 로고타입 (Figma 2573:20767) — 스크롤할 때 글자가 읽는 순서대로 하나씩 굴러 바뀐다
+ * (레퍼런스: rbp-agency-template 순차 모션).
+ * - 아래로 스크롤: 글자가 위로 빠지고 같은 글자가 아래에서 올라온다
+ * - 위로 스크롤  : 반대로 아래로 빠지고 위에서 내려온다
+ * 로고가 화면에 있을 때, 스크롤을 새로 시작할 때마다 한 번씩 굴린다 (굴러가는 중에는 겹쳐 걸지 않는다).
  *
- * 글자마다 원본 + 아래(TRAVEL)에 복제본을 두고 묶음을 -TRAVEL 만큼 올린 뒤 0 으로 되돌린다.
- * 복제본이 원본과 같아서 되돌릴 때 이음매가 보이지 않는다. 줄마다 clipPath 로 잘라 줄 밖으로는 안 보인다.
- * 마우스 기기 + 모션 줄이기 해제일 때만 움직인다.
+ * 글자마다 원본 + 아래(TRAVEL)에 복제본을 두고 묶음을 0 ↔ -TRAVEL 로 옮긴다.
+ * 복제본이 원본과 같아서 끝난 뒤 0 으로 되돌려도 이음매가 보이지 않는다. 줄마다 clipPath 로 잘라 줄 밖으로는 안 보인다.
  *
  * 등장: 홈 전시 소개(RevealLines)와 같은 인터랙션 — 화면에 들어오면 줄마다 글자가 아래에서 천천히 올라온다.
  * 글자 묶음을 TRAVEL 만큼 내려 두면 원본·복제본 모두 줄 clipPath 밖이라 보이지 않는다 → 0 으로 올린다.
- * 등장이 끝나기 전에는 호버 모션을 걸지 않는다.
+ * 등장이 끝나기 전에는 굴리지 않는다. 모션 줄이기 설정이면 둘 다 하지 않는다.
  */
 export default function HomeTitle({ className }: { className?: string }) {
   const svgRef = useRef<SVGSVGElement>(null);
-  const tl = useRef<gsap.core.Timeline | null>(null);
-  const finePointer = useHasFinePointer();
-  const revealed = useRef(false);
 
   useGSAP(
     () => {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        revealed.current = true;
-        return;
-      }
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       const letters = gsap.utils.toArray<SVGGElement>("[data-letter]", svgRef.current);
+      let revealed = false;
 
       // 등장 — RevealLines 와 같은 값 (1.4s power3.out, 줄 간격 0.12s)
       LOGO_ROWS.forEach((_, row) => {
@@ -46,25 +45,35 @@ export default function HomeTitle({ className }: { className?: string }) {
             delay: row * 0.12,
             scrollTrigger: { trigger: svgRef.current, start: "top 85%", once: true },
             onComplete: () => {
-              if (row === LOGO_ROWS.length - 1) revealed.current = true;
+              if (row === LOGO_ROWS.length - 1) revealed = true;
             },
           },
         );
       });
 
-      tl.current = gsap
+      const roll = { duration: 0.55, ease: "power3.inOut", stagger: 0.04 } as const;
+      const up = gsap
         .timeline({ paused: true })
-        .to(letters, { y: -TRAVEL, duration: 0.55, ease: "power3.inOut", stagger: 0.04 })
+        .fromTo(letters, { y: 0 }, { y: -TRAVEL, ...roll })
         .set(letters, { y: 0 });
+      const down = gsap.timeline({ paused: true }).fromTo(letters, { y: -TRAVEL }, { y: 0, ...roll });
+
+      let last = 0;
+      ScrollTrigger.create({
+        trigger: svgRef.current,
+        start: "top bottom",
+        end: "bottom top",
+        onUpdate: (self) => {
+          const now = performance.now();
+          const fresh = now - last > GESTURE_GAP;
+          last = now;
+          if (!revealed || !fresh || up.isActive() || down.isActive()) return;
+          (self.direction > 0 ? up : down).restart();
+        },
+      });
     },
     { scope: svgRef },
   );
-
-  const roll = (e: React.PointerEvent) => {
-    const t = tl.current;
-    if (!finePointer || e.pointerType !== "mouse" || !t || t.isActive() || !revealed.current) return;
-    t.restart();
-  };
 
   return (
     <svg
@@ -73,7 +82,6 @@ export default function HomeTitle({ className }: { className?: string }) {
       fill="currentColor"
       role="img"
       aria-label="Filling to Flowing"
-      onPointerEnter={roll}
       className={className}
       style={{ display: "block", width: "100%", height: "auto", overflow: "hidden" }}
     >
