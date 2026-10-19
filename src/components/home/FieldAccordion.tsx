@@ -119,7 +119,7 @@ function fillLoop<T>(items: T[], min: number): T[] {
  *         행 사이: 위 16 · 흰 1px 선 · 아래 16 (선 포함 행 간격 106 — 1px 선이라 아래는 15)
  * - 펼침: #333(Neutral/700) 패널 1920×540, 글자 흰색. 좌측 위(24, 30)에 분야명 + 소개 문구(Pretendard 18/26, 시안 줄바꿈)
  *         우측(right 24, top 22)에 썸네일 그리드 8열 131×112, 간격 16 (폭 1160 = 화면 폭 60.42%)
- *         패널 바로 아래에 흰 선, 그 아래 16 띄우고 다음 행
+ *         패널 위아래도 다른 행처럼 16 · 흰 선 · 16
  * - 클릭: 분야명·패널을 누르면 Works 의 그 분야로 간다 (/works/?field=…). 썸네일은 그 작품으로.
  *         터치 기기는 첫 탭에 펼치고, 펼친 패널을 누르면 이동한다
  */
@@ -186,12 +186,8 @@ export default function FieldAccordion({ worksByField }: { worksByField: Record<
             key={field.key}
             onPointerMove={(e) => e.pointerType === "mouse" && hoverTo(field.key, e)}
             onFocusCapture={() => active !== field.key && open(field.key)}
-            /* 행 사이 흰색 구분선 — 선 위아래로 16px (선 1px 포함 106 간격) */
-            /* 펼친 패널 바로 다음 행은 패널 아래에 바로 선, 그 아래 16 */
-            className={cn(
-              "border-fg-inverse",
-              i > 0 && (active === FIELDS[i - 1].key ? "border-t pt-[15px]" : "mt-4 border-t pt-[15px]"),
-            )}
+            /* 행 사이 흰색 구분선 — 펼친 패널이든 접힌 행이든 선 위아래로 16px (선 1px 포함 106 간격) */
+            className={cn("border-fg-inverse", i > 0 && "mt-4 border-t pt-[15px]")}
           >
             {/* ───── 접힌 행 ───── */}
             <button
