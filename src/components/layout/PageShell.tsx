@@ -38,8 +38,9 @@ export default function PageShell({
   /** 아래로 스크롤하면 헤더를 숨기고, 마우스를 화면 위로 올리면 다시 보여준다 */
   hideOnScroll?: boolean;
   /**
-   * 헤더를 본문 위에 띄운다 (홈). 데스크톱은 본문을 헤더 높이만큼 내리지 않고,
-   * 헤더는 커서를 화면 위쪽으로 올렸을 때만 내려온다. 모바일은 평소처럼 내린다
+   * 헤더를 본문 위에 띄운다 (홈). 본문을 헤더 높이만큼 내리지 않는다.
+   * 데스크톱 헤더는 커서를 화면 위쪽으로 올렸을 때만 내려오고,
+   * 모바일은 맨 위에서 배경 없이 Menu 만 보인다 (시안 2624:5445 — 로고는 본문의 큰 로고타입)
    */
   overlayHeader?: boolean;
   /** 둘째 줄이 없는 단순 헤더의 높이(px) */
@@ -82,7 +83,7 @@ export default function PageShell({
               : compact
                 ? "pt-[141px] md:pt-[74px]"
                 : overlayHeader
-                  ? "pt-16 md:pt-0"
+                  ? "pt-0"
                   : "pt-16 md:pt-(--header-h)"),
           className,
         )}

@@ -200,8 +200,12 @@ export default function Header({
   // 터치 기기는 커서로 헤더를 불러낼 수 없으니 위로 스크롤하면 다시 보여준다
   const [scrollingDown, setScrollingDown] = useState(false);
 
+  // 홈은 인트로 아래에서 본문이 시작한다 — 모바일 홈 헤더가 투명한 구간(본문 맨 위)을 인트로 높이만큼 내려 잡는다
+  const [atPageTop, setAtPageTop] = useState(true);
   useMotionValueEvent(scrollY, "change", (y) => {
     setAtTop(y < 40);
+    const intro = overlay ? (document.querySelector<HTMLElement>("[data-intro]")?.offsetHeight ?? 0) : 0;
+    setAtPageTop(y < intro + 40);
     const previous = scrollY.getPrevious() ?? 0;
     if (Math.abs(y - previous) > 4) setScrollingDown(y > previous);
   });
@@ -232,7 +236,7 @@ export default function Header({
 
   const hidden = finePointer
     ? hideOnScroll && !nearTop && !hovered && (overlay || !scrollable || !atTop)
-    : hideOnScroll && scrollable && !atTop && scrollingDown && !menuOpen;
+    : hideOnScroll && scrollable && !atTop && !atPageTop && scrollingDown && !menuOpen;
   // 둘째 줄이 있는 헤더는 통째로 숨지 않고 Scroll(74px) 로 접혀 둘째 줄(탭)만 남긴다
   const expanded =
     compact && !(isMobile && mobileTitle) ? hovered : (atTop || hovered || searchOpen) && !hidden;
@@ -407,7 +411,12 @@ export default function Header({
           initial={false}
           animate={{ y: hidden ? "-100%" : "0%" }}
           transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          className={cn("fixed inset-x-0 top-0 z-50 px-margin pt-6 max-md:pt-4", brand)}
+          className={cn(
+            "fixed inset-x-0 top-0 z-50 px-margin pt-6 transition-colors max-md:pt-4",
+            brand,
+            // 모바일 홈(2624:5445): 맨 위에서는 배경·작은 로고 없이 Menu 만 — 키비주얼 위에 뜬다
+            overlay && atPageTop && "max-md:bg-transparent max-md:[&_a[aria-label=홈으로]]:invisible",
+          )}
           style={{ height: isMobile ? HEADER_H.mobile.simple : height }}
         >
           {topRow}

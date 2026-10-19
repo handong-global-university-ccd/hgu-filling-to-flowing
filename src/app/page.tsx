@@ -4,9 +4,18 @@ import PageShell from "@/components/layout/PageShell";
 import HomeTitle from "@/components/home/HomeTitle";
 import RevealLines from "@/components/home/RevealLines";
 import FieldAccordion from "@/components/home/FieldAccordion";
+import FieldListMobile from "@/components/home/FieldListMobile";
 import { FIELDS, type FieldKey, type Work } from "@/data/types";
 import { getWorks } from "@/data/works";
-import { HOME_HERO, HOME_INFO, HOME_INTRO, HOME_TITLE, HOME_VERSE, VERSE_DELAY } from "@/data/home";
+import {
+  HOME_HERO,
+  HOME_INFO,
+  HOME_INTRO,
+  HOME_MOBILE,
+  HOME_TITLE,
+  HOME_VERSE,
+  VERSE_DELAY,
+} from "@/data/home";
 import { asset } from "@/lib/asset";
 import { INTRO_SEEN_SCRIPT, INTRO_SKIP_SCRIPT } from "@/lib/intro";
 
@@ -44,7 +53,55 @@ export default function HomePage() {
       {/* 인트로 위로 올라오는 레이어 */}
       <div className="relative z-10">
         <PageShell inverse overlayHeader>
-          <section className="px-margin pt-6">
+          {/* ───── 모바일 (2624:5445) ─────
+              시안 y 에서 상태 표시줄 54 를 뺀 값. 세로 키비주얼 430×686 이 위로 63 넘쳐 있고 아래 52 는 검정으로 흐려진다
+              로고 327 (left 16, top 28) · 크레딧 16/22 (left 21, top 155) · 날짜 18/25.6 (232/454, 313/477)
+              소개 12/20 가운데 정렬 폭 352 (top 667, 말씀과 본문 사이 44) · 분야 목록 top 1011 · 푸터까지 86 */}
+          <section className="relative md:hidden">
+            <div className="relative h-[624px] overflow-hidden">
+              <div className="absolute top-[-63px] left-1/2 h-[686px] w-[430px] -translate-x-1/2">
+                <Image
+                  src={asset(HOME_MOBILE.hero)}
+                  alt=""
+                  fill
+                  priority
+                  sizes="430px"
+                  className="object-cover"
+                />
+              </div>
+              <div className="absolute inset-x-0 bottom-0 h-[53px] bg-linear-to-b from-transparent to-bg-inverse" />
+            </div>
+
+            <h1 className="absolute top-[28px] left-4 w-[327px]">
+              <HomeTitle />
+            </h1>
+            <p className="absolute top-[155px] left-[21px] text-[16px] leading-[22px] font-medium">
+              {HOME_MOBILE.credit.map((line) => (
+                <span key={line} className="block">
+                  {line}
+                </span>
+              ))}
+            </p>
+            <p className="absolute top-[454px] left-[232px] text-[18px] leading-[25.6px] font-medium">
+              {HOME_MOBILE.date[0]}
+            </p>
+            <p className="absolute top-[477px] left-[calc(313/390*100%)] text-[18px] leading-[25.6px] font-medium">
+              {HOME_MOBILE.date[1]}
+            </p>
+
+            <div className="mx-auto mt-[43px] flex w-[352px] max-w-[calc(100%-32px)] flex-col gap-11 text-center font-kr text-[12px] leading-[20px]">
+              <RevealLines lines={HOME_MOBILE.verse} />
+              <RevealLines lines={HOME_MOBILE.intro} delay={0.15} />
+            </div>
+
+            <div className="mt-[60px]">
+              <FieldListMobile worksByField={worksByField} />
+            </div>
+            <div className="h-[86px]" />
+          </section>
+
+          {/* ───── 데스크톱 ───── */}
+          <section className="px-margin pt-6 max-md:hidden">
             <div className="relative aspect-[1872/484] w-full overflow-hidden max-md:aspect-[3/2]">
               <Image src={asset(HOME_HERO)} alt="" fill priority sizes="100vw" className="object-cover" />
             </div>
@@ -86,11 +143,11 @@ export default function HomePage() {
             </div>
           </section>
 
-          <div className="mt-[calc(194*var(--u))] max-md:mt-20">
+          <div className="mt-[calc(194*var(--u))] max-md:hidden">
             <FieldAccordion worksByField={worksByField} />
           </div>
           {/* 아코디언과 푸터 사이 300px — 모든 페이지 공통 (본문 끝 → 푸터 300) */}
-          <div className="h-75 max-md:h-40" />
+          <div className="h-75 max-md:hidden" />
         </PageShell>
       </div>
       <script dangerouslySetInnerHTML={{ __html: INTRO_SKIP_SCRIPT }} />
