@@ -119,7 +119,7 @@ function fillLoop<T>(items: T[], min: number): T[] {
  *         행 사이: 위 16 · 흰 1px 선 · 아래 16 (선 포함 행 간격 106 — 1px 선이라 아래는 15)
  * - 펼침: #333(Neutral/700) 패널 폭 1920, 글자 흰색. 좌측 위(24, 30)에 분야명 + 소개 문구(Pretendard 18/26, 시안 줄바꿈)
  *         우측(right 24, top 22)에 썸네일 그리드 8열 131×112, 간격 16 (폭 1160 = 화면 폭 60.42%)
- *         패널 높이는 썸네일 수에 맞춘다 — 마지막 줄 아래 16 에서 끝난다 (고정 540 이면 작품이 적을 때 아래가 빈다)
+ *         패널 높이는 썸네일 수에 맞춘다 — 썸네일 위아래 22 (고정 540 이면 작품이 적을 때 아래가 빈다)
  *         패널 위아래도 다른 행처럼 16 · 흰 선 · 16
  * - 클릭: 분야명·패널을 누르면 Works 의 그 분야로 간다 (/works/?field=…). 썸네일은 그 작품으로.
  *         터치 기기는 첫 탭에 펼치고, 펼친 패널을 누르면 이동한다
@@ -252,7 +252,7 @@ export default function FieldAccordion({ worksByField }: { worksByField: Record<
                       /* 모바일: 카피 위, 썸네일 아래로 쌓는다. 빈 곳 클릭은 아래 Link 로 통과시키고 썸네일만 받는다 */
                       className="pointer-events-none flex justify-between gap-10 max-md:flex-col max-md:gap-6 max-md:py-6"
                     >
-                      <div className="pointer-events-none pt-[30px] pb-4 pl-6 max-md:px-margin max-md:pt-0 max-md:pb-0">
+                      <div className="pointer-events-none pt-[30px] pb-[22px] pl-6 max-md:px-margin max-md:pt-0 max-md:pb-0">
                         <h3 className="text-h2 max-md:text-[28px] max-md:leading-[36px]">
                           <RiseLines lines={[field.label]} still={!!reduce} />
                         </h3>
@@ -265,7 +265,7 @@ export default function FieldAccordion({ worksByField }: { worksByField: Record<
                         </p>
                       </div>
 
-                      <ul className="pointer-events-auto relative grid w-[calc(60.42%+24px)] shrink-0 grid-cols-8 content-start gap-4 pt-[22px] pr-6 pb-4 max-md:w-full max-md:grid-cols-2 max-md:gap-(--spacing-gutter) max-md:px-margin max-md:py-0">
+                      <ul className="pointer-events-auto relative grid w-[calc(60.42%+24px)] shrink-0 grid-cols-8 content-start gap-4 py-[22px] pr-6 max-md:w-full max-md:grid-cols-2 max-md:gap-(--spacing-gutter) max-md:px-margin max-md:py-0">
                         {works.map((w) => (
                           <li key={w.slug}>
                             <Link
