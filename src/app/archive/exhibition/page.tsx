@@ -16,23 +16,26 @@ const photos = ["/placeholder/dummy/archive/view-1.webp", "/placeholder/dummy/ar
  *   헤더가 74px 로 접혀도 자리를 지킨다.
  * - 오른쪽 사진은 810×540, 세로 간격 20px, 헤더 바로 아래(y=176)에서 시작한다.
  * - 마지막 사진과 푸터 사이는 300px (모든 페이지 공통)
+ *
+ * 모바일 (2573:20571): 헤더 아래 4 에 제목 KR·EN Label 14/20 → 17 → 일시·장소 Caption 12/18
+ *                     → 45 → 사진 358 너비(3:2), 사이 15. 푸터 위 86
  */
 export default function ArchiveExhibitionPage() {
   return (
     <PageShell archive="exhibition" hideOnScroll>
-      <div className="flex flex-col gap-10 px-margin pb-75 lg:flex-row lg:justify-between lg:gap-8">
-        <div className="flex flex-col gap-4 lg:sticky lg:top-[228px] lg:mt-[52px] lg:h-fit lg:w-[529px] lg:shrink-0">
-          <div className="flex flex-col gap-1">
-            <h1 className="font-kr text-kr-h3">{SITE.fullTitle}</h1>
-            <p className="text-h3">{SITE.title}</p>
+      <div className="flex flex-col gap-10 px-margin pb-75 max-md:gap-[45px] max-md:pt-1 max-md:pb-[86px] lg:flex-row lg:justify-between lg:gap-8">
+        <div className="flex flex-col gap-4 max-md:gap-[17px] lg:sticky lg:top-[228px] lg:mt-[52px] lg:h-fit lg:w-[529px] lg:shrink-0">
+          <div className="flex flex-col gap-1 max-md:gap-0">
+            <h1 className="font-kr text-kr-h3 max-md:text-kr-label">{SITE.fullTitle}</h1>
+            <p className="text-h3 max-md:text-label">{SITE.title}</p>
           </div>
-          <div className="font-kr text-kr-body-lg">
+          <div className="font-kr text-kr-body-lg max-md:text-kr-caption">
             <p>{SITE.period}</p>
             <p>{SITE.place}</p>
           </div>
         </div>
 
-        <ul className="space-y-5 lg:w-[810px] lg:shrink-0">
+        <ul className="space-y-5 max-md:space-y-[15px] lg:w-[810px] lg:shrink-0">
           {photos.map((src) => (
             <li key={src}>
               <Image

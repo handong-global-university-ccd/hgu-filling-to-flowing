@@ -376,7 +376,11 @@ export default function Header({
   } else if (archive) {
     secondRow = (
       <div className="mt-auto flex items-center justify-between gap-6 md:px-1">
-        <nav aria-label="아카이브" className="flex gap-3 text-body">
+        {/* 모바일 (2573:20571): 12/18 Medium, 왼쪽 4 들여서 위에서 84 */}
+        <nav
+          aria-label="아카이브"
+          className="flex gap-3 text-body max-md:-mb-0.5 max-md:pl-1 max-md:text-caption"
+        >
           {ARCHIVE_TABS.map((t) => (
             <Link
               key={t.key}
