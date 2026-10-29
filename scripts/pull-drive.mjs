@@ -38,7 +38,7 @@ const SIZE = { profile: 800, photo: 900 };
 const QUALITY = 82;
 
 /** 드라이브 파일명에 쓰인 다른 표기 → 데이터의 팀명 */
-const TEAM_ALIAS = { 파이브가이즈: "FiveGuys" };
+const TEAM_ALIAS = { 파이브가이즈: "FiveGuys_2", FiveGuys: "FiveGuys_2", 공3즈: "03Z" };
 
 // macOS 로컬 파일명에서 rclone 이 바꿔 둔 전각 기호(：／)도 원래대로
 const nfc = (s) => s.normalize("NFC").replace(/：/g, ":").replace(/／/g, "/").trim();

@@ -19,7 +19,8 @@ export type ProfileDesigner = {
   nameEn: string;
   fieldKeys: FieldKey[];
   disciplines: string;
-  contacts: string[];
+  /** 이메일(mailto) + 시트의 링크들 */
+  contacts: { label: string; href: string }[];
   profile: string;
   profileMono?: string;
   works: ProfileWork[];
@@ -327,11 +328,14 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
                   <div className="flex flex-col text-fg-secondary">
                     {d.contacts.map((c) => (
                       <a
-                        key={c}
-                        href={c.includes("@") ? `mailto:${c}` : `https://${c.replace(/^https?:\/\//, "")}`}
-                        className="w-fit hover:text-fg"
+                        key={c.href}
+                        href={c.href}
+                        {...(c.href.startsWith("mailto:")
+                          ? {}
+                          : { target: "_blank", rel: "noopener noreferrer" })}
+                        className="w-fit break-all hover:text-fg"
                       >
-                        {c}
+                        {c.label}
                       </a>
                     ))}
                   </div>

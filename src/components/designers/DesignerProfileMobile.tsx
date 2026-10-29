@@ -38,12 +38,15 @@ export default function DesignerProfileMobile({ designer: d }: { designer?: Prof
             {d.contacts.length > 0 && (
               <Item label="Contact">
                 {d.contacts.map((c) => (
-                  <dd key={c}>
+                  <dd key={c.href}>
                     <a
-                      href={c.includes("@") ? `mailto:${c}` : `https://${c.replace(/^https?:\/\//, "")}`}
+                      href={c.href}
+                      {...(c.href.startsWith("mailto:")
+                        ? {}
+                        : { target: "_blank", rel: "noopener noreferrer" })}
                       className="break-all"
                     >
-                      {c}
+                      {c.label}
                     </a>
                   </dd>
                 ))}

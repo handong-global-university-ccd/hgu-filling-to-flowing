@@ -62,7 +62,8 @@ export type Designer = {
   nameEn: string;
   fields: FieldKey[];
   email?: string;
-  instagram?: string;
+  /** 인스타그램·링크드인·비핸스·포트폴리오 등 (시트 최대 5개). label 은 화면에 보이는 글자 */
+  links?: { label: string; href: string }[];
   profile: string; // 컬러 프로필
   profileMono?: string; // 흑백 리스트용 (없으면 CSS grayscale)
   workSlugs: string[];
