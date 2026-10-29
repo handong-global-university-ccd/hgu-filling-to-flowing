@@ -5,6 +5,7 @@ import PageShell from "@/components/layout/PageShell";
 import OthersMarquee from "@/components/works/OthersMarquee";
 import WorkCredits from "@/components/works/WorkCredits";
 import MobileCredits from "@/components/works/MobileCredits";
+import WorkPages from "@/components/works/WorkPages";
 import { WORKS, getOtherWorks, getWork } from "@/data/works";
 import { getDesigner } from "@/data/designers";
 import { asset } from "@/lib/asset";
@@ -109,23 +110,9 @@ export default async function WorkDetailPage({ params }: PageProps<"/works/[slug
           </div>
         </div>
 
-        {/* 우측 상세 설명 이미지 — PDF를 페이지별 webp로 변환해서 나열 */}
+        {/* 우측 작업물 — 드라이브 '작품파일' 폴더의 이미지·영상·YouTube 를 번호 순서대로 */}
         <div className="w-full min-w-0">
-          {work.pages.length === 0 && (
-            <div className="grid aspect-[1518/1000] place-items-center bg-bg-subtle text-fg-tertiary">
-              작업물 이미지 (TODO)
-            </div>
-          )}
-          {work.pages.map((src, i) => (
-            <Image
-              key={src}
-              src={asset(src)}
-              alt={`${work.title} ${i + 1}페이지`}
-              width={1518}
-              height={2024}
-              className="block w-full"
-            />
-          ))}
+          <WorkPages pages={work.pages} title={work.title} />
         </div>
       </article>
 

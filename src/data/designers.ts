@@ -1,6 +1,6 @@
 import type { Designer } from "./types";
 import media from "./media-manifest.json" with { type: "json" };
-import { WORKS } from "./works";
+import { WORKS } from "./works.ts";
 
 // 명단·영문명·연락처: '2026 졸업전시 웹사이트 정보 취합' 시트 '디자이너 정보' 탭 기준 (시트 순서).
 // - 동명이인은 학번으로 구분: 김시은 22100133 sieun-kim / 22100134 sieun-kim-2,

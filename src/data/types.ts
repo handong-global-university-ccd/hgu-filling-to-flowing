@@ -52,9 +52,15 @@ export type Work = {
   thumbnails: [string, string];
   /** 상세 좌측 타이틀 위 작품 사진 (338×225). 없으면 thumbnails[0] 을 쓴다 */
   photo?: string;
-  /** 상세 우측 설명 이미지 — PDF를 페이지별 webp로 변환한 경로들 */
-  pages: string[];
+  /** 상세 오른쪽 작업물 — 드라이브 '작품파일' 폴더의 번호 순서 (scripts/pull-works.mjs) */
+  pages: WorkPage[];
 };
+
+export type WorkPage =
+  | { type: "image"; src: string; width: number; height: number }
+  | { type: "video"; src: string; poster: string; width: number; height: number }
+  | { type: "youtube"; id: string }
+  | { type: "link"; href: string };
 
 export type Designer = {
   slug: string;

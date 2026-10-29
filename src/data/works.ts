@@ -1,5 +1,6 @@
-import type { FieldKey, Work } from "./types";
+import type { FieldKey, Work, WorkPage } from "./types";
 import media from "./media-manifest.json" with { type: "json" };
+import workMedia from "./work-media.json" with { type: "json" };
 
 /**
  * 작품 내용 — '2026 졸업전시 웹사이트 정보 취합' 시트(시각·제품 탭) 기준.
@@ -9,7 +10,8 @@ import media from "./media-manifest.json" with { type: "json" };
  * - 동명이인 김시은·김지민·김하경은 학번으로 구분했다 (designers.ts 참고)
  * TODO: 시트 미작성 — 김현진·이예찬·이윤서·한영찬 개인 작품, 딛 '영덕 복숭아 장터' 소개글
  *       (비어 있으면 제목은 디자이너 이름, 설명은 비워 둔다)
- * TODO: 이미지(thumbnails·pages)는 아직 더미. 실제 작품이 들어오면 /media/works/<slug>/... 로 바꿀 것
+ * 썸네일·작업물은 드라이브 '디그리어 작품취합' 폴더에서 `npm run pull:works` 로 받아 work-media.json 에 적힌다.
+ * 아직 자료가 없는 작품은 썸네일만 더미, 작업물은 비워 둔다 (상세에 '준비 중' 표시)
  */
 type WorkText = Omit<Work, "thumbnails" | "pages" | "photo">;
 
@@ -1272,15 +1274,19 @@ const TEXTS: WorkText[] = [
 ];
 
 const DUMMY = (n: number) => `/placeholder/dummy/works/work-${(n % 4) + 1}.webp`;
-const DUMMY_PAGE = (n: number) => `/placeholder/thumb-0${(n % 8) + 1}a.svg`;
 
-const RAW_WORKS: Work[] = TEXTS.map((w, i) => ({
-  ...w,
-  thumbnails: [DUMMY(i + 1), DUMMY(i + 2)],
-  // 팀 작품은 상세 타이틀 위에 팀 사진, 개인 작품은 디자이너 프로필 사진을 쓴다
-  photo: w.teamName ? "/placeholder/dummy/works/team-photo.webp" : undefined,
-  pages: [DUMMY_PAGE(i + 2), DUMMY_PAGE(i + 3), DUMMY_PAGE(i + 4)],
-}));
+/** work-media.json 은 `npm run pull:works` 가 다시 쓴다 — 손으로 고치지 말 것 */
+const WORK_MEDIA = workMedia as Record<string, { thumbnails: string[]; pages: WorkPage[] }>;
+
+const RAW_WORKS: Work[] = TEXTS.map((w, i) => {
+  const m = WORK_MEDIA[w.slug];
+  const [a, b] = m?.thumbnails ?? [];
+  return {
+    ...w,
+    thumbnails: [a ?? DUMMY(i + 1), b ?? a ?? DUMMY(i + 2)],
+    pages: m?.pages ?? [],
+  };
+});
 
 /**
  * 구글 드라이브에서 받아 R2 로 올린 팀 사진(작품 상세 타이틀 위)이 있으면 그걸 쓴다.

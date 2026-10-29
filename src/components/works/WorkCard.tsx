@@ -37,7 +37,7 @@ export default function WorkCard({ work, designerName }: { work: Work; designerN
       <div className="relative aspect-[456/270] overflow-hidden bg-bg-subtle">
         {work.thumbnails.map((src, i) => (
           <Image
-            key={src}
+            key={i}
             src={asset(src)}
             alt={i === 0 ? work.title : ""}
             fill
