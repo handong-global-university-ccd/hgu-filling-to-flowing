@@ -86,45 +86,56 @@ thumbnails: ["/media/works/generative-future/thumb-a.webp", "..."];
 
 ## 배포
 
-사이트와 미디어를 따로 올린다.
+|                      | 어디로                           | 언제                                      |
+| -------------------- | -------------------------------- | ----------------------------------------- |
+| 사이트 (HTML·JS·CSS) | Cloudflare Pages                 | `main` 에 push → 자동 빌드·배포           |
+| 영상·사진 원본       | Cloudflare R2 (비공개 창고)      | `npm run upload:media` 로 직접 업로드     |
+| 영상·사진 서빙       | Cloudflare Pages (사이트와 같이) | 빌드 때 R2 → `public/media/` 로 자동 복사 |
 
-|                      | 어디로           | 언제                                  |
-| -------------------- | ---------------- | ------------------------------------- |
-| 사이트 (HTML·JS·CSS) | Cloudflare Pages | `main` 에 push → 자동 빌드·배포       |
-| 영상·사진            | Cloudflare R2    | `npm run upload:media` 로 직접 업로드 |
+```
+upload:media          빌드 (build:pages)                    방문자
+public/media ──→ R2 ──→ pull:media → next build → out/ ──→ Pages ──→ ccd.handong.edu
+                 (API 키로만 접근, 공개 주소 없음)
+```
 
-`main` 에 push 하면 프로덕션이 갱신되고, PR 을 올리면 그 브랜치 전용 프리뷰 URL 이 자동으로 생긴다.
-미디어는 git 에 들어가지 않으므로 push 해도 올라가지 않는다 — 파일을 받을 때마다 따로 업로드할 것.
-
-### Cloudflare 설정 (최초 1회)
-
-1. 대시보드 → Workers & Pages → Create → Connect to Git
-2. `handong-global-university-ccd/hgu-filling-to-flowing` 선택
-3. 빌드 설정
-   - Build command: `npm run build`
-   - Deploy command: `npx wrangler deploy`
-   - Root directory: `/`
-   - Node 버전은 `.nvmrc`(22) 를 자동으로 따른다
-4. Settings → Variables 에 `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_ASSET_URL` 등록
-   (Production / Preview 양쪽 모두. 비워두면 `public/` 을 그대로 사용한다)
-
-배포 동작은 레포의 `wrangler.jsonc` 가 결정한다 — `out/` 을 정적 에셋으로 올리고
-`main` 필드가 없으므로 서버 코드는 배포되지 않는다.
-
-> **`wrangler.jsonc` 를 지우지 말 것.** 이 파일이 없으면 Cloudflare 가 Next.js 프로젝트로 감지해
-> `@opennextjs/cloudflare migrate` 를 자동 실행한다. OpenNext 는 서버 렌더링 Next.js 용 어댑터라
-> `output: "export"` 인 이 프로젝트와는 맞지 않고 빌드가 실패한다.
+- `main` 에 push 하면 프로덕션이 갱신되고, PR 을 올리면 그 브랜치 전용 프리뷰 URL 이 생긴다
+- 미디어는 git 에 들어가지 않는다. 파일을 바꾸면 **`upload:media` 후 push(또는 Pages 에서 Retry deployment)** 해야 사이트에 반영된다
+- 미디어 파일은 1개당 **25MB 이하** (Pages 한도). 넘으면 `upload:media` 와 빌드가 둘 다 멈춘다 → `encode:video` 로 다시 인코딩
+- R2 에 학교 도메인을 붙이지 않는 이유: R2·Workers 커스텀 도메인은 도메인(handong.edu) 전체가 Cloudflare 에 있어야 한다. Pages 는 CNAME 만으로 연결된다
 
 ### R2 설정 (최초 1회)
 
 1. 대시보드 → R2 → Create bucket → `hgu-degree-2026`
-2. 버킷 → Settings → Public access → **Connect Custom Domain** 으로 `cdn.<도메인>` 연결
-   - `*.r2.dev` 주소는 캐시되지 않고 요청 제한이 있어 운영에 쓰지 않는다
-3. Caching → Cache Rules 에서 해당 호스트에 **Cache Everything** 규칙 추가
-   (기본값은 일부 확장자만 캐시한다)
-4. R2 → Manage API tokens 에서 토큰 발급 → `rclone config` 에 등록
-   (자세한 절차는 `scripts/upload-media.sh` 주석 참고)
-5. `.env.local` 의 `NEXT_PUBLIC_ASSET_URL` 에 `https://cdn.<도메인>` 입력
+2. 버킷 → Settings → Public access 의 **r2.dev 주소는 꺼둔다** (Pages 가 서빙하므로 공개할 필요 없음)
+3. R2 → Manage API tokens 에서 토큰 2개 발급
+   - **업로드용** (Object Read & Write, 이 버킷만) → 내 컴퓨터 `rclone config` 에 등록 (`scripts/upload-media.sh` 주석 참고)
+   - **빌드용** (Object Read only, 이 버킷만) → 아래 Pages 환경변수에 등록
+
+### Pages 설정 (최초 1회)
+
+1. 대시보드 → Workers & Pages → Create → **Pages** → Connect to Git
+2. `handong-global-university-ccd/hgu-filling-to-flowing` 선택
+3. 빌드 설정
+   - Project name: `hgu-filling-to-flowing` → 기본 주소가 `hgu-filling-to-flowing.pages.dev` 가 된다
+   - Production branch: `main`
+   - Framework preset: `None`
+   - Build command: `npm run build:pages`
+   - Build output directory: `out`
+   - Node 버전은 `.nvmrc`(22) 를 자동으로 따른다
+4. Environment variables — **Production·Preview 둘 다**, 첫 배포 전에 등록 (없으면 빌드가 일부러 실패한다)
+
+   | 이름                   | 값                              | 종류   |
+   | ---------------------- | ------------------------------- | ------ |
+   | `NEXT_PUBLIC_SITE_URL` | `https://ccd.handong.edu`       | Text   |
+   | `R2_ACCOUNT_ID`        | Cloudflare 계정 ID              | Text   |
+   | `R2_BUCKET`            | `hgu-degree-2026`               | Text   |
+   | `R2_ACCESS_KEY_ID`     | 빌드용 토큰의 Access Key ID     | Secret |
+   | `R2_SECRET_ACCESS_KEY` | 빌드용 토큰의 Secret Access Key | Secret |
+
+   `NEXT_PUBLIC_ASSET_URL` 은 등록하지 않는다.
+
+`wrangler.jsonc` 는 예전 Workers 배포용이다. `pages_build_output_dir` 가 없어서 Pages 빌드는 이 파일을 쓰지 않는다.
+Workers 프로젝트를 삭제한 뒤에 지워도 된다.
 
 ### 구글 드라이브 사진
 
@@ -145,10 +156,16 @@ thumbnails: ["/media/works/generative-future/thumb-a.webp", "..."];
 원본은 `media-src/drive/` 에 남는다 (git 제외). 사진을 바꾸면 다시 `pull:drive` → `upload:media`.
 manifest 주소 끝에 내용 해시(`?v=`)가 붙어서, 같은 파일명으로 바꿔도 캐시된 옛 사진이 보이지 않는다.
 
-### 도메인
+### 도메인 — `ccd.handong.edu`
 
-아직 미정. 정해지기 전까지는 Pages 기본 주소(`<project>.pages.dev`)를 쓰고,
-`NEXT_PUBLIC_ASSET_URL` 은 비워 둔다 (비어 있으면 `public/` 을 그대로 사용).
+학교 정보인프라팀이 학교 DNS 에 CNAME 을 걸어 준다 (`ccd.handong.edu` → `hgu-filling-to-flowing.pages.dev`).
+**순서를 지킬 것** — CNAME 이 먼저 걸리면 522 에러가 난다.
+
+1. Pages 프로젝트 → Custom domains → Set up a domain → `ccd.handong.edu` 입력 (상태: 대기)
+2. 도메인 신청서의 링크 주소 칸: `hgu-filling-to-flowing.pages.dev` (`https://`·끝의 `/` 없이)
+3. 정보인프라팀이 CNAME 등록 → Pages 가 확인 후 SSL 인증서를 자동 발급 (학교 `*.handong.edu` 인증서 불필요)
+   - handong.edu 에는 CAA 레코드가 없어서 발급이 막히지 않는다 (2026-10 확인)
+4. 상태가 Active 가 되면 `https://ccd.handong.edu` 접속 확인
 
 > 2024년 전시 사이트(`hguccd2024.co.kr`)는 도메인이 만료되어 접속이 불가능하다.
-> 도메인을 정할 때 **갱신 주체와 유지 기간**을 함께 정해 둘 것.
+> 학교 도메인은 만료 걱정이 없지만, 전시가 끝난 뒤 **사이트 유지 기간**은 학부와 정해 둘 것.

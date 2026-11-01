@@ -1,0 +1,5 @@
+# Cloudflare Pages 응답 헤더
+# 미디어는 빌드 때 R2 에서 복사되어 Pages 가 서빙한다. 브라우저 캐시 하루.
+# (같은 파일명으로 교체해도 하루 안에 반영된다. 드라이브 사진은 manifest 의 ?v= 로 즉시 반영)
+/media/*
+  Cache-Control: public, max-age=86400

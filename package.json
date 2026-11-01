@@ -13,6 +13,8 @@
     "check": "npm run typecheck && npm run lint && npm run format:check",
     "encode:video": "bash scripts/encode-video.sh",
     "upload:media": "bash scripts/upload-media.sh",
+    "pull:media": "node scripts/pull-media.mjs",
+    "build:pages": "npm run pull:media && next build",
     "pull:drive": "node --experimental-strip-types --no-warnings scripts/pull-drive.mjs",
     "pull:works": "node --experimental-strip-types --no-warnings scripts/pull-works.mjs"
   },

@@ -42,7 +42,7 @@
 - 영상·사진은 `public/media/` 에 두고 **커밋하지 않는다** (R2 로 업로드)
 - R2 로 갈 파일은 전부 `public/media/` 아래. 데이터에도 `/media/...` 로 적는다
   (`works/<slug>/`, `designers/<slug>/`, `archive/behind/`, `intro/`)
-- 이 규칙은 `.gitignore` · `scripts/upload-media.sh` · `src/lib/asset.ts` 세 곳이 한 세트다
+- 이 규칙은 `.gitignore` · `scripts/upload-media.sh` · `scripts/pull-media.mjs` · `src/lib/asset.ts` 네 곳이 한 세트다
 - 로고·아이콘 등 **UI 이미지는 `public/media/` 에 넣지 않는다** (git 제외 대상이라 사라진다).
   로고타입·아이콘은 인라인 SVG 컴포넌트로, 후원사 로고 같은 고정 이미지는 `public/brand/` 에 둔다
 - 배경 영상에 글자를 넣지 않는다. 영상은 `ResponsiveVideo`(가로/세로 + 포스터), 글자는 HTML
@@ -56,9 +56,11 @@
 
 ## 배포
 
-- 사이트: Cloudflare Workers 정적 에셋 — `main` push 시 자동 빌드(`npm run build` → `out/`) 후 `npx wrangler deploy`
-- 배포 설정은 `wrangler.jsonc`. 이 파일을 지우면 Cloudflare 가 OpenNext 자동 변환을 걸어 빌드가 깨진다
-- 미디어: Cloudflare R2 — `npm run upload:media` 로 직접 업로드 (git 에 들어가지 않음)
+- 사이트: Cloudflare Pages — `main` push 시 자동 빌드(`npm run build:pages`) → `out/` 배포
+- 미디어: R2 는 **원본 보관용**. `npm run upload:media` 로 올리고, Pages 빌드 때 `pull:media` 가 R2 → `public/media/` 로 복사해 사이트와 같이 서빙한다 (방문자는 R2 에 직접 접속하지 않음)
+- `NEXT_PUBLIC_ASSET_URL` 은 배포에서도 비워 둔다
+- 미디어 파일은 1개당 **25MB 이하** (Pages 한도). 넘으면 업로드·빌드가 둘 다 멈춘다
+- 도메인: `ccd.handong.edu` — 학교 DNS 에서 CNAME 으로 Pages 에 연결. Workers·R2 커스텀 도메인은 handong.edu 가 Cloudflare 존이 아니라서 불가
 - 최초 세팅 절차는 README 의 "배포" 참고
 
 ## 남은 작업 (TODO 검색)
