@@ -3,6 +3,7 @@ import Link from "next/link";
 import { asset } from "@/lib/asset";
 import type { ProfileDesigner } from "./DesignerProfile";
 import EmptyResult from "@/components/common/EmptyResult";
+import ContactLink from "./ContactLink";
 
 /**
  * Figma 모바일 디자이너 상세 (2573:10650) — 390 기준, ← 헤더(46) 아래 9
@@ -36,17 +37,9 @@ export default function DesignerProfileMobile({ designer: d }: { designer?: Prof
             </Item>
             {d.contacts.length > 0 && (
               <Item label="Contact">
-                {d.contacts.map((c) => (
-                  <dd key={c.href}>
-                    <a
-                      href={c.href}
-                      {...(c.href.startsWith("mailto:")
-                        ? {}
-                        : { target: "_blank", rel: "noopener noreferrer" })}
-                      className="break-all underline-offset-2 hover:underline"
-                    >
-                      {c.label}
-                    </a>
+                {d.contacts.map((c, i) => (
+                  <dd key={`${i}-${c.label}`}>
+                    <ContactLink contact={c} className="underline-offset-2" />
                   </dd>
                 ))}
               </Item>

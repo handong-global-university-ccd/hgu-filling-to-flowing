@@ -12,6 +12,7 @@ import { asset } from "@/lib/asset";
 import { HEADER_H } from "@/lib/header";
 import { pageZoom } from "@/lib/zoom";
 import DesignerProfileMobile from "./DesignerProfileMobile";
+import ContactLink, { type Contact } from "./ContactLink";
 
 export type ProfileWork = { slug: string; title: string; thumbnail: string };
 export type ProfileDesigner = {
@@ -21,7 +22,7 @@ export type ProfileDesigner = {
   fieldKeys: FieldKey[];
   disciplines: string;
   /** 이메일(mailto) + 시트의 링크들 */
-  contacts: { label: string; href: string }[];
+  contacts: Contact[];
   profile: string;
   profileMono?: string;
   works: ProfileWork[];
@@ -306,17 +307,8 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
                 <div className="flex flex-col gap-[2px]">
                   <p>Contact</p>
                   <div className="flex flex-col text-fg-secondary">
-                    {d.contacts.map((c) => (
-                      <a
-                        key={c.href}
-                        href={c.href}
-                        {...(c.href.startsWith("mailto:")
-                          ? {}
-                          : { target: "_blank", rel: "noopener noreferrer" })}
-                        className="w-fit break-all underline-offset-4 hover:text-fg hover:underline"
-                      >
-                        {c.label}
-                      </a>
+                    {d.contacts.map((c, i) => (
+                      <ContactLink key={`${i}-${c.label}`} contact={c} className="w-fit underline-offset-4" />
                     ))}
                   </div>
                 </div>

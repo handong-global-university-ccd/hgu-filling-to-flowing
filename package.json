@@ -17,7 +17,8 @@
     "build:pages": "npm run pull:media && next build",
     "pull:drive": "node --experimental-strip-types --no-warnings scripts/pull-drive.mjs",
     "pull:works": "node --experimental-strip-types --no-warnings scripts/pull-works.mjs",
-    "pull:archive": "node scripts/pull-archive.mjs"
+    "pull:archive": "node scripts/pull-archive.mjs",
+    "pull:contacts": "node scripts/pull-contacts.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

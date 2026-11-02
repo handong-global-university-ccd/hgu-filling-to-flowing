@@ -1,5 +1,6 @@
 import type { Designer } from "./types";
 import media from "./media-manifest.json" with { type: "json" };
+import contacts from "./designer-contacts.json" with { type: "json" };
 import { WORKS } from "./works.ts";
 
 // 명단·영문명·연락처: '2026 졸업전시 웹사이트 정보 취합' 시트 '디자이너 정보' 탭 기준 (시트 순서).
@@ -952,10 +953,16 @@ const RAW_DESIGNERS: Designer[] = [
  * media-manifest.json 은 `npm run pull:drive` 가 public/media 를 훑어 다시 쓴다 — 손으로 고치지 말 것.
  */
 const MEDIA_DESIGNERS = (media as { designers: Record<string, string> }).designers;
+/**
+ * Contact(EMAIL · 링크) 는 시트를 그대로 옮긴 designer-contacts.json 이 우선이다 — `npm run pull:contacts` 로 다시 쓴다.
+ * 아래 RAW_DESIGNERS 의 email·links 는 시트에 없는 사람을 위한 예비값이다.
+ */
+const CONTACTS = contacts as Record<string, { email?: string; links: { label: string; href?: string }[] }>;
 // 작품 데이터에 참여자로 올라 있으면 workSlugs 에도 넣는다 (개인 작품은 works.ts 에서 명단으로 만든다)
 export const DESIGNERS: Designer[] = RAW_DESIGNERS.map((x) => ({
   ...x,
   profile: MEDIA_DESIGNERS[x.slug] ?? x.profile,
+  ...(CONTACTS[x.slug] ? { email: CONTACTS[x.slug].email, links: CONTACTS[x.slug].links } : {}),
   workSlugs: [
     ...new Set([...x.workSlugs, ...WORKS.filter((w) => w.designerSlugs.includes(x.slug)).map((w) => w.slug)]),
   ],
