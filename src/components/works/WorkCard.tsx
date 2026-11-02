@@ -3,27 +3,37 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import type { Work } from "@/data/types";
 import { asset } from "@/lib/asset";
 
+/** 다음 썸네일로 넘어가는 간격 · 미는 시간 */
+const INTERVAL = 1500; // ms
+const SLIDE = { duration: 0.7, ease: [0.22, 1, 0.36, 1] } as const;
+
 /**
  * Figma Works 카드 (2564:9047) — 썸네일 456×270, 아래로 16px, 제목 KR Body/Large · 이름 KR Body/Small, 사이 2px
- * 인터렉션(1801:15055): 호버하면 1.5초 간격으로 썸네일 A↔B 무한 교차 + 20% 검정 덮개 (2564:9048)
+ * 인터렉션(1801:15055): 호버하면 1.5초 간격으로 썸네일이 무한히 바뀌고 20% 검정 덮개 (2564:9048)
+ * 바뀔 때는 오른쪽으로 민다 — 지금 사진이 오른쪽으로 빠지고 다음 사진이 왼쪽에서 들어온다
+ * (참고: readymag.com/designs/5807552). 호버가 끝나면 첫 장으로 같은 방향으로 돌아온다.
+ * 모션 줄이기 설정이면 밀지 않고 바로 바꾼다.
  */
 export default function WorkCard({ work, designerName }: { work: Work; designerName: string }) {
+  const reduce = useReducedMotion();
   const [hover, setHover] = useState(false);
-  const [showB, setShowB] = useState(false);
+  const [index, setIndex] = useState(0);
+  const count = work.thumbnails.length;
 
   useEffect(() => {
-    if (!hover) return;
+    if (!hover || count < 2) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setShowB(true);
-    const id = setInterval(() => setShowB((v) => !v), 1500);
+    setIndex(1);
+    const id = setInterval(() => setIndex((i) => (i + 1) % count), INTERVAL);
     return () => {
       clearInterval(id);
-      setShowB(false);
+      setIndex(0);
     };
-  }, [hover]);
+  }, [hover, count]);
 
   return (
     <Link
@@ -35,15 +45,34 @@ export default function WorkCard({ work, designerName }: { work: Work; designerN
       onBlur={() => setHover(false)}
     >
       <div className="relative aspect-[456/270] overflow-hidden bg-bg-subtle">
-        {work.thumbnails.map((src, i) => (
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={index}
+            className="absolute inset-0"
+            initial={reduce ? false : { x: "-100%" }}
+            animate={{ x: 0 }}
+            exit={reduce ? { opacity: 0, transition: { duration: 0 } } : { x: "100%" }}
+            transition={SLIDE}
+          >
+            <Image
+              src={asset(work.thumbnails[index] ?? work.thumbnails[0])}
+              alt={index === 0 ? work.title : ""}
+              fill
+              sizes="(min-width: 1024px) 24vw, 50vw"
+              className="object-cover"
+            />
+          </motion.div>
+        </AnimatePresence>
+        {/* 다음 썸네일을 미리 받아 둔다 — 처음 밀려 들어올 때 빈 칸이 보이지 않게 */}
+        {work.thumbnails.slice(1).map((src, i) => (
           <Image
             key={i}
             src={asset(src)}
-            alt={i === 0 ? work.title : ""}
+            alt=""
             fill
             sizes="(min-width: 1024px) 24vw, 50vw"
-            className="object-cover transition-opacity duration-500"
-            style={{ opacity: (i === 1) === showB ? 1 : 0 }}
+            className="invisible object-cover"
+            aria-hidden
           />
         ))}
         <span

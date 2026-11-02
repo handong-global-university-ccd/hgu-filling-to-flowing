@@ -8,7 +8,14 @@ import { GAP, GRID_X, GRID_Y, PLATE_H, PLATE_W, TILE_H, TILE_W } from "@/data/ar
 import { pageZoom } from "@/lib/zoom";
 import { HEADER_H, MOBILE_QUERY } from "@/lib/header";
 
-export type Photo = { src: string; alt: string; col: number; row: number };
+export type Photo = {
+  src: string;
+  alt: string;
+  /** 호버하면 사진 위쪽 띠에 뜨는 제목 (팀 이름) */
+  title: string;
+  col: number;
+  row: number;
+};
 
 /** Figma 인터렉션 설명 (1801:15067) */
 const RADIUS = 200; // px
@@ -16,6 +23,8 @@ const DURATION = 0.35; // s
 const PAN_DURATION = 1.2; // s
 /** 호버(거리 0)에서 222×296 이 되도록 — 222/103 ≈ 296/137 */
 const MAX_SCALE = 222 / TILE_W;
+const HOVER_W = 222;
+const HOVER_H = 296;
 /** 오버뷰(왼쪽 아래 미니맵) — 판 3840×2160 을 220 폭으로 줄인 것. Figma 2670:13884 (220×123.75, 왼쪽 24·아래 40) */
 const MAP_W = 220;
 const MAP_SCALE = MAP_W / PLATE_W;
@@ -32,6 +41,9 @@ const MAP_H = PLATE_H * MAP_SCALE;
  *   화면 밖에 있던 사진이 들어온다. 페이지 자체는 스크롤되지 않는다.
  * - 커서 반경 200px 안의 사진이 거리에 비례해 커지고,
  *   커서가 올라간 사진은 222×296 이 된다 (0.35s)
+ * - 커서가 올라간 사진 위쪽에 제목 띠 (Figma 2574:5519·5520·5521):
+ *   222×32 검정 60%, 제목 Pretendard Medium 14/18 흰색 (왼쪽 5·위 7).
+ *   사진은 scale 로 커지므로 띠는 사진 안에 넣지 않고 판 위에 따로 띄운다 — 글자가 같이 늘어나 흐려지지 않게
  * - 오버뷰 (댓글 #205·#227): 왼쪽 아래 미니맵에 지금 보이는 영역을 사각형으로 표시한다.
  *   미니맵을 누르거나 끌면 그 자리로 판이 이동하고, 미니맵 위에서는 마우스 따라 움직이기를 멈춘다
  */
@@ -40,6 +52,7 @@ export default function ArchiveCanvas({ photos }: { photos: Photo[] }) {
   const plate = useRef<HTMLDivElement>(null);
   const map = useRef<HTMLDivElement>(null);
   const frame = useRef<HTMLDivElement>(null);
+  const label = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
@@ -47,6 +60,9 @@ export default function ArchiveCanvas({ photos }: { photos: Photo[] }) {
       const pl = plate.current!;
       const mp = map.current!;
       const fr = frame.current!;
+      const lb = label.current!;
+      const lbText = lb.firstElementChild as HTMLElement;
+      let shown = -1;
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
       const items = gsap.utils.toArray<HTMLElement>("[data-photo]", pl);
@@ -140,16 +156,29 @@ export default function ArchiveCanvas({ photos }: { photos: Photo[] }) {
         fr.style.transform = `translate(${-plx * MAP_SCALE}px, ${-ply * MAP_SCALE}px)`;
         fr.style.width = `${width * MAP_SCALE}px`;
         fr.style.height = `${height * MAP_SCALE}px`;
+        let hovered = -1;
         for (let i = 0; i < items.length; i++) {
           const dx = px - (left + plx + centers[i][0]);
           const dy = py - (top + ply + centers[i][1]);
           // 커서가 그 사진 칸 위에 있으면 최대(222×296), 아니면 거리에 비례
           // 판정에는 확대 전 크기를 쓴다 — 확대된 크기를 쓰면 한 번 커진 사진이 계속 붙잡힌다
           const over = Math.abs(dx) <= TILE_W / 2 && Math.abs(dy) <= TILE_H / 2;
+          if (over) hovered = i;
           const t = over ? 1 : Math.max(0, 1 - Math.hypot(dx, dy) / RADIUS);
           scaleX[i](1 + (MAX_SCALE - 1) * t);
           scaleY[i](1 + (MAX_SCALE - 1) * t);
           items[i].style.zIndex = t > 0 ? String(Math.round(t * 100)) : "";
+        }
+
+        // 제목 띠 — 커진 사진(222×296)의 위쪽에 맞춘다. 사진 중심은 판 기준으로 고정이다
+        if (hovered !== shown) {
+          shown = hovered;
+          if (hovered >= 0) {
+            lb.style.left = `${centers[hovered][0] - HOVER_W / 2}px`;
+            lb.style.top = `${centers[hovered][1] - HOVER_H / 2}px`;
+            lbText.textContent = photos[hovered].title;
+          }
+          lb.style.opacity = hovered >= 0 ? "1" : "0";
         }
       };
 
@@ -206,9 +235,19 @@ export default function ArchiveCanvas({ photos }: { photos: Photo[] }) {
               className="relative"
               style={{ gridColumn: p.col + 1, gridRow: p.row + 1 }}
             >
-              <Image src={asset(p.src)} alt={p.alt} fill sizes={`${TILE_W}px`} className="object-cover" />
+              <Image src={asset(p.src)} alt={p.alt} fill sizes={`${HOVER_W}px`} className="object-cover" />
             </div>
           ))}
+        </div>
+
+        <div
+          ref={label}
+          aria-hidden
+          className="pointer-events-none absolute z-[101] h-8 bg-bg-inverse/60 px-[5px] pt-[7px] opacity-0 transition-opacity duration-300"
+          style={{ width: HOVER_W }}
+        >
+          {/* Pretendard Medium 14/18 — Typography 스타일에 없는 값이라 직접 지정 */}
+          <p className="truncate font-kr text-[14px] leading-[18px] font-medium text-fg-inverse" />
         </div>
       </div>
 

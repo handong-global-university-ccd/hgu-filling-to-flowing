@@ -115,7 +115,7 @@ export default function WorksBrowser({ items }: { items: Item[] }) {
             <p className="mt-1 text-[10px] leading-4 lg:hidden">지도교수: {project.advisor}</p>
             {project.intro.length > 0 && (
               <>
-                <div className="mt-6 flex max-w-[1046px] flex-col gap-1 text-kr-body leading-[1.7] break-keep max-lg:hidden lg:whitespace-pre-line">
+                <div className="mt-6 flex max-w-[1067px] flex-col gap-1 text-kr-body leading-[1.7] break-keep max-lg:hidden lg:whitespace-pre-line">
                   {project.intro.map((para) => (
                     <p key={para.slice(0, 24)}>{para}</p>
                   ))}

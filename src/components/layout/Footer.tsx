@@ -8,7 +8,7 @@ import ArrowUpRight from "@/components/icons/ArrowUpRight";
  * Figma Footer (2573:23106 Black / 2573:27019 White) — 1924×285, 웹 285 고정, 모바일 260
  *
  * - 메뉴      : left 25, top 21, 폭 143, Body/Medium(16/26), 줄간격 없음
- * - 외부 링크 : left 81.25%-2, top 21, 폭 163, Body/Medium — INSTAGRAM · BEHANCE · (빈 줄) · 메일
+ * - 외부 링크 : left 81.25%-2, top 21, 폭 163, Body/Medium — Instagram · CCD Web (2573:23213)
  * - 학교 로고 : 외부 링크와 같은 열(오른쪽), 아래 30, 150×24 (CCD + 한동대학교). Black 은 흰색, White 는 Figma #3C3C3C → fg-secondary
  * - 링크 호버 : 글자 아래 밑줄 (페이지 이동·외부 링크 모두)
  * - 서브비주얼: 마블 인터랙션 — 푸터 아래로 잘려 나간다. 위치는 FooterMarble 참고
@@ -23,14 +23,15 @@ import ArrowUpRight from "@/components/icons/ArrowUpRight";
  */
 export default function Footer({ inverse = true }: { inverse?: boolean }) {
   const links = [
-    { label: "INSTAGRAM", href: SITE.contact.instagram },
-    { label: "BEHANCE", href: SITE.contact.behance },
+    { label: "Instagram", href: SITE.contact.instagram },
+    { label: "CCD Web", href: SITE.contact.ccd },
   ];
 
   return (
     <footer
       className={cn(
-        "relative h-[120px] text-[8px] leading-[14px] md:h-[285px] md:text-body",
+        // 모바일 8/14 · 데스크톱 Body/Medium 16/26 — leading-[14px] 이 text-body 의 행간까지 덮으므로 md 에서 다시 26
+        "relative h-[120px] text-[8px] leading-[14px] md:h-[285px] md:text-body md:leading-[26px]",
         inverse ? "bg-bg-inverse text-fg-inverse" : "bg-bg text-fg",
       )}
     >
@@ -73,14 +74,6 @@ export default function Footer({ inverse = true }: { inverse?: boolean }) {
             )}
           </li>
         ))}
-        <li className="mt-[26px]">
-          <a
-            href={`mailto:${SITE.contact.email}`}
-            className="whitespace-nowrap underline-offset-4 hover:underline"
-          >
-            {SITE.contact.email}
-          </a>
-        </li>
       </ul>
 
       {/* 모바일 외부 링크 (2593:5340) — INSTAGRAM · CCD 홈페이지 예정, 글자 뒤에 ↗ */}
