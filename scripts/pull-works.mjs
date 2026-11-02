@@ -14,7 +14,7 @@
  *     thumbnail1_*.jpg, thumbnail2_*.jpg     → thumb-a.webp, thumb-b.webp (Works 카드, 호버 시 교차)
  *     작품파일_…/01_….jpg, 02_….mp4 …        → 상세 오른쪽에 번호 순서대로
  *       .jpg .png        → 이미지 (아주 긴 이미지는 여러 장으로 나눈다 — webp 최대 16383px)
- *       .mp4 .mov        → 720p 이하 mp4 + 첫 장면 포스터
+ *       .mp4 .mov        → 1080p 이하 mp4 (24MB 이하) + 첫 장면 포스터
  *       .youtube / .docx / 구글 문서 → 안의 주소: YouTube 면 임베드, 그 밖은 링크
  *     전체보기_*.jpg     → 쓰지 않는다 (작품파일과 같은 내용을 한 장으로 이은 것)
  *
@@ -44,10 +44,12 @@ const OUT = path.join(ROOT, "public/media/works");
 const JSON_OUT = path.join(ROOT, "src/data/work-media.json");
 const FORCE = process.argv.includes("--force");
 
-/** 썸네일은 카드(456×270)의 2배, 상세 이미지는 오른쪽 칸(1518)보다 조금 크게 */
-const SIZE = { thumb: 960, page: 1600, video: 1280 };
+/** 썸네일은 카드(456×270)의 2배보다 넉넉히, 상세 이미지는 오른쪽 칸(1518)보다 크게, 영상은 1080p */
+const SIZE = { thumb: 1200, page: 2000, video: 1920 };
 const MAX_WEBP = 16000;
-const QUALITY = 82;
+const QUALITY = 88;
+/** Cloudflare Pages 파일 1개 한도(25MB)보다 조금 작게 — 넘으면 비트레이트를 맞춰 다시 인코딩 */
+const MAX_VIDEO_BYTES = 24 * 1024 * 1024;
 
 const FIELD_DIR = {
   "AX Product": "ax-product",
@@ -258,41 +260,68 @@ function videoSize(file) {
   return rot === 90 ? { width: s.height, height: s.width } : { width: s.width, height: s.height };
 }
 
+function encodeMp4(input, output, rate) {
+  execFileSync("ffmpeg", [
+    "-y",
+    "-v",
+    "error",
+    "-i",
+    input,
+    "-vf",
+    `scale='min(${SIZE.video},iw)':-2,fps=30`,
+    "-c:v",
+    "libx264",
+    "-profile:v",
+    "high",
+    "-pix_fmt",
+    "yuv420p",
+    "-preset",
+    "slow",
+    ...rate,
+    "-c:a",
+    "aac",
+    "-b:a",
+    "192k",
+    "-movflags",
+    "+faststart",
+    output,
+  ]);
+}
+
+function duration(file) {
+  const out = execFileSync("ffprobe", [
+    "-v",
+    "error",
+    "-show_entries",
+    "format=duration",
+    "-of",
+    "csv=p=0",
+    file,
+  ]);
+  return Number(out.toString().trim());
+}
+
 async function toMp4(input, base) {
   const mp4 = `${base}.mp4`;
   const poster = `${base}.webp`;
   if (FORCE || !existsSync(mp4)) {
-    // 너비 1280 이하, 짝수 크기. 소리는 남긴다 (작품 영상) — 화면에서는 음소거 자동재생, 컨트롤로 켤 수 있다
-    execFileSync("ffmpeg", [
-      "-y",
-      "-v",
-      "error",
-      "-i",
-      input,
-      "-vf",
-      `scale='min(${SIZE.video},iw)':-2,fps=30`,
-      "-c:v",
-      "libx264",
-      "-profile:v",
-      "high",
-      "-pix_fmt",
-      "yuv420p",
-      "-preset",
-      "medium",
-      "-crf",
-      "26",
-      "-maxrate",
-      "5M",
-      "-bufsize",
-      "10M",
-      "-c:a",
-      "aac",
-      "-b:a",
-      "128k",
-      "-movflags",
-      "+faststart",
-      `${mp4}.tmp.mp4`,
-    ]);
+    // 너비 1920 이하, 짝수 크기. 소리는 남긴다 (작품 영상) — 화면에서는 음소거 자동재생, 컨트롤로 켤 수 있다
+    encodeMp4(input, `${mp4}.tmp.mp4`, ["-crf", "22", "-maxrate", "10M", "-bufsize", "20M"]);
+    if (statSync(`${mp4}.tmp.mp4`).size > MAX_VIDEO_BYTES) {
+      // 길이에 맞춰 평균 비트레이트를 정해 다시 — 24MB 안에 들어오게
+      const sec = duration(input);
+      const kbps = Math.floor(((MAX_VIDEO_BYTES * 8) / sec / 1000) * 0.92) - 192;
+      if (kbps < 300)
+        throw new Error(`영상이 너무 길어 24MB 안에 넣을 수 없음 (${Math.round(sec)}초) — YouTube 로`);
+      encodeMp4(input, `${mp4}.tmp.mp4`, [
+        "-b:v",
+        `${kbps}k`,
+        "-maxrate",
+        `${kbps}k`,
+        "-bufsize",
+        `${kbps * 2}k`,
+      ]);
+    }
     renameSync(`${mp4}.tmp.mp4`, mp4);
   }
   if (FORCE || !existsSync(poster)) {
