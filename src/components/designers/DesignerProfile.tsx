@@ -52,8 +52,9 @@ const MARKER_GAP = 16;
  * - Scroll : 스크롤하면 리스트 순서대로 다음 디자이너로 전환된다
  * - Work   : 작품을 누르면 작품 상세로 간다
  *
- * 한 번의 스크롤 제스처마다 한 명씩 전환하고 사진 중앙을 마커에 맞춘다.
- * 첫/마지막 프로필에서 바깥 방향으로 다시 스크롤하면 페이지 스크롤을 허용한다.
+ * 스크롤은 연속적이다 — 휠·트랙패드로 민 양(관성 포함)만큼 여러 명이 차례로 넘어간다.
+ * 살짝 밀면 한 명, 세게 튕기면 여러 명. 사진 중앙은 항상 마커에 맞춘다.
+ * 첫/마지막 프로필에서 바깥 방향으로 스크롤하면 페이지 스크롤을 허용한다.
  */
 export default function DesignerProfile({
   designers,
@@ -128,82 +129,62 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
   useEffect(() => {
     const element = stage.current;
     if (!element || last < 0) return;
-    let lastWheel = 0;
-    let lockedUntil = 0;
+    // 민 거리를 모아서 STEP 만큼 쌓일 때마다 한 명씩 넘긴다 — 관성이 이어지는 동안 계속 넘어간다.
+    // 마우스 휠 한 칸(≈100)이면 한 명, 트랙패드로 세게 튕기면 관성만큼 여러 명.
+    // 너무 빨리 휙휙 지나가 사진을 못 알아보지 않게 한 명당 최소 MIN_GAP ms 는 둔다
+    const STEP = 90;
+    const MIN_GAP = 70;
     let accumulated = 0;
-    let gestureConsumed = false;
-    let lastDirection = 0;
-    // 최근 휠 세기 기록 — 관성(점점 약해짐)과 새 스와이프(다시 세짐)를 구분하는 데 쓴다
-    let history: number[] = [];
-    const average = (count: number) => {
-      const recent = history.slice(-count);
-      return recent.reduce((sum, value) => sum + value, 0) / recent.length;
-    };
+    let lastMove = 0;
+    let lastWheel = 0;
     let touchY: number | null = null;
-    let touchDelta = 0;
     const canMove = (direction: number) => (direction > 0 ? selected.current < last : selected.current > 0);
     const move = (direction: number) => {
       goTo(Math.max(0, Math.min(last, selected.current + direction)));
-      lockedUntil = performance.now() + 400;
+      lastMove = performance.now();
     };
     const wheel = (event: WheelEvent) => {
       if (event.ctrlKey || Math.abs(event.deltaX) > Math.abs(event.deltaY) || !event.deltaY) return;
       const now = performance.now();
       const direction = Math.sign(event.deltaY);
-      // 관성이 끝나거나 방향이 바뀌면 새 제스처다. 애니메이션 종료만으로 다시 열지 않는다.
-      if (now - lastWheel > 180 || direction !== lastDirection) {
-        gestureConsumed = false;
+      // 끝에 닿았으면 페이지가 스크롤되게 둔다
+      if (!canMove(direction)) {
         accumulated = 0;
-        history = [];
+        return;
       }
-      lastWheel = now;
-      lastDirection = direction;
-      const delta =
-        event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? element.clientHeight : 1);
-      history.push(Math.abs(delta));
-      if (history.length > 40) history.shift();
-      // 트랙패드·매직마우스는 관성 이벤트가 끊기지 않고 계속 들어와서 시간 간격만으로는
-      // 다음 스와이프를 못 알아챈다. 관성은 계속 약해지기만 하므로, 최근 세기가
-      // 평균보다 다시 커지면 손가락으로 새로 민 것으로 보고 다음 전환을 연다.
-      if (gestureConsumed && now >= lockedUntil && history.length > 5 && average(5) > average(40)) {
-        gestureConsumed = false;
-        accumulated = 0;
-      }
-      if (!gestureConsumed && now >= lockedUntil && !canMove(direction)) return;
       event.preventDefault();
       event.stopPropagation();
-      if (gestureConsumed || now < lockedUntil) return;
-      if (Math.sign(accumulated) !== direction) accumulated = 0;
-      accumulated += delta;
-      if (Math.abs(accumulated) >= 24) {
-        accumulated = 0;
-        gestureConsumed = true;
+      // 잠깐 멈췄다가 다시 밀거나 방향을 바꾸면 처음부터 모은다
+      if (now - lastWheel > 200 || Math.sign(accumulated) !== direction) accumulated = 0;
+      lastWheel = now;
+      accumulated +=
+        event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? element.clientHeight : 1);
+      if (Math.abs(accumulated) >= STEP && now - lastMove >= MIN_GAP) {
+        accumulated -= direction * STEP;
         move(direction);
       }
     };
+    // 터치: 손가락이 STEP 만큼 움직일 때마다 한 명씩 — 끌어올리는 동안 계속 넘어간다
     const touchStart = (event: TouchEvent) => {
       touchY = event.touches.length === 1 ? event.touches[0].clientY : null;
-      touchDelta = 0;
     };
     const touchMove = (event: TouchEvent) => {
       if (touchY === null || event.touches.length !== 1) return;
-      touchDelta = touchY - event.touches[0].clientY;
-      if (canMove(Math.sign(touchDelta))) {
-        event.preventDefault();
-        event.stopPropagation();
+      const y = event.touches[0].clientY;
+      const delta = touchY - y;
+      const direction = Math.sign(delta);
+      if (!direction || !canMove(direction)) return;
+      event.preventDefault();
+      event.stopPropagation();
+      if (Math.abs(delta) >= STEP / 2) {
+        touchY = y;
+        move(direction);
       }
     };
     const touchEnd = () => {
-      if (touchY !== null && Math.abs(touchDelta) >= 30 && canMove(Math.sign(touchDelta))) {
-        move(Math.sign(touchDelta));
-      }
       touchY = null;
-      touchDelta = 0;
     };
-    const touchCancel = () => {
-      touchY = null;
-      touchDelta = 0;
-    };
+    const touchCancel = touchEnd;
     element.addEventListener("wheel", wheel, { passive: false });
     element.addEventListener("touchstart", touchStart, { passive: true });
     element.addEventListener("touchmove", touchMove, { passive: false });
@@ -332,7 +313,7 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
                         {...(c.href.startsWith("mailto:")
                           ? {}
                           : { target: "_blank", rel: "noopener noreferrer" })}
-                        className="w-fit break-all hover:text-fg"
+                        className="w-fit break-all underline-offset-4 hover:text-fg hover:underline"
                       >
                         {c.label}
                       </a>
@@ -348,9 +329,9 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
                     <li key={w.slug}>
                       <Link
                         href={`/works/${w.slug}/`}
-                        className="flex items-start font-kr text-kr-body text-fg-secondary hover:text-fg"
+                        className="group/work flex items-start font-kr text-kr-body text-fg-secondary hover:text-fg"
                       >
-                        <span>{w.title}</span>
+                        <span className="underline-offset-4 group-hover/work:underline">{w.title}</span>
                         <ArrowUpRight className="size-6 shrink-0" />
                       </Link>
                     </li>

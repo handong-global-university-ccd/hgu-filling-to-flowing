@@ -230,13 +230,28 @@ export default function Header({
 
   // 홈은 인트로 아래에서 본문이 시작한다 — 모바일 홈 헤더가 투명한 구간(본문 맨 위)을 인트로 높이만큼 내려 잡는다
   const [atPageTop, setAtPageTop] = useState(true);
+  // 홈: 인트로를 지나 본문(레이어)이 화면 맨 위에 닿으면 헤더를 상단에 고정한다 — 인트로 동안만 숨는다
+  const [pastIntro, setPastIntro] = useState(false);
   useMotionValueEvent(scrollY, "change", (y) => {
     setAtTop(y < 40);
     const intro = overlay ? (document.querySelector<HTMLElement>("[data-intro]")?.offsetHeight ?? 0) : 0;
     setAtPageTop(y < intro + 40);
+    setPastIntro(overlay && y >= intro - 1);
     const previous = scrollY.getPrevious() ?? 0;
     if (Math.abs(y - previous) > 4) setScrollingDown(y > previous);
   });
+
+  // 이번 세션에 인트로를 이미 지났으면 홈이 인트로 아래에서 바로 시작한다 — 스크롤 이벤트 없이도 맞춘다
+  useEffect(() => {
+    if (!overlay) return;
+    const check = () => {
+      const intro = document.querySelector<HTMLElement>("[data-intro]")?.offsetHeight ?? 0;
+      setPastIntro(window.scrollY >= intro - 1);
+    };
+    check();
+    const id = setTimeout(check, 300);
+    return () => clearTimeout(id);
+  }, [overlay]);
 
   // 페이지를 옮기면 메뉴를 닫는다
   useEffect(() => {
@@ -262,9 +277,12 @@ export default function Header({
     return () => window.removeEventListener("resize", check);
   }, [hideOnScroll]);
 
-  const hidden = finePointer
-    ? hideOnScroll && !nearTop && !hovered && (overlay || !scrollable || !atTop)
-    : hideOnScroll && scrollable && !atTop && !atPageTop && scrollingDown && !menuOpen;
+  const hidden =
+    overlay && pastIntro
+      ? false
+      : finePointer
+        ? hideOnScroll && !nearTop && !hovered && (overlay || !scrollable || !atTop)
+        : hideOnScroll && scrollable && !atTop && !atPageTop && scrollingDown && !menuOpen;
   // 둘째 줄이 있는 헤더는 통째로 숨지 않고 Scroll(74px) 로 접혀 둘째 줄(탭)만 남긴다
   const expanded =
     compact && !(isMobile && mobileTitle) ? hovered : (atTop || hovered || searchOpen) && !hidden;

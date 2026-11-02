@@ -43,7 +43,7 @@ export default function DesignerProfileMobile({ designer: d }: { designer?: Prof
                       {...(c.href.startsWith("mailto:")
                         ? {}
                         : { target: "_blank", rel: "noopener noreferrer" })}
-                      className="break-all"
+                      className="break-all underline-offset-2 hover:underline"
                     >
                       {c.label}
                     </a>
