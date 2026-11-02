@@ -3,6 +3,8 @@ import PageShell from "@/components/layout/PageShell";
 import ArchiveCanvas, { type Photo } from "@/components/archive/ArchiveCanvas";
 import { ARCHIVE_TILES } from "@/data/archive-layout";
 import ARCHIVE_PHOTOS from "@/data/archive-photos.json";
+import ArchivePreparing from "@/components/archive/ArchivePreparing";
+import { ARCHIVE_READY } from "@/data/archive";
 
 export const metadata: Metadata = { title: "Archive — Behind" };
 
@@ -21,7 +23,14 @@ const photos: Photo[] = ARCHIVE_TILES.map(([col, row], k) => {
 export default function ArchiveBehindPage() {
   return (
     <PageShell fullscreen archive="behind" hideOnScroll>
-      <ArchiveCanvas photos={photos} />
+      {ARCHIVE_READY.behind ? (
+        <ArchiveCanvas photos={photos} />
+      ) : (
+        // 펼친 헤더(데스크톱 176 · 모바일 120) 아래부터 화면 끝까지, 마진 안쪽
+        <div className="flex min-h-0 flex-1 px-margin pt-[176px] pb-margin max-md:pt-[120px]">
+          <ArchivePreparing className="flex-1" />
+        </div>
+      )}
     </PageShell>
   );
 }

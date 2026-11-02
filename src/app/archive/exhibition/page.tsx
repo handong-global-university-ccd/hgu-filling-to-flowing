@@ -3,6 +3,8 @@ import Image from "next/image";
 import PageShell from "@/components/layout/PageShell";
 import { SITE } from "@/lib/site";
 import { asset } from "@/lib/asset";
+import ArchivePreparing from "@/components/archive/ArchivePreparing";
+import { ARCHIVE_READY } from "@/data/archive";
 
 export const metadata: Metadata = { title: "Archive — Exhibition View" };
 
@@ -35,19 +37,23 @@ export default function ArchiveExhibitionPage() {
           </div>
         </div>
 
-        <ul className="space-y-5 max-md:space-y-[15px] lg:w-[810px] lg:shrink-0">
-          {photos.map((src) => (
-            <li key={src}>
-              <Image
-                src={asset(src)}
-                alt="전시 현장"
-                width={810}
-                height={540}
-                className="aspect-[3/2] w-full object-cover"
-              />
-            </li>
-          ))}
-        </ul>
+        {!ARCHIVE_READY.exhibition ? (
+          <ArchivePreparing className="aspect-[3/2] w-full lg:w-[810px] lg:shrink-0" />
+        ) : (
+          <ul className="space-y-5 max-md:space-y-[15px] lg:w-[810px] lg:shrink-0">
+            {photos.map((src) => (
+              <li key={src}>
+                <Image
+                  src={asset(src)}
+                  alt="전시 현장"
+                  width={810}
+                  height={540}
+                  className="aspect-[3/2] w-full object-cover"
+                />
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </PageShell>
   );

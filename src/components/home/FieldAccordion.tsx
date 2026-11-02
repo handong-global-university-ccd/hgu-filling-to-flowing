@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion, type Variants } from "motion/react";
 import Marquee from "./Marquee";
-import { FIELDS, type FieldKey, type Work } from "@/data/types";
+import { FIELDS, FIELD_INTRO_LINES, type FieldKey, type Work } from "@/data/types";
 import { asset } from "@/lib/asset";
 import { cn } from "@/lib/cn";
 
@@ -264,7 +264,7 @@ export default function FieldAccordion({ worksByField }: { worksByField: Record<
                         </h3>
                         <p className="mt-2 font-kr text-kr-body-lg max-md:text-kr-body">
                           <RiseLines
-                            lines={field.intro.split("\n").map((l) => l.trim())}
+                            lines={FIELD_INTRO_LINES[field.key]}
                             still={!!reduce}
                             delay={RISE_STAGGER}
                           />
