@@ -9,7 +9,7 @@ import { asset } from "@/lib/asset";
 
 /** 한 장이 다 들어온 뒤 머무는 시간 · 미는 시간 (넘어가는 간격 ≈ 1.3 + 1.2 = 2.5초) */
 const HOLD = 1300; // ms
-const SLIDE = { duration: 3.2, ease: [0.65, 0, 0.35, 1] } as const;
+const SLIDE = { duration: 2.2, ease: [0.65, 0, 0.35, 1] } as const;
 
 /**
  * Figma Works 카드 (2564:9047) — 썸네일 456×270, 아래로 16px, 제목 KR Body/Large · 이름 KR Body/Small, 사이 2px
