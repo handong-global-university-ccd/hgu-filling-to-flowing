@@ -6,6 +6,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import { motion } from "motion/react";
 import ArrowUpRight from "@/components/icons/ArrowUpRight";
 import { useWorksFilter } from "@/components/works/works-filter";
+import EmptyResult from "@/components/common/EmptyResult";
 import { matchesFilter, type FieldKey } from "@/data/types";
 import { asset } from "@/lib/asset";
 import { HEADER_H } from "@/lib/header";
@@ -227,9 +228,7 @@ function ProfileStage({ designers, initialIndex }: { designers: ProfileDesigner[
   if (!d) {
     return (
       <section className="px-margin max-md:hidden" style={{ minHeight: `calc(var(--svh) - ${header}px)` }}>
-        <p role="status" className="py-20 text-center text-fg-tertiary">
-          검색 결과가 없습니다.
-        </p>
+        <EmptyResult className="max-md:hidden">검색 결과가 없습니다.</EmptyResult>
       </section>
     );
   }

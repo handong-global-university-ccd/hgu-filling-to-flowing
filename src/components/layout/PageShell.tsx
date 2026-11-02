@@ -26,6 +26,7 @@ export default function PageShell({
   overlayHeader = false,
   headerHeight = 110,
   fullscreen = false,
+  fillScreen = true,
   mobileTitle,
   className,
 }: {
@@ -46,6 +47,8 @@ export default function PageShell({
   /** 둘째 줄이 없는 단순 헤더의 높이(px) */
   headerHeight?: number;
   fullscreen?: boolean;
+  /** false 면 본문이 짧아도 화면 높이만큼 늘리지 않는다 — 본문 끝 ~ 푸터 간격을 그대로 지킬 때 (About) */
+  fillScreen?: boolean;
   /** 모바일 헤더를 ← 하나로 (Header 의 mobileTitle) — 높이 46. title 은 지금 시안에서는 보이지 않는다 */
   mobileTitle?: { title: string; backHref: string };
   className?: string;
@@ -73,7 +76,7 @@ export default function PageShell({
       <main
         id="main"
         className={cn(
-          fullscreen ? "flex h-(--svh) flex-col" : "min-h-(--svh)",
+          fullscreen ? "flex h-(--svh) flex-col" : fillScreen && "min-h-(--svh)",
           // 모바일 값은 lib/header.ts 의 HEADER_H.mobile 과 같아야 한다
           padTop &&
             (tall

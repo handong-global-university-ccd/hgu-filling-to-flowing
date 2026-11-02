@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useWorksFilter } from "@/components/works/works-filter";
+import EmptyResult from "@/components/common/EmptyResult";
 import { asset } from "@/lib/asset";
 import { cn } from "@/lib/cn";
 import { matchesFilter, type FieldKey } from "@/data/types";
@@ -198,7 +199,7 @@ export default function DesignerList({ designers }: { designers: DesignerRow[] }
         </ul>
       </div>
 
-      {filtered.length === 0 && <p className="py-20 text-fg-tertiary">검색 결과가 없습니다.</p>}
+      {filtered.length === 0 && <EmptyResult>검색 결과가 없습니다.</EmptyResult>}
     </div>
   );
 }

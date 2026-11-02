@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { asset } from "@/lib/asset";
 import type { ProfileDesigner } from "./DesignerProfile";
+import EmptyResult from "@/components/common/EmptyResult";
 
 /**
  * Figma 모바일 디자이너 상세 (2573:10650) — 390 기준, ← 헤더(46) 아래 9
@@ -15,9 +16,7 @@ export default function DesignerProfileMobile({ designer: d }: { designer?: Prof
   if (!d) {
     return (
       <section className="px-margin md:hidden">
-        <p role="status" className="py-20 text-center text-fg-tertiary">
-          검색 결과가 없습니다.
-        </p>
+        <EmptyResult className="md:hidden">검색 결과가 없습니다.</EmptyResult>
       </section>
     );
   }

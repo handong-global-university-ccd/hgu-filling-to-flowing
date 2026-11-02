@@ -203,8 +203,9 @@ export default function AboutPage() {
   const [titleHead, titleTail] = SITE.fullTitle.split("한동대학교 ");
 
   return (
-    <PageShell hideOnScroll headerHeight={84}>
-      <div className="grid gap-y-16 pt-[106px] pb-75 max-md:gap-y-11 max-md:pt-7 max-md:pb-[86px] lg:grid-cols-[56.25%_1fr]">
+    // 후원사 로고 줄 끝 ~ 푸터 140 (데스크톱) — 화면보다 짧아도 늘리지 않는다
+    <PageShell hideOnScroll headerHeight={84} fillScreen={false}>
+      <div className="grid gap-y-16 pt-[106px] pb-[140px] max-md:gap-y-11 max-md:pt-7 max-md:pb-[86px] lg:grid-cols-[56.25%_1fr]">
         {/* ───── 좌측: 전시 개요 + 주제 말씀 ───── */}
         <div className="px-margin lg:pr-0">
           <div className="max-w-[529px]">

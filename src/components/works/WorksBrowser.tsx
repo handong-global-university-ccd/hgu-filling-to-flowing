@@ -3,8 +3,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import WorkCard from "./WorkCard";
+import EmptyResult from "@/components/common/EmptyResult";
 import { useWorksFilter } from "./works-filter";
-import { FIELDS, isFieldKey, type Work } from "@/data/types";
+import { isFieldKey, type Work } from "@/data/types";
 import { getProjects, inProject } from "@/data/projects";
 import { cn } from "@/lib/cn";
 
@@ -19,7 +20,8 @@ type Item = { work: Work; designerNames: string };
  *              스크롤해도 제자리에 남는다 — 헤더가 Scroll(74px) 로 접히면 그 아래 48px(top 122)에 붙는다
  * - 왼쪽 칸 항목 사이 4 (2670:5150)
  * - 오른쪽 9칸 : 전시 제목(Body/Large) · 지도교수 · 소개글(16/1.7, 문단 사이 4) → 52 아래 작품 3열 (가로 16, 세로 64)
- * - All 은 소개글 없이 전체 작품. 왼쪽 칸은 분야 목록이 되어 누르면 그 분야로 간다
+ * - All 은 소개글 없이 전체 작품. 왼쪽 칸은 비워 둔다 (분야 탭이 헤더에 있다)
+ * - 작품 순서는 페이지에 들어올 때마다 랜덤 — 서버 HTML 은 데이터 순서라 섞기 전에는 그리드를 숨긴다
  */
 export default function WorksBrowser({ items }: { items: Item[] }) {
   const filter = useWorksFilter();
@@ -32,9 +34,24 @@ export default function WorksBrowser({ items }: { items: Item[] }) {
   const projects = useMemo(() => (field === "all" ? [] : getProjects(field)), [field]);
   const project = projects.find((p) => p.key === filter?.project) ?? projects[0];
 
+  // 들어올 때마다 작품 순서를 섞는다 (Fisher–Yates). 서버·첫 렌더와 어긋나지 않게 마운트 뒤에 정한다
+  const [rank, setRank] = useState<Map<string, number> | null>(null);
+  useEffect(() => {
+    const slugs = items.map((i) => i.work.slug);
+    for (let i = slugs.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [slugs[i], slugs[j]] = [slugs[j], slugs[i]];
+    }
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setRank(new Map(slugs.map((s, i) => [s, i])));
+  }, [items]);
+
   const filtered = useMemo(() => {
     const query = q.trim().toLowerCase();
-    return items.filter(({ work, designerNames }) => {
+    const list = rank
+      ? [...items].sort((a, b) => (rank.get(a.work.slug) ?? 0) - (rank.get(b.work.slug) ?? 0))
+      : items;
+    return list.filter(({ work, designerNames }) => {
       if (project && !inProject(work, project)) return false;
       if (!query) return true;
       return (
@@ -42,7 +59,7 @@ export default function WorksBrowser({ items }: { items: Item[] }) {
         designerNames.toLowerCase().includes(query)
       );
     });
-  }, [items, project, q]);
+  }, [items, project, q, rank]);
 
   // 다른 분야·전시로 바꾸면 소개글부터 다시 보이게 맨 위로
   const scope = project?.key ?? field;
@@ -53,50 +70,43 @@ export default function WorksBrowser({ items }: { items: Item[] }) {
     if (window.scrollY > 0) window.scrollTo({ top: 0 });
   }, [scope]);
 
-  const nav =
-    field === "all"
-      ? FIELDS.map((f) => ({
-          key: f.key,
-          label: f.label,
-          active: false,
-          select: () => filter?.setField(f.key),
-        }))
-      : projects.map((p) => ({
-          key: p.key,
-          label: p.label,
-          active: p.key === project?.key,
-          select: () => filter?.setProject(p.key),
-        }));
+  const nav = projects.map((p) => ({
+    key: p.key,
+    label: p.label,
+    active: p.key === project?.key,
+    select: () => filter?.setProject(p.key),
+  }));
 
   return (
     <div className="pb-75 max-lg:px-margin max-lg:pb-[86px] lg:page-grid lg:pt-[49px]">
-      {/* 왼쪽 칸 — 모바일(2573:9729)은 헤더 아래 6 에 세로 목록 12/18, 사이 4. All 에서는 숨긴다 (분야 탭이 헤더에 있다) */}
-      <nav
-        aria-label={field === "all" ? "분야" : "전시"}
-        className={cn(
-          "self-start max-lg:pt-1.5 lg:sticky lg:top-[122px] lg:col-span-3 lg:pl-1",
-          field === "all" && "max-lg:hidden",
-        )}
-      >
-        <ul className="flex flex-col gap-1 text-body max-lg:font-kr max-lg:text-[12px] max-lg:leading-[18px]">
-          {nav.map((n) => (
-            <li key={n.key}>
-              <button
-                type="button"
-                onClick={n.select}
-                aria-current={n.active ? "true" : undefined}
-                className={cn(
-                  "flex items-center gap-[11px] text-left transition-colors max-lg:gap-2",
-                  n.active ? "text-fg" : "text-neutral-300 hover:text-fg-secondary",
-                )}
-              >
-                {n.active && <span aria-hidden className="size-1.5 shrink-0 bg-current" />}
-                {n.label}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      {/* 왼쪽 칸 — 모바일(2573:9729)은 헤더 아래 6 에 세로 목록 12/18, 사이 4. All 에서는 빈 칸 */}
+      {field === "all" ? (
+        <div aria-hidden className="max-lg:hidden lg:col-span-3" />
+      ) : (
+        <nav
+          aria-label="전시"
+          className="self-start max-lg:pt-1.5 lg:sticky lg:top-[122px] lg:col-span-3 lg:pl-1"
+        >
+          <ul className="flex flex-col gap-1 text-body max-lg:font-kr max-lg:text-[12px] max-lg:leading-[18px]">
+            {nav.map((n) => (
+              <li key={n.key}>
+                <button
+                  type="button"
+                  onClick={n.select}
+                  aria-current={n.active ? "true" : undefined}
+                  className={cn(
+                    "flex items-center gap-[11px] text-left transition-colors max-lg:gap-2",
+                    n.active ? "text-fg" : "text-neutral-300 hover:text-fg-secondary",
+                  )}
+                >
+                  {n.active && <span aria-hidden className="size-1.5 shrink-0 bg-current" />}
+                  {n.label}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
 
       <motion.div
         key={scope}
@@ -126,17 +136,20 @@ export default function WorksBrowser({ items }: { items: Item[] }) {
           </header>
         )}
 
-        <ul className="grid grid-cols-2 gap-x-gutter gap-y-8 max-lg:gap-3 md:gap-y-16 lg:grid-cols-3">
+        <ul
+          className={cn(
+            "grid grid-cols-2 gap-x-gutter gap-y-8 max-lg:gap-3 md:gap-y-16 lg:grid-cols-3",
+            !rank && "invisible",
+          )}
+        >
           {filtered.map(({ work, designerNames }) => (
             <li key={work.slug}>
               <WorkCard work={work} designerName={designerNames} />
             </li>
           ))}
         </ul>
-        {filtered.length === 0 && (
-          <p className="py-20 text-center text-fg-tertiary">
-            {q.trim() ? "검색 결과가 없습니다." : "작품을 준비하고 있습니다."}
-          </p>
+        {rank && filtered.length === 0 && (
+          <EmptyResult>{q.trim() ? "검색 결과가 없습니다." : "작품을 준비하고 있습니다."}</EmptyResult>
         )}
       </motion.div>
     </div>
