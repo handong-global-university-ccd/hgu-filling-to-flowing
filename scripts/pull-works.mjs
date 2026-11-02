@@ -16,7 +16,8 @@
  *       .jpg .png        → 이미지 (아주 긴 이미지는 여러 장으로 나눈다 — webp 최대 16383px)
  *       .mp4 .mov        → 1080p 이하 mp4 (24MB 이하) + 첫 장면 포스터
  *       .youtube / .docx / 구글 문서 → 안의 주소: YouTube 면 임베드, 그 밖은 링크
- *     전체보기_*.jpg     → 쓰지 않는다 (작품파일과 같은 내용을 한 장으로 이은 것)
+ *     전체보기_*.jpg/.pdf → 작품파일이 비어 있을 때만 대신 쓴다 (작품파일과 같은 내용을 한 장으로 이은 것)
+ *                          PDF 는 페이지마다 이미지로 — pdftoppm 필요 (brew install poppler)
  *
  * 원본은 media-src/drive-works/ 에 파일 ID 이름으로 받아 둔다 (git 제외, 다시 받지 않는다).
  */
@@ -125,6 +126,7 @@ async function walk(id, parts = []) {
 // ───────── 2. 작품 폴더 → slug ─────────
 const THUMB = /^thu?mb?n?a?il[\s_-]*0?([12])/i;
 const PAGES_DIR = /(작품|작업)\s*파일/;
+const OVERVIEW = /^전체\s*보기/;
 
 function soloSlug(field, folder) {
   const m = folder.match(/^(.+?)\s*\(?\s*(\d{8})?\s*\)?$/);
@@ -260,6 +262,37 @@ function videoSize(file) {
   return rot === 90 ? { width: s.height, height: s.width } : { width: s.width, height: s.height };
 }
 
+/** PDF → 페이지마다 이미지 (p01-1.webp, p01-2.webp …). 긴 페이지는 pageImages 처럼 나눈다 */
+async function pdfImages(input, base) {
+  const tmp = `${base}.pdf-pages`;
+  rmSync(tmp, { recursive: true, force: true });
+  mkdirSync(tmp, { recursive: true });
+  try {
+    execFileSync("pdftoppm", [
+      "-png",
+      "-scale-to-x",
+      String(SIZE.page),
+      "-scale-to-y",
+      "-1",
+      input,
+      path.join(tmp, "page"),
+    ]);
+  } catch (err) {
+    rmSync(tmp, { recursive: true, force: true });
+    if (err.code === "ENOENT") throw new Error("PDF 변환에 pdftoppm 이 필요합니다 → brew install poppler");
+    throw err;
+  }
+  const pngs = readdirSync(tmp)
+    .filter((f) => f.endsWith(".png"))
+    .sort((a, b) => Number(a.match(/\d+/)[0]) - Number(b.match(/\d+/)[0]));
+  const outs = [];
+  for (const [i, png] of pngs.entries()) {
+    outs.push(...(await pageImages(path.join(tmp, png), `${base}-${i + 1}`)));
+  }
+  rmSync(tmp, { recursive: true, force: true });
+  return outs;
+}
+
 function encodeMp4(input, output, rate) {
   execFileSync("ffmpeg", [
     "-y",
@@ -342,7 +375,7 @@ const version = (file) => createHash("md5").update(readFileSync(file)).digest("h
 const url = (file) => `/media/works/${path.relative(OUT, file).split(path.sep).join("/")}?v=${version(file)}`;
 
 const media = {};
-const report = { ok: [], skipped: [], warn: [] };
+const report = { ok: [], skipped: [], warn: [], note: [] };
 
 for (const node of folders) {
   const field = FIELD_DIR[node.parts[0]];
@@ -375,12 +408,17 @@ for (const node of folders) {
   if (entry.thumbnails.length === 1) entry.thumbnails.push(entry.thumbnails[0]);
 
   // 상세 — 번호 순서
-  const pageFiles = (pagesDir?.files ?? [])
+  let pageFiles = (pagesDir?.files ?? [])
     .filter((f) => /^\d+/.test(f.name) && !THUMB.test(f.name))
     .sort(
       (a, b) =>
         Number(a.name.match(/^\d+/)[0]) - Number(b.name.match(/^\d+/)[0]) || a.name.localeCompare(b.name),
     );
+  // 작품파일이 비어 있으면 전체보기로 대신한다
+  if (!pageFiles.length) {
+    pageFiles = [...node.files, ...(pagesDir?.files ?? [])].filter((f) => OVERVIEW.test(f.name));
+    if (pageFiles.length) report.note.push(`${label} — 작품파일이 없어 전체보기로 대신함`);
+  }
   let i = 0;
   for (const f of pageFiles) {
     i += 1;
@@ -392,6 +430,12 @@ for (const node of folders) {
         for (const u of urlsIn(src, f.name)) {
           const id = youtubeId(u);
           entry.pages.push(id ? { type: "youtube", id } : { type: "link", href: u });
+        }
+        continue;
+      }
+      if (e === ".pdf") {
+        for (const img of await pdfImages(src, base)) {
+          entry.pages.push({ type: "image", src: url(img.file), width: img.width, height: img.height });
         }
         continue;
       }
@@ -447,6 +491,10 @@ for (const l of report.ok) console.log("  ✓", l);
 if (report.warn.length) {
   console.log(`\n⚠️  변환 실패 ${report.warn.length}개`);
   for (const l of report.warn) console.log("  ", l);
+}
+if (report.note.length) {
+  console.log(`\n전체보기로 대신 ${report.note.length}개`);
+  for (const l of report.note) console.log("  ", l);
 }
 if (report.skipped.length) {
   console.log(`\n건너뜀 ${report.skipped.length}개`);

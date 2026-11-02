@@ -193,7 +193,14 @@
       "/media/works/communication-06/thumb-a.webp?v=701d48f8",
       "/media/works/communication-06/thumb-b.webp?v=d1cc2671"
     ],
-    "pages": []
+    "pages": [
+      {
+        "type": "image",
+        "src": "/media/works/communication-06/p01.webp?v=b7103d74",
+        "width": 1518,
+        "height": 3924
+      }
+    ]
   },
   "communication-07": {
     "thumbnails": [
@@ -702,7 +709,14 @@
       "/media/works/communication-22/thumb-a.webp?v=4af7d04e",
       "/media/works/communication-22/thumb-b.webp?v=8e8250fa"
     ],
-    "pages": []
+    "pages": [
+      {
+        "type": "image",
+        "src": "/media/works/communication-22/p01-1.webp?v=4b66a07a",
+        "width": 2000,
+        "height": 10791
+      }
+    ]
   },
   "communication-23": {
     "thumbnails": [
@@ -1789,7 +1803,14 @@
       "/media/works/communication-57/thumb-a.webp?v=d9df2e70",
       "/media/works/communication-57/thumb-b.webp?v=a0fe4df7"
     ],
-    "pages": []
+    "pages": [
+      {
+        "type": "image",
+        "src": "/media/works/communication-57/p01.webp?v=639d0621",
+        "width": 2000,
+        "height": 6434
+      }
+    ]
   },
   "communication-58": {
     "thumbnails": [
