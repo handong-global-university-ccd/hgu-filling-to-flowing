@@ -6,7 +6,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import { motion } from "motion/react";
 import ArrowUpRight from "@/components/icons/ArrowUpRight";
 import { useWorksFilter } from "@/components/works/works-filter";
-import type { FieldKey } from "@/data/types";
+import { matchesFilter, type FieldKey } from "@/data/types";
 import { asset } from "@/lib/asset";
 import { HEADER_H } from "@/lib/header";
 import { pageZoom } from "@/lib/zoom";
@@ -67,7 +67,7 @@ export default function DesignerProfile({
   const filtered = useMemo(
     () =>
       designers.filter((designer) => {
-        if (field !== "all" && !designer.fieldKeys.includes(field)) return false;
+        if (!matchesFilter(designer.fieldKeys, field)) return false;
         return [designer.nameKo, designer.nameEn, designer.disciplines].some((value) =>
           value.normalize("NFC").toLowerCase().includes(query),
         );

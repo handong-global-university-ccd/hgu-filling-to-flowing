@@ -37,6 +37,30 @@ export const FIELDS = [
 
 export type FieldKey = (typeof FIELDS)[number]["key"];
 
+/**
+ * 전공 2개 — Designers 탭 (Figma 1807:14949 "All / Product Design / Visual Design").
+ * 시트의 시각·제품 탭 구분을 따른다 — 커뮤니케이션·서비스는 시각, AX·UX Product·UX Space 는 제품.
+ */
+export const MAJORS = [
+  { key: "product", label: "Product Design", fields: ["ax-product", "ux-product", "ux-space"] },
+  { key: "visual", label: "Visual Design", fields: ["communication", "service"] },
+] as const satisfies readonly { key: string; label: string; fields: readonly FieldKey[] }[];
+
+export type MajorKey = (typeof MAJORS)[number]["key"];
+
+/** 분야 탭(Works) 또는 전공 탭(Designers) 에서 고른 값 */
+export type FilterKey = FieldKey | MajorKey | "all";
+
+export const isFieldKey = (v: string): v is FieldKey => FIELDS.some((f) => f.key === v);
+
+/** 분야 목록이 고른 탭(분야·전공·All)에 들어가는지 */
+export function matchesFilter(fieldKeys: readonly FieldKey[], key: FilterKey) {
+  if (key === "all") return true;
+  const major = MAJORS.find((m) => m.key === key);
+  if (major) return fieldKeys.some((f) => (major.fields as readonly FieldKey[]).includes(f));
+  return fieldKeys.includes(key as FieldKey);
+}
+
 export type Work = {
   slug: string;
   field: FieldKey;

@@ -1,11 +1,12 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { FIELDS, type FieldKey } from "@/data/types";
+import { FIELDS, MAJORS, type FilterKey } from "@/data/types";
 
 type WorksFilter = {
-  field: FieldKey | "all";
-  setField: (f: FieldKey | "all") => void;
+  /** Works 는 분야(FieldKey), Designers 는 전공(MajorKey) 탭 */
+  field: FilterKey;
+  setField: (f: FilterKey) => void;
   /** Works 왼쪽 칸에서 고른 전시 (data/projects.ts). null 이면 분야의 첫 전시 */
   project: string | null;
   setProject: (key: string | null) => void;
@@ -17,10 +18,11 @@ type WorksFilter = {
 
 const Context = createContext<WorksFilter | null>(null);
 
-const isField = (v: string | null): v is FieldKey => FIELDS.some((f) => f.key === v);
+const isFilterKey = (v: string | null): v is Exclude<FilterKey, "all"> =>
+  [...FIELDS, ...MAJORS].some((f) => f.key === v);
 
 /** 분야·전시 → "?field=communication&project=local-innovation" */
-export function filterQuery(field: FieldKey | "all", project: string | null) {
+export function filterQuery(field: FilterKey, project: string | null) {
   const params = new URLSearchParams();
   if (field !== "all") params.set("field", field);
   if (field !== "all" && project) params.set("project", project);
@@ -38,7 +40,7 @@ export function filterQuery(field: FieldKey | "all", project: string | null) {
  * 페이지를 새로 그리지 않도록 router 대신 history.replaceState 로 바꾼다 (Next 가 주소 변경을 따라온다).
  */
 export function WorksFilterProvider({ children }: { children: React.ReactNode }) {
-  const [field, setFieldState] = useState<FieldKey | "all">("all");
+  const [field, setFieldState] = useState<FilterKey>("all");
   const [project, setProject] = useState<string | null>(null);
   const [q, setQ] = useState("");
   // 주소를 읽기 전에는 쓰지 않는다 — 안 그러면 첫 렌더의 All 이 주소의 ?field 를 지운다
@@ -49,7 +51,7 @@ export function WorksFilterProvider({ children }: { children: React.ReactNode })
     const params = new URLSearchParams(window.location.search);
     const f = params.get("field");
     /* eslint-disable react-hooks/set-state-in-effect */
-    if (isField(f)) {
+    if (isFilterKey(f)) {
       setFieldState(f);
       setProject(params.get("project"));
     }
@@ -67,7 +69,7 @@ export function WorksFilterProvider({ children }: { children: React.ReactNode })
   }, [ready, field, project]);
 
   // 분야를 바꾸면 그 분야의 첫 전시부터 보여준다
-  const setField = useCallback((f: FieldKey | "all") => {
+  const setField = useCallback((f: FilterKey) => {
     setFieldState(f);
     setProject(null);
   }, []);

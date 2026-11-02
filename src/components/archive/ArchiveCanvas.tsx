@@ -16,6 +16,10 @@ const DURATION = 0.35; // s
 const PAN_DURATION = 1.2; // s
 /** 호버(거리 0)에서 222×296 이 되도록 — 222/103 ≈ 296/137 */
 const MAX_SCALE = 222 / TILE_W;
+/** 오버뷰(왼쪽 아래 미니맵) — 판 3840×2160 을 220 폭으로 줄인 것. Figma 2670:13884 (220×123.75, 왼쪽 24·아래 40) */
+const MAP_W = 220;
+const MAP_SCALE = MAP_W / PLATE_W;
+const MAP_H = PLATE_H * MAP_SCALE;
 
 /**
  * Figma 아카이브_비하인드 (1807:15967 / 1807:15770)
@@ -28,15 +32,21 @@ const MAX_SCALE = 222 / TILE_W;
  *   화면 밖에 있던 사진이 들어온다. 페이지 자체는 스크롤되지 않는다.
  * - 커서 반경 200px 안의 사진이 거리에 비례해 커지고,
  *   커서가 올라간 사진은 222×296 이 된다 (0.35s)
+ * - 오버뷰 (댓글 #205·#227): 왼쪽 아래 미니맵에 지금 보이는 영역을 사각형으로 표시한다.
+ *   미니맵을 누르거나 끌면 그 자리로 판이 이동하고, 미니맵 위에서는 마우스 따라 움직이기를 멈춘다
  */
 export default function ArchiveCanvas({ photos }: { photos: Photo[] }) {
   const viewport = useRef<HTMLDivElement>(null);
   const plate = useRef<HTMLDivElement>(null);
+  const map = useRef<HTMLDivElement>(null);
+  const frame = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
       const vp = viewport.current!;
       const pl = plate.current!;
+      const mp = map.current!;
+      const fr = frame.current!;
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
       const items = gsap.utils.toArray<HTMLElement>("[data-photo]", pl);
@@ -82,8 +92,35 @@ export default function ArchiveCanvas({ photos }: { photos: Photo[] }) {
 
       let px = -1e4;
       let py = -1e4;
+      let overMap = false;
+      let dragging = false;
+
+      // 미니맵 좌표 → 그 점이 화면 가운데 오도록 판을 옮긴다 (판 끝을 넘지 않게)
+      const goTo = (e: PointerEvent) => {
+        const z = pageZoom();
+        const r = mp.getBoundingClientRect();
+        const cx = (e.clientX - r.left) / z / MAP_SCALE;
+        const cy = (e.clientY - r.top) / z / MAP_SCALE;
+        moveX(Math.min(0, Math.max(-slackX, width / 2 - cx)));
+        moveY(Math.min(inset, Math.max(inset - slackY, height / 2 - cy)));
+      };
+      const onMapDown = (e: PointerEvent) => {
+        dragging = true;
+        mp.setPointerCapture(e.pointerId);
+        goTo(e);
+      };
+      const onMapMove = (e: PointerEvent) => dragging && goTo(e);
+      const onMapUp = () => (dragging = false);
+      const onMapEnter = () => {
+        overMap = true;
+        // 미니맵 밑에 깔린 사진이 커지지 않게 커서를 판 밖으로 뺀다
+        px = -1e4;
+        py = -1e4;
+      };
+      const onMapLeave = () => (overMap = false);
 
       const onMove = (e: PointerEvent) => {
+        if (overMap || dragging) return;
         const z = pageZoom();
         px = e.clientX / z;
         py = e.clientY / z;
@@ -99,6 +136,10 @@ export default function ArchiveCanvas({ photos }: { photos: Photo[] }) {
       const update = () => {
         const plx = gsap.getProperty(pl, "x") as number;
         const ply = gsap.getProperty(pl, "y") as number;
+        // 오버뷰의 현재 영역 — 화면에 보이는 판 범위를 미니맵 비율로
+        fr.style.transform = `translate(${-plx * MAP_SCALE}px, ${-ply * MAP_SCALE}px)`;
+        fr.style.width = `${width * MAP_SCALE}px`;
+        fr.style.height = `${height * MAP_SCALE}px`;
         for (let i = 0; i < items.length; i++) {
           const dx = px - (left + plx + centers[i][0]);
           const dy = py - (top + ply + centers[i][1]);
@@ -115,10 +156,22 @@ export default function ArchiveCanvas({ photos }: { photos: Photo[] }) {
       measure();
       window.addEventListener("resize", measure);
       window.addEventListener("pointermove", onMove, { passive: true });
+      mp.addEventListener("pointerdown", onMapDown);
+      mp.addEventListener("pointermove", onMapMove);
+      mp.addEventListener("pointerup", onMapUp);
+      mp.addEventListener("pointercancel", onMapUp);
+      mp.addEventListener("pointerenter", onMapEnter);
+      mp.addEventListener("pointerleave", onMapLeave);
       gsap.ticker.add(update);
       return () => {
         window.removeEventListener("resize", measure);
         window.removeEventListener("pointermove", onMove);
+        mp.removeEventListener("pointerdown", onMapDown);
+        mp.removeEventListener("pointermove", onMapMove);
+        mp.removeEventListener("pointerup", onMapUp);
+        mp.removeEventListener("pointercancel", onMapUp);
+        mp.removeEventListener("pointerenter", onMapEnter);
+        mp.removeEventListener("pointerleave", onMapLeave);
         gsap.ticker.remove(update);
       };
     },
@@ -157,6 +210,16 @@ export default function ArchiveCanvas({ photos }: { photos: Photo[] }) {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* 오버뷰 — 마우스로만 쓰는 보조 내비게이션이라 보조기기에는 숨긴다. 모바일·모션 줄이기에서는 판이 움직이지 않아 없앤다 */}
+      <div
+        ref={map}
+        aria-hidden
+        className="absolute bottom-10 left-margin z-20 cursor-pointer touch-none overflow-hidden bg-neutral-200 motion-reduce:hidden max-md:hidden"
+        style={{ width: MAP_W, height: MAP_H }}
+      >
+        <div ref={frame} className="pointer-events-none absolute top-0 left-0 bg-neutral-300" />
       </div>
     </div>
   );

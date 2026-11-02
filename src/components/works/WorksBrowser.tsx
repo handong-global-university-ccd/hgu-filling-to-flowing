@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import WorkCard from "./WorkCard";
 import { useWorksFilter } from "./works-filter";
-import { FIELDS, type Work } from "@/data/types";
+import { FIELDS, isFieldKey, type Work } from "@/data/types";
 import { getProjects, inProject } from "@/data/projects";
 import { cn } from "@/lib/cn";
 
@@ -17,13 +17,16 @@ type Item = { work: Work; designerNames: string };
  * - 분야 탭·검색은 헤더 둘째 줄에 있다 (Header.tsx)
  * - 왼쪽 3칸 : 분야 안의 전시 목록. 고른 항목만 검정 + 6px 사각 점, 나머지 Neutral/300.
  *              스크롤해도 제자리에 남는다 — 헤더가 Scroll(74px) 로 접히면 그 아래 48px(top 122)에 붙는다
- * - 오른쪽 9칸 : 전시 제목(Body/Large) · 지도교수 · 소개글(16/1.7, 문단 사이 8) → 48 아래 작품 3열 (가로 16, 세로 64)
+ * - 왼쪽 칸 항목 사이 4 (2670:5150)
+ * - 오른쪽 9칸 : 전시 제목(Body/Large) · 지도교수 · 소개글(16/1.7, 문단 사이 4) → 52 아래 작품 3열 (가로 16, 세로 64)
  * - All 은 소개글 없이 전체 작품. 왼쪽 칸은 분야 목록이 되어 누르면 그 분야로 간다
  */
 export default function WorksBrowser({ items }: { items: Item[] }) {
   const filter = useWorksFilter();
   const reduce = useReducedMotion();
-  const field = filter?.field ?? "all";
+  // Works 에는 분야 탭만 있다 — 전공(Designers 탭) 값이 주소로 넘어오면 All 로 본다
+  const rawField = filter?.field ?? "all";
+  const field = isFieldKey(rawField) ? rawField : "all";
   const q = filter?.q ?? "";
 
   const projects = useMemo(() => (field === "all" ? [] : getProjects(field)), [field]);
@@ -75,7 +78,7 @@ export default function WorksBrowser({ items }: { items: Item[] }) {
           field === "all" && "max-lg:hidden",
         )}
       >
-        <ul className="flex flex-col text-body max-lg:gap-1 max-lg:font-kr max-lg:text-[12px] max-lg:leading-[18px]">
+        <ul className="flex flex-col gap-1 text-body max-lg:font-kr max-lg:text-[12px] max-lg:leading-[18px]">
           {nav.map((n) => (
             <li key={n.key}>
               <button
@@ -103,7 +106,7 @@ export default function WorksBrowser({ items }: { items: Item[] }) {
         className={cn("lg:col-span-9", project ? "max-lg:mt-7" : "max-lg:mt-[11px]")}
       >
         {project && (
-          <header className="mb-12 font-kr text-fg-secondary max-lg:mb-2">
+          <header className="mb-[52px] font-kr text-fg-secondary max-lg:mb-2">
             {project.title && (
               <h1 className="text-body-lg max-lg:text-[14px] max-lg:leading-[22px]">{project.title}</h1>
             )}
@@ -112,7 +115,7 @@ export default function WorksBrowser({ items }: { items: Item[] }) {
             <p className="mt-1 text-[10px] leading-4 lg:hidden">지도교수: {project.advisor}</p>
             {project.intro.length > 0 && (
               <>
-                <div className="mt-6 flex max-w-[1046px] flex-col gap-2 text-kr-body leading-[1.7] break-keep max-lg:hidden lg:whitespace-pre-line">
+                <div className="mt-6 flex max-w-[1046px] flex-col gap-1 text-kr-body leading-[1.7] break-keep max-lg:hidden lg:whitespace-pre-line">
                   {project.intro.map((para) => (
                     <p key={para.slice(0, 24)}>{para}</p>
                   ))}

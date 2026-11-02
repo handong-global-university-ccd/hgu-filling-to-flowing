@@ -5,6 +5,7 @@ import HomeTitle from "@/components/home/HomeTitle";
 import RevealLines from "@/components/home/RevealLines";
 import FieldAccordion from "@/components/home/FieldAccordion";
 import FieldListMobile from "@/components/home/FieldListMobile";
+import HomeLayer from "@/components/home/HomeLayer";
 import { FIELDS, type FieldKey, type Work } from "@/data/types";
 import { getWorks } from "@/data/works";
 import {
@@ -36,6 +37,7 @@ import { INTRO_SEEN_SCRIPT, INTRO_SKIP_SCRIPT } from "@/lib/intro";
  *
  * 인터랙션
  * - 인트로 → 홈: 홈 전체가 레이어로 아래에서 올라와 고정된 인트로를 덮는다. 다시 올리면 인트로가 보인다 (Intro 참고)
+ *   올라오는 동안은 양옆 마진 24 를 두고, 화면을 다 덮으면 꽉 찬다 (HomeLayer)
  * - 로고타입 → 말씀: 전시 소개와 같은 모션으로 FILLING → TO FLOWING → 말씀 두 줄이 한 줄씩 올라온다 (HomeTitle)
  * - 전시 소개: 줄마다 아래에서 천천히 올라온다 (RevealLines)
  */
@@ -51,7 +53,7 @@ export default function HomePage() {
       <script dangerouslySetInnerHTML={{ __html: INTRO_SEEN_SCRIPT }} />
       <Intro />
       {/* 인트로 위로 올라오는 레이어 */}
-      <div className="relative z-10">
+      <HomeLayer>
         <PageShell inverse overlayHeader>
           {/* ───── 모바일 (2624:5445) ─────
               시안 y 에서 상태 표시줄 62 를 뺀 값. 세로 키비주얼 430×686 이 위로 71 넘쳐 있고 아래 52 는 검정으로 흐려진다
@@ -149,7 +151,7 @@ export default function HomePage() {
           {/* 아코디언과 푸터 사이 300px — 모든 페이지 공통 (본문 끝 → 푸터 300) */}
           <div className="h-75 max-md:hidden" />
         </PageShell>
-      </div>
+      </HomeLayer>
       <script dangerouslySetInnerHTML={{ __html: INTRO_SKIP_SCRIPT }} />
     </>
   );

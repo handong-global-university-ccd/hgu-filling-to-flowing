@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useWorksFilter } from "@/components/works/works-filter";
 import { asset } from "@/lib/asset";
 import { cn } from "@/lib/cn";
-import type { FieldKey } from "@/data/types";
+import { matchesFilter, type FieldKey } from "@/data/types";
 
 export type DesignerRow = {
   slug: string;
@@ -20,16 +20,19 @@ export type DesignerRow = {
   thumbnails: string[];
 };
 
-/** Figma 1893:2000 / 1807:14949 / 1807:14984 — 활성 행에 붙는 이미지 위치 */
+/**
+ * Figma 1893:2000 / 1807:14949 / 1807:14984 — 활성 행에 붙는 이미지 위치
+ * 프로필은 옆 대표 작업 썸네일과 세로 길이를 맞춘다 (124×165, 행 위쪽에 맞춤)
+ */
 // 이름 102 / 이름과 분야 사이 488 / 분야 338 — 데스크톱 값은 아래 md: 클래스에 그대로 들어 있다
-const PROFILE = { left: 119, top: -8, w: 102, h: 136 };
+const PROFILE = { left: 119, top: 0, w: 124, h: 165 };
 const THUMBS = { left: 944, w: 280, h: 165, gap: 16 };
 
 /**
  * 모바일 (2573:10604): 헤더 아래 17 부터 이름만 14/20 Regular, 사이 16. 분야·대표 썸네일·Name 머리글은 숨긴다.
  * 활성 행의 프로필 사진은 오른쪽 끝에 111×148 (행 위쪽에 맞춤). 위 상수는 데스크톱 전용이라 md: 클래스로만 쓴다.
  *
- * Figma 디자이너 리스트 (1807:15014 디폴트 / 1893:2000 hover) — 이름·분야 모두 Medium(500) 14/20
+ * Figma 디자이너 리스트 (1807:15014 디폴트 / 1807:14949 hover) — 이름·분야 모두 Medium(500) 16/20, 행 사이 20
  *
  * 인터렉션 설명 (1837:11706)
  * - Scroll : 스크롤하면 다음 디자이너가 활성화되고 프로필·썸네일이 함께 바뀐다
@@ -52,7 +55,7 @@ export default function DesignerList({ designers }: { designers: DesignerRow[] }
     // macOS 등에서 한글이 자모 분리(NFD)로 들어와도 일치하도록 NFC 로 맞춘다
     const query = q.trim().normalize("NFC").toLowerCase();
     return designers.filter((d) => {
-      if (field !== "all" && !d.fieldKeys.includes(field)) return false;
+      if (!matchesFilter(d.fieldKeys, field)) return false;
       if (!query) return true;
       return (
         d.nameKo.toLowerCase().includes(query) ||
@@ -116,7 +119,7 @@ export default function DesignerList({ designers }: { designers: DesignerRow[] }
 
         <ul
           ref={list}
-          className="flex flex-col gap-4"
+          className="flex flex-col gap-5 max-md:gap-4"
           onPointerLeave={(e) => e.pointerType === "mouse" && setHovered(null)}
         >
           {filtered.map((d, i) => {
@@ -136,11 +139,11 @@ export default function DesignerList({ designers }: { designers: DesignerRow[] }
                 >
                   <span className="flex w-20 shrink-0 items-center gap-2 md:w-[102px]">
                     {on && <span aria-hidden className="size-1.5 shrink-0 bg-current" />}
-                    <span className="font-kr text-kr-label font-medium whitespace-nowrap max-md:font-normal">
+                    <span className="font-kr text-kr-body leading-5 font-medium whitespace-nowrap max-md:text-kr-label max-md:font-normal">
                       {d.nameKo}
                     </span>
                   </span>
-                  <span className="w-[338px] shrink-0 text-label font-medium max-md:hidden">
+                  <span className="w-[338px] shrink-0 text-body leading-5 font-medium max-md:hidden">
                     {d.disciplines}
                   </span>
                 </Link>

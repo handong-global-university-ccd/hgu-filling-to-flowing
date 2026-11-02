@@ -7,7 +7,7 @@ import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { NAV } from "@/lib/site";
 import { cn } from "@/lib/cn";
-import { FIELDS } from "@/data/types";
+import { FIELDS, MAJORS } from "@/data/types";
 import { useWorksFilter } from "@/components/works/works-filter";
 import { useHasFinePointer, useMediaQuery } from "@/hooks/useMediaQuery";
 import { HEADER_H, MOBILE_QUERY } from "@/lib/header";
@@ -30,7 +30,10 @@ const ARCHIVE_TABS = [
   { key: "exhibition", label: "Exhibition View", href: "/archive/exhibition/" },
 ] as const;
 
-/** Figma Search (2357:18591) — 298×30, 아래 0.5px Neutral/500 밑줄, placeholder Neutral/500 */
+/**
+ * Figma Search (2357:18591) — 298×30, 아래 0.5px Neutral/500 밑줄, placeholder Neutral/500
+ * 검색어가 있으면 오른쪽 끝에 X(지우기)를 항상 띄운다 — 브라우저 기본 X 는 호버·포커스 때만 보여서 숨긴다 (댓글 #202)
+ */
 function SearchField({
   value,
   onChange,
@@ -41,17 +44,42 @@ function SearchField({
   className?: string;
 }) {
   return (
-    <label
-      className={cn("h-[30px] w-full shrink-0 border-b-[0.5px] border-border-strong md:w-[298px]", className)}
+    <div
+      className={cn(
+        "relative flex h-[30px] w-full shrink-0 items-start border-b-[0.5px] border-border-strong md:w-[298px]",
+        className,
+      )}
     >
-      <span className="sr-only">검색</span>
-      <input
-        type="search"
-        {...(onChange ? { value, onChange: (e) => onChange(e.target.value) } : {})}
-        placeholder="Search"
-        className="w-full bg-transparent text-body outline-none placeholder:text-fg-tertiary"
-      />
-    </label>
+      <label className="flex-1">
+        <span className="sr-only">검색</span>
+        <input
+          type="search"
+          {...(onChange ? { value, onChange: (e) => onChange(e.target.value) } : {})}
+          placeholder="Search"
+          className="w-full bg-transparent pr-6 text-body outline-none placeholder:text-fg-tertiary [&::-webkit-search-cancel-button]:appearance-none"
+        />
+      </label>
+      {onChange && value && (
+        <button
+          type="button"
+          onClick={() => onChange("")}
+          aria-label="검색어 지우기"
+          className="absolute top-[5px] right-0 grid size-4 place-items-center text-fg-tertiary transition-colors hover:text-fg"
+        >
+          <svg
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.25"
+            strokeLinecap="round"
+            aria-hidden
+            className="size-4"
+          >
+            <path d="M4 4l8 8M12 4l-8 8" />
+          </svg>
+        </button>
+      )}
+    </div>
   );
 }
 
@@ -341,7 +369,11 @@ export default function Header({
   let secondRow: React.ReactNode = null;
 
   if (showFilterRow && filter) {
-    const tabs = [{ key: "all" as const, label: "All" }, ...FIELDS];
+    // Designers 는 전공 탭 (Figma 1807:14949 — All / Product Design / Visual Design), Works 는 분야 탭
+    const tabs = [
+      { key: "all" as const, label: "All" },
+      ...(pathname.startsWith("/designers") ? MAJORS : FIELDS),
+    ];
     const renderTab = (t: (typeof tabs)[number]) => (
       <button
         key={t.key}
@@ -364,7 +396,7 @@ export default function Header({
         {/* 모바일 (2573:10142): All 과 분야를 한 줄에 12/26 — 넘치면 가로로 밀어서 본다 */}
         <div
           role="tablist"
-          aria-label="분야"
+          aria-label={pathname.startsWith("/designers") ? "전공" : "분야"}
           className="-mx-margin flex [scrollbar-width:none] gap-3 overflow-x-auto px-margin text-[12px] leading-[26px] md:mx-0 md:flex-wrap md:overflow-visible md:px-0 md:text-body [&::-webkit-scrollbar]:hidden"
         >
           {tabs.map(renderTab)}

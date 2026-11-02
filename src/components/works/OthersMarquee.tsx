@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import ArrowUpRight from "@/components/icons/ArrowUpRight";
+import ArrowUpRightLarge from "@/components/icons/ArrowUpRightLarge";
 import { asset } from "@/lib/asset";
 import { pageZoom } from "@/lib/zoom";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
@@ -202,13 +202,11 @@ export default function OthersMarquee({ items }: { items: OtherItem[] }) {
                 className="pointer-events-none size-full object-cover"
               />
               <span className="absolute inset-0 bg-bg/80 opacity-0 transition-opacity duration-200 group-hover/tile:opacity-100" />
-              <span className="absolute inset-0 grid place-items-center px-6 text-center font-kr text-body text-fg-secondary opacity-0 transition-opacity duration-200 group-hover/tile:opacity-100">
+              {/* 호버: 흰 80% 덮개 + 가운데 제목 18/24 + 오른쪽 아래(4.5) 36 화살표 — Figma 1893:2303 */}
+              <span className="absolute inset-0 grid place-items-center px-6 text-center font-kr text-body-lg text-fg-secondary opacity-0 transition-opacity duration-200 group-hover/tile:opacity-100">
                 {w.title}
               </span>
-              <ArrowUpRight
-                aria-hidden
-                className="absolute right-1.5 bottom-1.5 size-6 text-fg-secondary opacity-0 transition-opacity duration-200 group-hover/tile:opacity-100"
-              />
+              <ArrowUpRightLarge className="absolute right-[4.5px] bottom-[4.5px] size-9 text-fg-secondary opacity-0 transition-opacity duration-200 group-hover/tile:opacity-100" />
             </Link>
           ))}
         </div>
