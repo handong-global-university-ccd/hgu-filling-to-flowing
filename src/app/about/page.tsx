@@ -49,32 +49,127 @@ function SponsorLogos() {
 }
 
 /**
- * 라벨(회색) + 이름들 한 줄
- * - 데스크톱: 라벨 86, 이름은 칸마다 띄어 쓰거나(stacked) 세로로 쌓는다
- * - 모바일(2499:4632): 라벨 88, 이름은 왼쪽에서 123 — 쉼표로 이어 쓰고 넘치면 줄바꿈(줄높이 20).
- *   mobile 을 주면 모바일에서는 이름 대신 그것을 보여준다 (후원사 로고)
+ * 데스크톱 후원사 로고 줄 (Figma 2670:13877) — 1920 기준 748×40.
+ * 로고마다 시안의 상자(x·y·w·h, 줄 기준 px)에 원본 이미지를 crop(%) 그대로 얹는다.
+ * 줄 전체를 % 로 잡아 두어서, 우측 칸이 748 보다 좁아지면 비율 그대로 줄어든다.
+ */
+const SPONSOR_ROW = { w: 748.13, h: 39.862 } as const;
+const SPONSOR_LINE = [
+  {
+    src: "moorim",
+    alt: "무림페이퍼",
+    w: 4096,
+    h: 2172,
+    box: [0, 0.07, 85.546, 31.908],
+    crop: [0, -21.08, 100, 142.17],
+  },
+  {
+    src: "sandoll",
+    alt: "산돌구름",
+    w: 4096,
+    h: 1185,
+    box: [104.79, 0.14, 94.699, 31.908],
+    crop: [0, 27.12, 100, 85.86],
+  },
+  {
+    src: "adsland",
+    alt: "ADSLAND",
+    w: 2283,
+    h: 1398,
+    box: [226.34, 0.07, 97.815, 31.908],
+    crop: [-6.84, -51.3, 113.67, 213.38],
+  },
+  {
+    src: "yesod",
+    alt: "YESOD",
+    w: 3944,
+    h: 2978,
+    box: [357.01, 0.07, 72.466, 31.908],
+    crop: [0, -15.75, 100, 171.48],
+  },
+  {
+    src: "yoondesign",
+    alt: "Yoondesign",
+    w: 1334,
+    h: 550,
+    box: [464.88, 13.02, 99.262, 21.381],
+    crop: [0, -45.71, 100, 191.41],
+  },
+  {
+    src: "rixfont",
+    alt: "RixFont",
+    w: 3508,
+    h: 2482,
+    box: [596.87, 11.75, 62.083, 22.667],
+    crop: [-68.67, -183.32, 237.33, 459.92],
+  },
+  {
+    src: "hddn",
+    alt: "hddn hidden figures inc.",
+    w: 3544,
+    h: 2363,
+    box: [675.76, 16.15, 72.372, 20.27],
+    crop: [0, -69.32, 100, 238.06],
+  },
+] as const;
+
+const pctX = (px: number) => `${(px / SPONSOR_ROW.w) * 100}%`;
+const pctY = (px: number) => `${(px / SPONSOR_ROW.h) * 100}%`;
+
+function SponsorLine({ className }: { className?: string }) {
+  return (
+    <ul
+      aria-label="후원사 로고"
+      className={cn("relative w-full", className)}
+      style={{ maxWidth: SPONSOR_ROW.w, aspectRatio: `${SPONSOR_ROW.w} / ${SPONSOR_ROW.h}` }}
+    >
+      {SPONSOR_LINE.map(({ src, alt, w, h, box: [x, y, bw, bh], crop: [cl, ct, cw, ch] }) => (
+        <li
+          key={src}
+          className="absolute overflow-hidden"
+          style={{ left: pctX(x), top: pctY(y), width: pctX(bw), height: pctY(bh) }}
+        >
+          <Image
+            src={`/brand/sponsors/about/${src}.png`}
+            alt={alt}
+            width={w}
+            height={h}
+            className="absolute max-w-none"
+            style={{ left: `${cl}%`, top: `${ct}%`, width: `${cw}%`, height: `${ch}%` }}
+          />
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/**
+ * 라벨(회색, 88) + 이름들(쉼표로 이어 쓰기) 한 줄.
+ * 데스크톱은 라벨과 이름 사이 4, 모바일(2499:4632)은 이름이 왼쪽에서 123 (사이 35, 줄높이 20).
+ * mobile 을 주면 모바일에서는 이름 대신 그것을 보여준다 (후원사 로고)
  */
 function CreditRow({
   role,
   names,
-  stacked = false,
   mobile,
 }: {
   role: string;
   names: readonly string[];
-  stacked?: boolean;
   mobile?: React.ReactNode;
 }) {
+  const text = names.join(", ");
   return (
-    <div className="flex gap-4 max-md:gap-[35px]">
-      <dt className="w-[86px] shrink-0 text-fg-tertiary max-md:w-[88px]">{role}</dt>
+    <div className="flex gap-1 max-md:gap-[35px]">
+      <dt className="w-[88px] shrink-0 text-fg-tertiary">{role}</dt>
       <dd>
-        <span className={cn("max-md:hidden", stacked ? "flex flex-col gap-1" : "flex flex-wrap gap-x-2")}>
-          {names.map((n) => (
-            <span key={n}>{n}</span>
-          ))}
-        </span>
-        <span className="md:hidden">{mobile ?? names.join(", ")}</span>
+        {mobile ? (
+          <>
+            <span className="max-md:hidden">{text}</span>
+            <span className="md:hidden">{mobile}</span>
+          </>
+        ) : (
+          text
+        )}
       </dd>
     </div>
   );
@@ -98,8 +193,9 @@ function CreditGroup({
 }
 
 /**
- * Figma About 페이지 (1807:15663) / 모바일 (2499:4632)
- * 좌측 43.75% 에 전시 개요, 우측에 주제 말씀 + 크레딧.
+ * Figma About 페이지 (2358:18527) / 모바일 (2499:4632)
+ * 좌측 56.25% 에 전시 개요 → 52 → 주제 말씀·소개, 우측에 크레딧(묶음 사이 32) + 후원사 로고 줄.
+ * 제목과 크레딧은 화면 위에서 190 (헤더 84 + 106) 에서 같이 시작한다.
  * 모바일은 한 열 — 헤더 아래 28 에 제목 20 → 12 → 일정 14 → 36 → 말씀·소개 12/1.5 (사이 16)
  * → 44 → 크레딧 12 (묶음 사이 28, 줄 사이 8). 소개 글은 시안대로 홈 소개(HOME_INTRO)를 한 문단으로 쓴다.
  */
@@ -108,8 +204,8 @@ export default function AboutPage() {
 
   return (
     <PageShell hideOnScroll headerHeight={84}>
-      <div className="grid gap-y-16 pt-[118px] pb-75 max-md:gap-y-9 max-md:pt-7 max-md:pb-[86px] lg:grid-cols-[43.75%_1fr]">
-        {/* ───── 좌측: 전시 개요 ───── */}
+      <div className="grid gap-y-16 pt-[106px] pb-75 max-md:gap-y-11 max-md:pt-7 max-md:pb-[86px] lg:grid-cols-[56.25%_1fr]">
+        {/* ───── 좌측: 전시 개요 + 주제 말씀 ───── */}
         <div className="px-margin lg:pr-0">
           <div className="max-w-[529px]">
             <h1 className="flex flex-col gap-1 max-md:gap-0">
@@ -124,28 +220,26 @@ export default function AboutPage() {
                   SITE.fullTitle
                 )}
               </span>
-              <span className="text-h3 uppercase max-md:text-h4">{SITE.title}</span>
+              {/* 시안의 영문 제목 상자는 행간(32)보다 2 높은 34 */}
+              <span className="text-h3 uppercase max-md:text-h4 md:h-[34px]">{SITE.title}</span>
             </h1>
             <div className="mt-4 font-kr text-kr-body-lg max-md:mt-3 max-md:text-kr-body-sm max-md:text-fg-secondary">
               <p>{SITE.period}</p>
               <p>{SITE.place}</p>
             </div>
           </div>
-        </div>
 
-        {/* ───── 우측: 주제 말씀 + 크레딧 ───── */}
-        <div className="px-margin lg:pl-[10px]">
-          <div className="flex max-w-[843px] flex-col gap-5 font-kr text-kr-body-lg max-md:gap-4 max-md:text-[12px] max-md:leading-[1.5] max-md:text-fg-secondary">
+          <div className="mt-[52px] flex flex-col gap-3 font-kr text-kr-body-lg max-md:mt-9 max-md:gap-4 max-md:text-[12px] max-md:leading-[1.5] max-md:text-fg-secondary">
             <div>
               <p>{SITE.verse.ref}</p>
-              {/* 모바일은 '채워주어,' 뒤에서 줄을 바꾼다 */}
+              {/* '채워주어,' 뒤에서 줄을 바꾼다 */}
               <p>
                 {SITE.verse.text.split(", ").map((part, i, all) => (
                   <span key={part}>
                     {part}
                     {i < all.length - 1 && (
                       <>
-                        ,<br className="md:hidden" />{" "}
+                        ,<br />
                       </>
                     )}
                   </span>
@@ -159,47 +253,36 @@ export default function AboutPage() {
             </div>
             <p className="break-normal md:hidden">{HOME_INTRO.join(" ")}</p>
           </div>
+        </div>
 
-          <dl className="mt-20 flex max-w-[942px] flex-col gap-10 text-body max-md:mt-11 max-md:gap-7 max-md:text-[12px] max-md:leading-[18px]">
+        {/* ───── 우측: 크레딧 ───── */}
+        <div className="px-margin lg:pl-[6.55px]">
+          <dl className="flex max-w-[834px] flex-col gap-8 text-body max-md:gap-7 max-md:text-[12px] max-md:leading-[18px]">
             <CreditGroup title="주최" className="max-md:gap-1">
               <p className="font-kr">{HOST}</p>
             </CreditGroup>
 
             <CreditGroup title="졸업준비위원회">
-              <div className="flex flex-col gap-4 font-kr max-md:gap-2 sm:flex-row sm:gap-4">
-                <div className="flex w-[220px] shrink-0 flex-col gap-3 max-md:gap-2">
-                  {COMMITTEE_LEADS.map((c) => (
-                    <CreditRow key={c.role} role={c.role} names={c.names} />
-                  ))}
-                </div>
-                <div className="flex flex-col gap-3 max-md:gap-2">
-                  {COMMITTEE_TEAMS.map((c) => (
-                    <CreditRow key={c.role} role={c.role} names={c.names} />
-                  ))}
-                </div>
+              <div className="flex flex-col gap-1 font-kr max-md:gap-2">
+                {[...COMMITTEE_LEADS, ...COMMITTEE_TEAMS].map((c) => (
+                  <CreditRow key={c.role} role={c.role} names={c.names} />
+                ))}
               </div>
             </CreditGroup>
 
             <CreditGroup title="도움을 주신 분들">
-              <div className="flex flex-col gap-8 font-kr max-md:gap-3 sm:flex-row sm:gap-[92px] max-md:[&_dd]:leading-5">
+              <div className="flex flex-col gap-2 font-kr max-md:gap-3 max-md:[&_dd]:leading-5">
                 {THANKS.map((t) => (
                   <CreditRow
                     key={t.role}
                     role={t.role}
                     names={t.names}
-                    stacked
                     mobile={t.role === "후원사" ? <SponsorLogos /> : undefined}
                   />
                 ))}
               </div>
-              {/* 협력·후원 로고 — 원본 1367×173(@2x). 그룹 gap 12px + mt 20px = 이름 목록 아래 32px */}
-              <Image
-                src="/brand/logo1.png"
-                alt="RixFont, 산돌구름, Yoondesign, YESOD, ADSLAND, hddn, 무림페이퍼, 콘텐츠융합디자인학부, 한동대학교"
-                width={1367}
-                height={173}
-                className="mt-10 h-auto w-full max-w-[684px] max-md:hidden"
-              />
+              {/* 이름 목록 아래 32 (그룹 gap 12 + 20). 시안상 로고 줄은 텍스트 칸보다 10 왼쪽에서 시작한다 */}
+              <SponsorLine className="mt-5 -ml-[10.32px] max-md:hidden" />
             </CreditGroup>
           </dl>
         </div>

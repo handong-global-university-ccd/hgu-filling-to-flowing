@@ -39,7 +39,7 @@ export const FIGMA = {
     designerDetail: "1807:15093",
     archiveBehind: "1807:15770",
     archiveExhibition: "1807:16563",
-    about: "1807:15663",
+    about: "2358:18527",
     header: "1696:14396",
     footer: "2573:27018",
     cursorLight: "1860:11931",
