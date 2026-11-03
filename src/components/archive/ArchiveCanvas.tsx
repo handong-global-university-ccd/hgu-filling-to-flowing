@@ -255,7 +255,7 @@ export default function ArchiveCanvas({ photos }: { photos: Photo[] }) {
       <div
         ref={map}
         aria-hidden
-        className="absolute bottom-10 left-margin z-20 cursor-pointer touch-none overflow-hidden bg-neutral-200 motion-reduce:hidden max-md:hidden"
+        className="absolute bottom-10 left-margin z-20 cursor-pointer touch-none overflow-hidden bg-neutral-200 opacity-60 motion-reduce:hidden max-md:hidden"
         style={{ width: MAP_W, height: MAP_H }}
       >
         <div ref={frame} className="pointer-events-none absolute top-0 left-0 bg-neutral-300" />

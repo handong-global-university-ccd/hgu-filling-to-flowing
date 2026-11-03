@@ -16,6 +16,8 @@ type Props = {
   className?: string;
   onEnded?: () => void;
   loop?: boolean;
+  /** cover: 화면을 꽉 채우고 넘치는 부분은 자른다 / contain: 영상 전체가 보이게 (남는 곳은 부모 배경색) */
+  fit?: "cover" | "contain";
 };
 
 /**
@@ -31,6 +33,7 @@ export default function ResponsiveVideo({
   className,
   onEnded,
   loop = true,
+  fit = "cover",
 }: Props) {
   const isPortrait = useIsPortrait();
   const reduceMotion = useReducedMotion();
@@ -46,7 +49,11 @@ export default function ResponsiveVideo({
   }, [source.src, reduceMotion]);
 
   const style = { objectPosition: focus };
-  const base = cn("absolute inset-0 h-full w-full object-cover", className);
+  const base = cn(
+    "absolute inset-0 h-full w-full",
+    fit === "contain" ? "object-contain" : "object-cover",
+    className,
+  );
 
   if (reduceMotion) {
     // eslint-disable-next-line @next/next/no-img-element

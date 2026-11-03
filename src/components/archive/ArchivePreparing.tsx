@@ -6,7 +6,7 @@ import { cn } from "@/lib/cn";
  */
 export default function ArchivePreparing({ className }: { className?: string }) {
   return (
-    <div className={cn("grid place-items-center bg-bg-subtle font-kr text-fg-tertiary", className)}>
+    <div className={cn("grid place-items-center bg-neutral-50 font-kr text-fg-tertiary", className)}>
       준비중입니다.
     </div>
   );

@@ -14,6 +14,8 @@
 
   /* Neutral */
   --color-neutral-0: #ffffff;
+  /* 준비중 상자 (2026-11-03 요청 #F4F4F4) */
+  --color-neutral-50: #f4f4f4;
   --color-neutral-100: #e6e6e6;
   /* 아카이브 오버뷰 판 (1807:15967 — Figma 변수 없이 #D9D9D9) */
   --color-neutral-200: #d9d9d9;

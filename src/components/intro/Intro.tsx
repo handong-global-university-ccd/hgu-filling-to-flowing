@@ -1,18 +1,16 @@
 "use client";
 
 import { useRef } from "react";
-import { motion } from "motion/react";
 import ResponsiveVideo from "@/components/media/ResponsiveVideo";
 import { ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { INTRO_SEEN_KEY } from "@/lib/intro";
 import { SITE } from "@/lib/site";
-
-const EASE = [0.22, 1, 0.36, 1] as const;
+import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { MOBILE_QUERY } from "@/lib/header";
 
 /**
  * Figma 01. 인트로 (1807:14129)
- * - 진입 시 FILLING / TO FLOWING 이 좌우에서 들어오고 키 비주얼 영상 재생
- * - 글자는 mix-blend-difference 로 배경에 따라 흑백 반전
+ * - 데스크톱만 — 키 비주얼 영상(글자 포함)을 화면 가득 재생한다. 모바일에는 인트로가 없다
  * - 스크롤하면 홈이 아래에서 레이어처럼 올라와 인트로를 덮는다
  *   (GSAP Layered pinning 과 같은 효과 — 인트로를 CSS sticky 로 top 에 붙여 두고 홈이 그 위로 지나간다.
  *    GSAP pin 은 화면 px 로 높이를 고정해서 노트북 폭 zoom(lib/zoom.ts) 에서 인트로가 짧아진다)
@@ -21,10 +19,14 @@ const EASE = [0.22, 1, 0.36, 1] as const;
  */
 export default function Intro() {
   const ref = useRef<HTMLElement>(null);
+  // 영상은 데스크톱에서만 붙인다 — 숨긴 섹션 안에 두면 모바일에서도 영상을 받는다 (서버 HTML 에는 없다)
+  const desktop = useMediaQuery("(min-width: 768px)");
 
   useGSAP(
     () => {
       if (document.documentElement.classList.contains("intro-seen")) return;
+      // 모바일은 인트로가 없으니 "지나쳤다" 표시도 하지 않는다
+      if (window.matchMedia(MOBILE_QUERY).matches) return;
       ScrollTrigger.create({
         trigger: ref.current,
         // 홈 레이어가 인트로 높이만큼 올라와 다 덮은 시점 (스크롤은 화면 px 라 화면 기준 높이로)
@@ -47,57 +49,19 @@ export default function Intro() {
       ref={ref}
       data-intro
       aria-label="인트로"
-      className="sticky top-0 h-(--svh) overflow-hidden bg-bg"
+      // 모바일은 인트로 없이 홈부터 시작한다 — 숨기면 높이가 0 이라 홈 레이어·헤더·스크롤 위치 계산도 그대로 맞는다
+      className="sticky top-0 h-(--svh) overflow-hidden bg-bg-inverse max-md:hidden"
     >
-      {/* TODO: 실제 영상이 R2 에 올라가면 /media/intro/bg-*.mp4 · bg-*.webp 로 교체 */}
-      <ResponsiveVideo
-        landscape={{
-          src: "/placeholder/dummy/intro/bg-landscape.mp4",
-          poster: "/placeholder/dummy/intro/bg-landscape.webp",
-        }}
-        portrait={{
-          src: "/placeholder/dummy/intro/bg-portrait.mp4",
-          poster: "/placeholder/dummy/intro/bg-portrait.webp",
-        }}
-        focus="65% 50%"
-      />
-
-      <div className="relative h-full text-white mix-blend-difference">
-        <h1 className="sr-only">{SITE.title}</h1>
-        <motion.p
-          aria-hidden
-          className="absolute top-[8%] left-margin text-[clamp(56px,calc(var(--vw)*0.1),190px)] leading-none font-semibold uppercase"
-          initial={{ x: "-110%" }}
-          animate={{ x: 0 }}
-          transition={{ duration: 1.4, ease: EASE, delay: 0.2 }}
-        >
-          Filling
-        </motion.p>
-        <motion.p
-          aria-hidden
-          className="absolute top-[24%] right-margin text-[clamp(56px,calc(var(--vw)*0.1),190px)] leading-none font-semibold uppercase"
-          initial={{ x: "110%" }}
-          animate={{ x: 0 }}
-          transition={{ duration: 1.4, ease: EASE, delay: 0.35 }}
-        >
-          To Flowing
-        </motion.p>
-
-        <div className="absolute top-[57%] left-[38%] text-body">
-          <p>2026</p>
-          <p>{SITE.subtitle.replace("2026 ", "")}</p>
-        </div>
-        <div className="absolute top-[72%] left-[56%] text-body">
-          <p>{SITE.periodShort.start}</p>
-          <p>- {SITE.periodShort.end}</p>
-        </div>
-        <div className="absolute bottom-margin left-margin text-body">
-          {SITE.org.map((line) => (
-            <p key={line}>{line}</p>
-          ))}
-        </div>
-      </div>
-
+      {/* 인트로 영상 (2026-11-03 디자인팀 최종본, 1920×1080 · 4.8초 반복).
+          제목·날짜·학교명 글자가 영상 안에 들어 있어서 HTML 글자는 올리지 않는다.
+          글자가 화면 가장자리까지 차 있어 잘리지 않게 contain — 16:9 가 아닌 화면에서는 위아래(또는 양옆)가 검정 */}
+      {desktop && (
+        <ResponsiveVideo
+          landscape={{ src: "/media/intro/bg-landscape.mp4", poster: "/media/intro/bg-landscape.webp" }}
+          fit="contain"
+        />
+      )}
+      <h1 className="sr-only">{SITE.title}</h1>
       <p className="sr-only">스크롤하면 메인 화면이 올라옵니다.</p>
     </section>
   );

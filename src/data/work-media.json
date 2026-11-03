@@ -137,7 +137,56 @@
       "/media/works/communication-05/thumb-a.webp?v=862d89a4",
       "/media/works/communication-05/thumb-b.webp?v=292bb7fe"
     ],
-    "pages": []
+    "pages": [
+      {
+        "type": "image",
+        "src": "/media/works/communication-05/p01.webp?v=85184930",
+        "width": 1600,
+        "height": 626
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-05/p02.webp?v=469b0af4",
+        "width": 1600,
+        "height": 686
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-05/p03.webp?v=1702df3e",
+        "width": 1600,
+        "height": 1023
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-05/p04.webp?v=ca51afe2",
+        "width": 1600,
+        "height": 2635
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-05/p05.webp?v=3b0cdd18",
+        "width": 1600,
+        "height": 1309
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-05/p06.webp?v=27a9e4af",
+        "width": 1600,
+        "height": 788
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-05/p07.webp?v=f085915b",
+        "width": 1600,
+        "height": 1324
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-05/p08.webp?v=6733ccdd",
+        "width": 1600,
+        "height": 1256
+      }
+    ]
   },
   "communication-06": {
     "thumbnails": [
@@ -206,45 +255,57 @@
   },
   "communication-09": {
     "thumbnails": [
-      "/media/works/communication-09/thumb-a.webp?v=3cf4b003",
-      "/media/works/communication-09/thumb-a.webp?v=3cf4b003"
+      "/media/works/communication-09/thumb-a.webp?v=6025e299",
+      "/media/works/communication-09/thumb-b.webp?v=b7294f6c"
     ],
     "pages": [
       {
         "type": "image",
-        "src": "/media/works/communication-09/p01.webp?v=b66306aa",
+        "src": "/media/works/communication-09/p01.webp?v=cd452662",
         "width": 1600,
         "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/communication-09/p02.webp?v=a71cb1ad",
+        "src": "/media/works/communication-09/p02.webp?v=0d064536",
         "width": 1600,
         "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/communication-09/p03.webp?v=867da216",
+        "src": "/media/works/communication-09/p03.webp?v=4ee5897f",
         "width": 1600,
         "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/communication-09/p04.webp?v=906549c8",
+        "src": "/media/works/communication-09/p04.webp?v=54d2221d",
         "width": 1600,
         "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/communication-09/p05.webp?v=ff7fa595",
+        "src": "/media/works/communication-09/p05.webp?v=90f25edb",
         "width": 1600,
-        "height": 2601
+        "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/communication-09/p06.webp?v=0295499d",
+        "src": "/media/works/communication-09/p06.webp?v=fc1b255a",
         "width": 1600,
-        "height": 2601
+        "height": 2635
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-09/p07.webp?v=bef548e7",
+        "width": 1600,
+        "height": 2635
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-09/p08.webp?v=254b1b9c",
+        "width": 1600,
+        "height": 670
       }
     ]
   },
@@ -256,7 +317,7 @@
     "pages": [
       {
         "type": "image",
-        "src": "/media/works/communication-10/p01.webp?v=11d2f30f",
+        "src": "/media/works/communication-10/p01.webp?v=9e2acd6c",
         "width": 1600,
         "height": 2635
       },
@@ -378,10 +439,47 @@
   },
   "communication-14": {
     "thumbnails": [
-      "/media/works/communication-14/thumb-a.webp?v=11b9de85",
-      "/media/works/communication-14/thumb-b.webp?v=414ec256"
+      "/media/works/communication-14/thumb-a.webp?v=414ec256",
+      "/media/works/communication-14/thumb-b.webp?v=44a45a4d"
     ],
-    "pages": []
+    "pages": [
+      {
+        "type": "image",
+        "src": "/media/works/communication-14/p01.webp?v=36142014",
+        "width": 1600,
+        "height": 948
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-14/p02.webp?v=f4aecff5",
+        "width": 1600,
+        "height": 2635
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-14/p03.webp?v=510f1834",
+        "width": 1600,
+        "height": 2635
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-14/p04.webp?v=1f394460",
+        "width": 1600,
+        "height": 2635
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-14/p05.webp?v=91ef2169",
+        "width": 1600,
+        "height": 2635
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-14/p06.webp?v=4e6d668b",
+        "width": 1600,
+        "height": 1217
+      }
+    ]
   },
   "communication-15": {
     "thumbnails": [
@@ -431,7 +529,44 @@
       "/media/works/communication-17/thumb-a.webp?v=7f4a2cb5",
       "/media/works/communication-17/thumb-b.webp?v=64c6a144"
     ],
-    "pages": []
+    "pages": [
+      {
+        "type": "image",
+        "src": "/media/works/communication-17/p01.webp?v=9cb13712",
+        "width": 1600,
+        "height": 2399
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-17/p02.webp?v=67020f19",
+        "width": 1600,
+        "height": 2871
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-17/p03.webp?v=7f12d501",
+        "width": 1600,
+        "height": 1290
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-17/p04.webp?v=fd524be2",
+        "width": 1600,
+        "height": 2143
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-17/p05.webp?v=9500ab18",
+        "width": 1600,
+        "height": 2448
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-17/p06.webp?v=dd5932ef",
+        "width": 1600,
+        "height": 2124
+      }
+    ]
   },
   "communication-18": {
     "thumbnails": [
@@ -441,8 +576,8 @@
     "pages": [
       {
         "type": "video",
-        "src": "/media/works/communication-18/p01.mp4?v=96c6e769",
-        "poster": "/media/works/communication-18/p01.webp?v=fa81666b",
+        "src": "/media/works/communication-18/p01.mp4?v=95bf869c",
+        "poster": "/media/works/communication-18/p01.webp?v=28b6f80f",
         "width": 1280,
         "height": 720
       }
@@ -456,35 +591,77 @@
     "pages": [
       {
         "type": "image",
-        "src": "/media/works/communication-19/p01.webp?v=dfeced24",
+        "src": "/media/works/communication-19/p01.webp?v=bd38ca79",
         "width": 1600,
-        "height": 2177
+        "height": 2141
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-19/p02.webp?v=8c1e4b65",
+        "width": 1600,
+        "height": 2447
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-19/p03.webp?v=c271a8de",
+        "width": 1600,
+        "height": 1665
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-19/p04.webp?v=a3eff9be",
+        "width": 1600,
+        "height": 2087
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-19/p05.webp?v=84afaa70",
+        "width": 1600,
+        "height": 2146
       }
     ]
   },
   "communication-20": {
     "thumbnails": [
       "/media/works/communication-20/thumb-a.webp?v=b5cf35d6",
-      "/media/works/communication-20/thumb-b.webp?v=136d500d"
+      "/media/works/communication-20/thumb-b.webp?v=93350f8e"
     ],
     "pages": [
       {
         "type": "image",
-        "src": "/media/works/communication-20/p01.webp?v=02f273a5",
+        "src": "/media/works/communication-20/p01.webp?v=6a1598e0",
         "width": 1600,
-        "height": 2266
+        "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/communication-20/p02.webp?v=8df2bfef",
+        "src": "/media/works/communication-20/p02.webp?v=72073f83",
         "width": 1600,
-        "height": 948
+        "height": 943
       },
       {
         "type": "image",
-        "src": "/media/works/communication-20/p03.webp?v=42dd8046",
+        "src": "/media/works/communication-20/p03.webp?v=a8fa4d6d",
         "width": 1600,
-        "height": 1199
+        "height": 1073
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-20/p04.webp?v=2d658137",
+        "width": 1600,
+        "height": 733
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-20/p05.webp?v=6fd483f3",
+        "width": 1600,
+        "height": 1755
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-20/p06.webp?v=abc0c381",
+        "width": 1600,
+        "height": 1475
       }
     ]
   },
@@ -522,8 +699,8 @@
   },
   "communication-22": {
     "thumbnails": [
-      "/media/works/communication-22/thumb-a.webp?v=3777462e",
-      "/media/works/communication-22/thumb-b.webp?v=8dac4254"
+      "/media/works/communication-22/thumb-a.webp?v=61579223",
+      "/media/works/communication-22/thumb-b.webp?v=ce2027f5"
     ],
     "pages": []
   },
@@ -568,6 +745,20 @@
       }
     ]
   },
+  "communication-27": {
+    "thumbnails": [
+      "/media/works/communication-27/thumb-a.webp?v=1a49e235",
+      "/media/works/communication-27/thumb-b.webp?v=6d26aa76"
+    ],
+    "pages": []
+  },
+  "communication-28": {
+    "thumbnails": [
+      "/media/works/communication-28/thumb-a.webp?v=11188a24",
+      "/media/works/communication-28/thumb-b.webp?v=99ed9d79"
+    ],
+    "pages": []
+  },
   "communication-29": {
     "thumbnails": [
       "/media/works/communication-29/thumb-a.webp?v=98675436",
@@ -577,8 +768,8 @@
   },
   "communication-30": {
     "thumbnails": [
-      "/media/works/communication-30/thumb-a.webp?v=26e71933",
-      "/media/works/communication-30/thumb-b.webp?v=29effe19"
+      "/media/works/communication-30/thumb-a.webp?v=29effe19",
+      "/media/works/communication-30/thumb-a.webp?v=29effe19"
     ],
     "pages": [
       {
@@ -597,7 +788,7 @@
     "pages": [
       {
         "type": "image",
-        "src": "/media/works/communication-31/p01.webp?v=dc6b846e",
+        "src": "/media/works/communication-31/p01.webp?v=f158a604",
         "width": 1600,
         "height": 3989
       },
@@ -607,13 +798,13 @@
       },
       {
         "type": "image",
-        "src": "/media/works/communication-31/p03.webp?v=54c738ba",
+        "src": "/media/works/communication-31/p03.webp?v=706265eb",
         "width": 1600,
         "height": 4590
       },
       {
         "type": "image",
-        "src": "/media/works/communication-31/p04.webp?v=9da1152e",
+        "src": "/media/works/communication-31/p04.webp?v=ee1105d0",
         "width": 1600,
         "height": 2750
       }
@@ -645,8 +836,8 @@
       },
       {
         "type": "video",
-        "src": "/media/works/communication-32/p04.mp4?v=30e19159",
-        "poster": "/media/works/communication-32/p04.webp?v=716f3dcf",
+        "src": "/media/works/communication-32/p04.mp4?v=275d1cc2",
+        "poster": "/media/works/communication-32/p04.webp?v=afb1bd94",
         "width": 1280,
         "height": 1000
       },
@@ -728,19 +919,19 @@
       },
       {
         "type": "image",
-        "src": "/media/works/communication-34/p02.webp?v=2dd7b0c0",
+        "src": "/media/works/communication-34/p02.webp?v=c0dd748b",
         "width": 1600,
         "height": 2233
       },
       {
         "type": "image",
-        "src": "/media/works/communication-34/p03.webp?v=68f299df",
+        "src": "/media/works/communication-34/p03.webp?v=14e830b0",
         "width": 1600,
         "height": 2370
       },
       {
         "type": "image",
-        "src": "/media/works/communication-34/p04.webp?v=24d7e905",
+        "src": "/media/works/communication-34/p04.webp?v=23d71310",
         "width": 1600,
         "height": 787
       }
@@ -786,8 +977,8 @@
       },
       {
         "type": "video",
-        "src": "/media/works/communication-36/p02.mp4?v=86708b67",
-        "poster": "/media/works/communication-36/p02.webp?v=fc3c10a2",
+        "src": "/media/works/communication-36/p02.mp4?v=a91730dd",
+        "poster": "/media/works/communication-36/p02.webp?v=adda2a72",
         "width": 1280,
         "height": 768
       },
@@ -855,6 +1046,50 @@
       }
     ]
   },
+  "communication-38": {
+    "thumbnails": [
+      "/media/works/communication-38/thumb-a.webp?v=3b166a73",
+      "/media/works/communication-38/thumb-b.webp?v=6358ee63"
+    ],
+    "pages": [
+      {
+        "type": "image",
+        "src": "/media/works/communication-38/p01.webp?v=4133442f",
+        "width": 1600,
+        "height": 2177
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-38/p02.webp?v=7007f3fb",
+        "width": 1600,
+        "height": 2425
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-38/p03.webp?v=a618719d",
+        "width": 1600,
+        "height": 1698
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-38/p04.webp?v=3102d50c",
+        "width": 1600,
+        "height": 2536
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-38/p05.webp?v=89a36f82",
+        "width": 1600,
+        "height": 2635
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-38/p06.webp?v=8ab01dfd",
+        "width": 1600,
+        "height": 1504
+      }
+    ]
+  },
   "communication-39": {
     "thumbnails": [
       "/media/works/communication-39/thumb-a.webp?v=336536a3",
@@ -909,8 +1144,8 @@
       },
       {
         "type": "video",
-        "src": "/media/works/communication-41/p02.mp4?v=9b461da4",
-        "poster": "/media/works/communication-41/p02.webp?v=526fec0a",
+        "src": "/media/works/communication-41/p02.mp4?v=d0dfbf5e",
+        "poster": "/media/works/communication-41/p02.webp?v=1750f5e6",
         "width": 1280,
         "height": 868
       },
@@ -922,8 +1157,8 @@
       },
       {
         "type": "video",
-        "src": "/media/works/communication-41/p04.mp4?v=2b326616",
-        "poster": "/media/works/communication-41/p04.webp?v=26a49f73",
+        "src": "/media/works/communication-41/p04.mp4?v=cd9d13f3",
+        "poster": "/media/works/communication-41/p04.webp?v=a9a32ae6",
         "width": 1280,
         "height": 976
       },
@@ -967,52 +1202,58 @@
   },
   "communication-43": {
     "thumbnails": [
-      "/media/works/communication-43/thumb-a.webp?v=0b50e1b3",
-      "/media/works/communication-43/thumb-b.webp?v=5060e5d6"
+      "/media/works/communication-43/thumb-a.webp?v=06f08483",
+      "/media/works/communication-43/thumb-b.webp?v=0a555230"
     ],
     "pages": [
       {
         "type": "video",
-        "src": "/media/works/communication-43/p01.mp4?v=c5545a01",
-        "poster": "/media/works/communication-43/p01.webp?v=7770b58d",
+        "src": "/media/works/communication-43/p01.mp4?v=9ac4b7f4",
+        "poster": "/media/works/communication-43/p01.webp?v=346d8dbe",
         "width": 1280,
         "height": 904
       },
       {
         "type": "image",
-        "src": "/media/works/communication-43/p02.webp?v=344a14e1",
+        "src": "/media/works/communication-43/p02.webp?v=49601e89",
         "width": 1600,
         "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/communication-43/p03.webp?v=6e22f547",
+        "src": "/media/works/communication-43/p03.webp?v=98e425fd",
         "width": 1600,
         "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/communication-43/p04.webp?v=ba3931de",
+        "src": "/media/works/communication-43/p04.webp?v=75b3156a",
         "width": 1600,
         "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/communication-43/p05.webp?v=827f412c",
+        "src": "/media/works/communication-43/p05.webp?v=ac44940f",
         "width": 1600,
         "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/communication-43/p06.webp?v=34354010",
+        "src": "/media/works/communication-43/p06.webp?v=9147f25e",
         "width": 1600,
         "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/communication-43/p07.webp?v=859eb476",
+        "src": "/media/works/communication-43/p07.webp?v=cff47d4d",
         "width": 1600,
-        "height": 1394
+        "height": 2635
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-43/p08.webp?v=bae46f73",
+        "width": 1600,
+        "height": 1051
       }
     ]
   },
@@ -1117,6 +1358,13 @@
       }
     ]
   },
+  "communication-47": {
+    "thumbnails": [
+      "/media/works/communication-47/thumb-b.webp?v=6879650d",
+      "/media/works/communication-47/thumb-b.webp?v=6879650d"
+    ],
+    "pages": []
+  },
   "communication-48": {
     "thumbnails": [
       "/media/works/communication-48/thumb-a.webp?v=7956e8c4",
@@ -1125,8 +1373,8 @@
     "pages": [
       {
         "type": "video",
-        "src": "/media/works/communication-48/p01.mp4?v=5955202a",
-        "poster": "/media/works/communication-48/p01.webp?v=fe7928c4",
+        "src": "/media/works/communication-48/p01.mp4?v=05b00602",
+        "poster": "/media/works/communication-48/p01.webp?v=2b19a15d",
         "width": 1280,
         "height": 720
       },
@@ -1138,15 +1386,15 @@
       },
       {
         "type": "video",
-        "src": "/media/works/communication-48/p03.mp4?v=a16d8f40",
-        "poster": "/media/works/communication-48/p03.webp?v=16fbba82",
+        "src": "/media/works/communication-48/p03.mp4?v=f3920db6",
+        "poster": "/media/works/communication-48/p03.webp?v=bb930541",
         "width": 1280,
         "height": 720
       },
       {
         "type": "video",
-        "src": "/media/works/communication-48/p04.mp4?v=a1e35b0d",
-        "poster": "/media/works/communication-48/p04.webp?v=5180340c",
+        "src": "/media/works/communication-48/p04.mp4?v=d969848a",
+        "poster": "/media/works/communication-48/p04.webp?v=f52fed90",
         "width": 1280,
         "height": 720
       },
@@ -1164,8 +1412,8 @@
       },
       {
         "type": "video",
-        "src": "/media/works/communication-48/p07.mp4?v=1fba0b6d",
-        "poster": "/media/works/communication-48/p07.webp?v=9125c9ab",
+        "src": "/media/works/communication-48/p07.mp4?v=faf515cc",
+        "poster": "/media/works/communication-48/p07.webp?v=93742569",
         "width": 1280,
         "height": 720
       },
@@ -1177,8 +1425,8 @@
       },
       {
         "type": "video",
-        "src": "/media/works/communication-48/p09.mp4?v=827d60a7",
-        "poster": "/media/works/communication-48/p09.webp?v=55094ab9",
+        "src": "/media/works/communication-48/p09.mp4?v=e5779386",
+        "poster": "/media/works/communication-48/p09.webp?v=8783f859",
         "width": 1280,
         "height": 720
       },
@@ -1192,8 +1440,8 @@
   },
   "communication-49": {
     "thumbnails": [
-      "/media/works/communication-49/thumb-a.webp?v=19aa2fe7",
-      "/media/works/communication-49/thumb-b.webp?v=b4418491"
+      "/media/works/communication-49/thumb-a.webp?v=831dbeef",
+      "/media/works/communication-49/thumb-b.webp?v=fc2a368d"
     ],
     "pages": [
       {
@@ -1204,13 +1452,13 @@
       },
       {
         "type": "image",
-        "src": "/media/works/communication-49/p02.webp?v=1d3f8279",
+        "src": "/media/works/communication-49/p02.webp?v=03c0a0c5",
         "width": 1600,
         "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/communication-49/p03.webp?v=7e35274b",
+        "src": "/media/works/communication-49/p03.webp?v=c615c4ca",
         "width": 1600,
         "height": 2635
       },
@@ -1228,7 +1476,7 @@
       },
       {
         "type": "image",
-        "src": "/media/works/communication-49/p06.webp?v=8fcf2fa9",
+        "src": "/media/works/communication-49/p06.webp?v=23b396b6",
         "width": 1600,
         "height": 2635
       },
@@ -1314,22 +1562,71 @@
   },
   "communication-51": {
     "thumbnails": [
-      "/media/works/communication-51/thumb-a.webp?v=2d7faed2",
-      "/media/works/communication-51/thumb-b.webp?v=acbecc07"
-    ],
-    "pages": []
-  },
-  "communication-52": {
-    "thumbnails": [
-      "/media/works/communication-52/thumb-a.webp?v=10065be8",
-      "/media/works/communication-52/thumb-b.webp?v=e939a0b6"
+      "/media/works/communication-51/thumb-a.webp?v=9f79d6cf",
+      "/media/works/communication-51/thumb-b.webp?v=430c8c0d"
     ],
     "pages": [
       {
         "type": "image",
-        "src": "/media/works/communication-52/p01.webp?v=d6fc0faa",
-        "width": 1518,
+        "src": "/media/works/communication-51/p01.webp?v=5eb3e689",
+        "width": 1600,
+        "height": 2635
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-51/p02.webp?v=043802de",
+        "width": 1600,
+        "height": 2635
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-51/p03.webp?v=8bfea926",
+        "width": 1600,
+        "height": 2635
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-51/p04.webp?v=d4e15405",
+        "width": 1600,
         "height": 2500
+      }
+    ]
+  },
+  "communication-52": {
+    "thumbnails": [
+      "/media/works/communication-52/thumb-a.webp?v=9816acd4",
+      "/media/works/communication-52/thumb-b.webp?v=8d0821f7"
+    ],
+    "pages": [
+      {
+        "type": "image",
+        "src": "/media/works/communication-52/p01.webp?v=5a4d98f2",
+        "width": 1600,
+        "height": 1800
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-52/p02.webp?v=fdd7fe4a",
+        "width": 1600,
+        "height": 2058
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-52/p03.webp?v=bcdcc41f",
+        "width": 1600,
+        "height": 2339
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-52/p04.webp?v=97951744",
+        "width": 1600,
+        "height": 2304
+      },
+      {
+        "type": "image",
+        "src": "/media/works/communication-52/p05.webp?v=493e5237",
+        "width": 1600,
+        "height": 2119
       }
     ]
   },
@@ -1379,8 +1676,8 @@
     "pages": [
       {
         "type": "video",
-        "src": "/media/works/communication-54/p01.mp4?v=5e7d4a76",
-        "poster": "/media/works/communication-54/p01.webp?v=581400e0",
+        "src": "/media/works/communication-54/p01.mp4?v=2c0fd3a2",
+        "poster": "/media/works/communication-54/p01.webp?v=c9cc0858",
         "width": 1280,
         "height": 720
       },
@@ -1462,8 +1759,8 @@
       },
       {
         "type": "video",
-        "src": "/media/works/communication-56/p03.mp4?v=ae69e5bd",
-        "poster": "/media/works/communication-56/p03.webp?v=6524cbdd",
+        "src": "/media/works/communication-56/p03.mp4?v=795bbc54",
+        "poster": "/media/works/communication-56/p03.webp?v=53ebd141",
         "width": 1280,
         "height": 810
       },
@@ -1489,7 +1786,7 @@
   },
   "communication-57": {
     "thumbnails": [
-      "/media/works/communication-57/thumb-a.webp?v=4f8e0312",
+      "/media/works/communication-57/thumb-a.webp?v=e2d1ec3b",
       "/media/works/communication-57/thumb-b.webp?v=30580c14"
     ],
     "pages": []
@@ -1520,8 +1817,8 @@
       },
       {
         "type": "video",
-        "src": "/media/works/communication-58/p04.mp4?v=ee05f52a",
-        "poster": "/media/works/communication-58/p04.webp?v=656c10aa",
+        "src": "/media/works/communication-58/p04.mp4?v=d9d09ac9",
+        "poster": "/media/works/communication-58/p04.webp?v=95dbd852",
         "width": 1280,
         "height": 898
       },
@@ -1547,7 +1844,7 @@
   },
   "communication-59": {
     "thumbnails": [
-      "/media/works/communication-59/thumb-a.webp?v=8df556c5",
+      "/media/works/communication-59/thumb-a.webp?v=da1ebdf7",
       "/media/works/communication-59/thumb-b.webp?v=5a2a963a"
     ],
     "pages": [
@@ -1677,8 +1974,8 @@
     "pages": [
       {
         "type": "video",
-        "src": "/media/works/communication-61/p01.mp4?v=ec7c2f05",
-        "poster": "/media/works/communication-61/p01.webp?v=e4a8f527",
+        "src": "/media/works/communication-61/p01.mp4?v=ac7ce7bf",
+        "poster": "/media/works/communication-61/p01.webp?v=8673303e",
         "width": 1280,
         "height": 800
       },
@@ -1796,8 +2093,8 @@
       },
       {
         "type": "video",
-        "src": "/media/works/industrial-02/p03.mp4?v=d63d511c",
-        "poster": "/media/works/industrial-02/p03.webp?v=3a2e2304",
+        "src": "/media/works/industrial-02/p03.mp4?v=37be9987",
+        "poster": "/media/works/industrial-02/p03.webp?v=7fb900d1",
         "width": 1280,
         "height": 720
       },
@@ -1978,13 +2275,6 @@
         "id": "Kq2C-xqibWk"
       },
       {
-        "type": "video",
-        "src": "/media/works/industrial-06/p04.mp4?v=36105f6a",
-        "poster": "/media/works/industrial-06/p04.webp?v=5308715f",
-        "width": 1280,
-        "height": 720
-      },
-      {
         "type": "image",
         "src": "/media/works/industrial-06/p05.webp?v=01f24d8f",
         "width": 1600,
@@ -2078,8 +2368,8 @@
   },
   "industrial-09": {
     "thumbnails": [
-      "/media/works/industrial-09/thumb-a.webp?v=f65d4d07",
-      "/media/works/industrial-09/thumb-b.webp?v=92b1765d"
+      "/media/works/industrial-09/thumb-a.webp?v=ba2c5673",
+      "/media/works/industrial-09/thumb-b.webp?v=3e918c51"
     ],
     "pages": [
       {
@@ -2126,8 +2416,8 @@
       },
       {
         "type": "video",
-        "src": "/media/works/industrial-10/p03.mp4?v=09f221e2",
-        "poster": "/media/works/industrial-10/p03.webp?v=1473a049",
+        "src": "/media/works/industrial-10/p03.mp4?v=38e35037",
+        "poster": "/media/works/industrial-10/p03.webp?v=52dce64d",
         "width": 1280,
         "height": 720
       },
@@ -2139,8 +2429,8 @@
       },
       {
         "type": "video",
-        "src": "/media/works/industrial-10/p05.mp4?v=e66d8d1d",
-        "poster": "/media/works/industrial-10/p05.webp?v=8e1b89f2",
+        "src": "/media/works/industrial-10/p05.mp4?v=31928ad9",
+        "poster": "/media/works/industrial-10/p05.webp?v=f7aca65a",
         "width": 1280,
         "height": 720
       },
@@ -2434,7 +2724,7 @@
     "pages": [
       {
         "type": "image",
-        "src": "/media/works/industrial-18/p01.webp?v=a2664726",
+        "src": "/media/works/industrial-18/p01.webp?v=65d36dc9",
         "width": 1600,
         "height": 1356
       },
@@ -2446,13 +2736,13 @@
       },
       {
         "type": "image",
-        "src": "/media/works/industrial-18/p03.webp?v=29c1f690",
+        "src": "/media/works/industrial-18/p03.webp?v=8ee8849e",
         "width": 1600,
         "height": 1322
       },
       {
         "type": "image",
-        "src": "/media/works/industrial-18/p04.webp?v=019141f4",
+        "src": "/media/works/industrial-18/p04.webp?v=6742f51d",
         "width": 1600,
         "height": 1794
       },
@@ -2746,15 +3036,15 @@
       },
       {
         "type": "video",
-        "src": "/media/works/industrial-24/p05.mp4?v=bf1ea196",
-        "poster": "/media/works/industrial-24/p05.webp?v=57f36535",
+        "src": "/media/works/industrial-24/p05.mp4?v=3a1b5070",
+        "poster": "/media/works/industrial-24/p05.webp?v=9f275453",
         "width": 1280,
         "height": 720
       },
       {
         "type": "video",
-        "src": "/media/works/industrial-24/p06.mp4?v=a6b89508",
-        "poster": "/media/works/industrial-24/p06.webp?v=15307bb8",
+        "src": "/media/works/industrial-24/p06.mp4?v=7392de9f",
+        "poster": "/media/works/industrial-24/p06.webp?v=007f3665",
         "width": 1280,
         "height": 720
       },
@@ -2933,6 +3223,13 @@
       }
     ]
   },
+  "service-04": {
+    "thumbnails": [
+      "/media/works/service-04/thumb-a.webp?v=0e396fe5",
+      "/media/works/service-04/thumb-b.webp?v=59bb74e2"
+    ],
+    "pages": []
+  },
   "service-05": {
     "thumbnails": [
       "/media/works/service-05/thumb-a.webp?v=50a5ba64",
@@ -2973,8 +3270,8 @@
   },
   "service-06": {
     "thumbnails": [
-      "/media/works/service-06/thumb-a.webp?v=f9a2bc55",
-      "/media/works/service-06/thumb-a.webp?v=f9a2bc55"
+      "/media/works/service-06/thumb-a.webp?v=222c485f",
+      "/media/works/service-06/thumb-a.webp?v=222c485f"
     ],
     "pages": [
       {
@@ -3041,8 +3338,8 @@
       },
       {
         "type": "video",
-        "src": "/media/works/service-07/p04.mp4?v=635fd1c8",
-        "poster": "/media/works/service-07/p04.webp?v=e2a0b5c3",
+        "src": "/media/works/service-07/p04.mp4?v=ed2e666e",
+        "poster": "/media/works/service-07/p04.webp?v=262466c1",
         "width": 1280,
         "height": 736
       },
@@ -3074,75 +3371,75 @@
   },
   "service-08": {
     "thumbnails": [
-      "/media/works/service-08/thumb-a.webp?v=4a449909",
-      "/media/works/service-08/thumb-b.webp?v=4dab6b30"
+      "/media/works/service-08/thumb-a.webp?v=b87e1e89",
+      "/media/works/service-08/thumb-b.webp?v=6d51175b"
     ],
     "pages": [
       {
         "type": "image",
-        "src": "/media/works/service-08/p01.webp?v=08a4aa00",
+        "src": "/media/works/service-08/p01.webp?v=5f097af6",
         "width": 1600,
         "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/service-08/p02.webp?v=708980d1",
+        "src": "/media/works/service-08/p02.webp?v=a1f0b6e7",
         "width": 1600,
         "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/service-08/p03.webp?v=3a44b815",
+        "src": "/media/works/service-08/p03.webp?v=88f09fba",
         "width": 1600,
         "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/service-08/p04.webp?v=4cfd67b9",
+        "src": "/media/works/service-08/p04.webp?v=b4bf276f",
         "width": 1600,
         "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/service-08/p05.webp?v=69349fbd",
+        "src": "/media/works/service-08/p05.webp?v=6a94a4b1",
         "width": 1600,
         "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/service-08/p06.webp?v=6d082b27",
+        "src": "/media/works/service-08/p06.webp?v=5f6c51c6",
         "width": 1600,
         "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/service-08/p07.webp?v=76faefbb",
+        "src": "/media/works/service-08/p07.webp?v=f548eb56",
         "width": 1600,
         "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/service-08/p08.webp?v=e16b4d70",
+        "src": "/media/works/service-08/p08.webp?v=63e1ec3d",
         "width": 1600,
         "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/service-08/p09.webp?v=c81d2591",
+        "src": "/media/works/service-08/p09.webp?v=9b04251c",
         "width": 1600,
         "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/service-08/p10.webp?v=4cd6a635",
+        "src": "/media/works/service-08/p10.webp?v=eb857365",
         "width": 1600,
         "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/service-08/p11.webp?v=5adf39cd",
+        "src": "/media/works/service-08/p11.webp?v=3b2d5095",
         "width": 1600,
-        "height": 2275
+        "height": 2635
       },
       {
         "type": "youtube",
@@ -3164,7 +3461,7 @@
     "pages": [
       {
         "type": "image",
-        "src": "/media/works/service-09/p01.webp?v=23f40dde",
+        "src": "/media/works/service-09/p01.webp?v=21fbf43d",
         "width": 1600,
         "height": 2635
       },
@@ -3182,7 +3479,7 @@
       },
       {
         "type": "image",
-        "src": "/media/works/service-09/p04.webp?v=610b7fbc",
+        "src": "/media/works/service-09/p04.webp?v=29ced634",
         "width": 1600,
         "height": 1686
       }
@@ -3276,7 +3573,7 @@
       },
       {
         "type": "image",
-        "src": "/media/works/service-11/p02.webp?v=4b105ed9",
+        "src": "/media/works/service-11/p02.webp?v=404fe7fa",
         "width": 1600,
         "height": 2635
       },
@@ -3386,8 +3683,8 @@
       },
       {
         "type": "video",
-        "src": "/media/works/service-12/p08.mp4?v=392a2675",
-        "poster": "/media/works/service-12/p08.webp?v=a55a8758",
+        "src": "/media/works/service-12/p08.mp4?v=cf1ff7af",
+        "poster": "/media/works/service-12/p08.webp?v=ed1cbb65",
         "width": 1280,
         "height": 894
       },
@@ -3734,7 +4031,7 @@
   },
   "ux-07": {
     "thumbnails": [
-      "/media/works/ux-07/thumb-a.webp?v=f74a6430",
+      "/media/works/ux-07/thumb-a.webp?v=dced449e",
       "/media/works/ux-07/thumb-b.webp?v=0e183549"
     ],
     "pages": []
@@ -3747,149 +4044,125 @@
     "pages": [
       {
         "type": "image",
-        "src": "/media/works/ux-08/p01.webp?v=7c0ce279",
+        "src": "/media/works/ux-08/p01.webp?v=48407769",
         "width": 1600,
-        "height": 1021
+        "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/ux-08/p02.webp?v=7065761f",
+        "src": "/media/works/ux-08/p02.webp?v=b8c8071d",
         "width": 1600,
-        "height": 934
+        "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/ux-08/p03.webp?v=14bf84b2",
+        "src": "/media/works/ux-08/p03.webp?v=f61442db",
         "width": 1600,
-        "height": 934
+        "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/ux-08/p04.webp?v=1eb24b37",
+        "src": "/media/works/ux-08/p04.webp?v=28171dce",
         "width": 1600,
-        "height": 934
+        "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/ux-08/p05.webp?v=6ff8af22",
+        "src": "/media/works/ux-08/p05.webp?v=ab264440",
         "width": 1600,
-        "height": 934
+        "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/ux-08/p06.webp?v=6574cb6b",
-        "width": 1600,
-        "height": 934
-      },
-      {
-        "type": "image",
-        "src": "/media/works/ux-08/p07.webp?v=a25654e6",
-        "width": 1600,
-        "height": 934
-      },
-      {
-        "type": "image",
-        "src": "/media/works/ux-08/p08.webp?v=44b652b9",
-        "width": 1600,
-        "height": 934
-      },
-      {
-        "type": "image",
-        "src": "/media/works/ux-08/p09.webp?v=48d10f26",
-        "width": 1600,
-        "height": 934
-      },
-      {
-        "type": "image",
-        "src": "/media/works/ux-08/p10.webp?v=540c417f",
-        "width": 1600,
-        "height": 1553
-      },
-      {
-        "type": "image",
-        "src": "/media/works/ux-08/p11.webp?v=0a56d3f1",
-        "width": 1600,
-        "height": 1897
-      },
-      {
-        "type": "image",
-        "src": "/media/works/ux-08/p12.webp?v=b5877fcb",
-        "width": 1600,
-        "height": 934
-      },
-      {
-        "type": "image",
-        "src": "/media/works/ux-08/p13.webp?v=853b6c70",
+        "src": "/media/works/ux-08/p06.webp?v=a1edd402",
         "width": 1600,
         "height": 2290
       },
       {
         "type": "image",
-        "src": "/media/works/ux-08/p14.webp?v=134789d1",
+        "src": "/media/works/ux-08/p07.webp?v=3205ef40",
         "width": 1600,
         "height": 2515
       },
       {
         "type": "image",
-        "src": "/media/works/ux-08/p15.webp?v=f4bb2d19",
+        "src": "/media/works/ux-08/p08.webp?v=f4bb2d19",
         "width": 1600,
         "height": 2630
-      },
-      {
-        "type": "image",
-        "src": "/media/works/ux-08/p16.webp?v=9b836445",
-        "width": 1600,
-        "height": 1138
       }
     ]
   },
   "ux-09": {
     "thumbnails": [
-      "/media/works/ux-09/thumb-a.webp?v=eda455f4",
+      "/media/works/ux-09/thumb-a.webp?v=1c34b741",
       "/media/works/ux-09/thumb-b.webp?v=203beedf"
     ],
     "pages": [
       {
         "type": "image",
-        "src": "/media/works/ux-09/p01.webp?v=cce01ddf",
+        "src": "/media/works/ux-09/p01.webp?v=5efd8ae2",
         "width": 1600,
-        "height": 2614
+        "height": 1843
       },
       {
         "type": "image",
-        "src": "/media/works/ux-09/p02.webp?v=f43ac5eb",
+        "src": "/media/works/ux-09/p02.webp?v=d03b5f54",
         "width": 1600,
-        "height": 2108
+        "height": 2528
       },
       {
         "type": "image",
-        "src": "/media/works/ux-09/p03.webp?v=763eaecb",
+        "src": "/media/works/ux-09/p03.webp?v=1b5c7d58",
+        "width": 1600,
+        "height": 1164
+      },
+      {
+        "type": "image",
+        "src": "/media/works/ux-09/p04.webp?v=aec25138",
         "width": 1600,
         "height": 2389
       },
       {
         "type": "image",
-        "src": "/media/works/ux-09/p04.webp?v=534f348b",
+        "src": "/media/works/ux-09/p05.webp?v=fea88a37",
         "width": 1600,
         "height": 2635
       },
       {
         "type": "image",
-        "src": "/media/works/ux-09/p05.webp?v=06d46308",
-        "width": 1600,
-        "height": 2403
-      },
-      {
-        "type": "image",
-        "src": "/media/works/ux-09/p06.webp?v=431098c4",
-        "width": 1600,
-        "height": 2319
-      },
-      {
-        "type": "image",
-        "src": "/media/works/ux-09/p07.webp?v=864b84fb",
+        "src": "/media/works/ux-09/p06.webp?v=d26067b2",
         "width": 1600,
         "height": 2635
+      },
+      {
+        "type": "image",
+        "src": "/media/works/ux-09/p07.webp?v=8585fcd0",
+        "width": 1600,
+        "height": 1534
+      },
+      {
+        "type": "image",
+        "src": "/media/works/ux-09/p08.webp?v=f654259f",
+        "width": 1600,
+        "height": 1534
+      },
+      {
+        "type": "image",
+        "src": "/media/works/ux-09/p09.webp?v=2fe5e481",
+        "width": 1600,
+        "height": 2505
+      },
+      {
+        "type": "image",
+        "src": "/media/works/ux-09/p10.webp?v=79faa78d",
+        "width": 1600,
+        "height": 1382
+      },
+      {
+        "type": "image",
+        "src": "/media/works/ux-09/p11.webp?v=797510f1",
+        "width": 1600,
+        "height": 1686
       }
     ]
   },
@@ -3919,37 +4192,43 @@
       },
       {
         "type": "image",
-        "src": "/media/works/ux-10/p04.webp?v=c1ca340e",
+        "src": "/media/works/ux-10/p04.webp?v=25d858d7",
+        "width": 1600,
+        "height": 902
+      },
+      {
+        "type": "image",
+        "src": "/media/works/ux-10/p05.webp?v=c1ca340e",
         "width": 1600,
         "height": 2342
       },
       {
         "type": "image",
-        "src": "/media/works/ux-10/p05.webp?v=d9ca18b6",
+        "src": "/media/works/ux-10/p06.webp?v=2c3cdce8",
         "width": 1600,
         "height": 2175
       },
       {
         "type": "image",
-        "src": "/media/works/ux-10/p06.webp?v=30c6220e",
+        "src": "/media/works/ux-10/p07.webp?v=30c6220e",
         "width": 1600,
         "height": 1818
       },
       {
         "type": "image",
-        "src": "/media/works/ux-10/p07.webp?v=3360d480",
+        "src": "/media/works/ux-10/p08.webp?v=3360d480",
         "width": 1600,
         "height": 1444
       },
       {
         "type": "image",
-        "src": "/media/works/ux-10/p08.webp?v=2a8f47b0",
+        "src": "/media/works/ux-10/p09.webp?v=2a8f47b0",
         "width": 1600,
         "height": 1088
       },
       {
         "type": "image",
-        "src": "/media/works/ux-10/p09.webp?v=552efe08",
+        "src": "/media/works/ux-10/p10.webp?v=552efe08",
         "width": 1600,
         "height": 2366
       }
@@ -3957,51 +4236,57 @@
   },
   "ux-11": {
     "thumbnails": [
-      "/media/works/ux-11/thumb-a.webp?v=bdefbc27",
-      "/media/works/ux-11/thumb-b.webp?v=4bfdb7e0"
+      "/media/works/ux-11/thumb-a.webp?v=398510cd",
+      "/media/works/ux-11/thumb-b.webp?v=e388ae1b"
     ],
     "pages": [
       {
         "type": "image",
-        "src": "/media/works/ux-11/p01.webp?v=bf6a50f0",
+        "src": "/media/works/ux-11/p01.webp?v=b046361a",
         "width": 1600,
-        "height": 1703
+        "height": 607
       },
       {
         "type": "image",
-        "src": "/media/works/ux-11/p02.webp?v=53ea2a35",
+        "src": "/media/works/ux-11/p02.webp?v=5982eb63",
         "width": 1600,
-        "height": 1000
+        "height": 1521
       },
       {
         "type": "image",
-        "src": "/media/works/ux-11/p03.webp?v=25cc9b94",
+        "src": "/media/works/ux-11/p03.webp?v=1eb7cdd0",
         "width": 1600,
-        "height": 600
+        "height": 698
       },
       {
         "type": "image",
-        "src": "/media/works/ux-11/p04.webp?v=dc8fcbc6",
+        "src": "/media/works/ux-11/p04.webp?v=f23948bd",
         "width": 1600,
-        "height": 1817
+        "height": 1217
       },
       {
         "type": "image",
-        "src": "/media/works/ux-11/p05.webp?v=f9ca0d3c",
+        "src": "/media/works/ux-11/p05.webp?v=25e35ad8",
         "width": 1600,
-        "height": 1355
+        "height": 1316
       },
       {
         "type": "image",
-        "src": "/media/works/ux-11/p06.webp?v=6f250251",
+        "src": "/media/works/ux-11/p06.webp?v=0bab3057",
         "width": 1600,
-        "height": 370
+        "height": 871
       },
       {
         "type": "image",
-        "src": "/media/works/ux-11/p07.webp?v=292aade7",
+        "src": "/media/works/ux-11/p07.webp?v=c84d480e",
         "width": 1600,
-        "height": 2850
+        "height": 1377
+      },
+      {
+        "type": "image",
+        "src": "/media/works/ux-11/p08.webp?v=d8edc207",
+        "width": 1600,
+        "height": 958
       }
     ]
   },
@@ -4038,8 +4323,8 @@
       },
       {
         "type": "video",
-        "src": "/media/works/ux-13/p04.mp4?v=88c560c2",
-        "poster": "/media/works/ux-13/p04.webp?v=4a9d7a1e",
+        "src": "/media/works/ux-13/p04.mp4?v=752805f9",
+        "poster": "/media/works/ux-13/p04.webp?v=174f3688",
         "width": 1280,
         "height": 714
       },
@@ -4063,8 +4348,8 @@
       },
       {
         "type": "video",
-        "src": "/media/works/ux-13/p08.mp4?v=1c8f0963",
-        "poster": "/media/works/ux-13/p08.webp?v=c7d21e9c",
+        "src": "/media/works/ux-13/p08.mp4?v=35489e66",
+        "poster": "/media/works/ux-13/p08.webp?v=c97f4d12",
         "width": 1280,
         "height": 956
       },
@@ -4084,45 +4369,81 @@
   },
   "ux-14": {
     "thumbnails": [
-      "/media/works/ux-14/thumb-a.webp?v=4801c446",
+      "/media/works/ux-14/thumb-a.webp?v=04ef1320",
       "/media/works/ux-14/thumb-b.webp?v=bebc0aa8"
     ],
     "pages": [
       {
         "type": "image",
-        "src": "/media/works/ux-14/p01.webp?v=3d9ff2c0",
+        "src": "/media/works/ux-14/p01.webp?v=f8775363",
         "width": 1600,
-        "height": 2222
+        "height": 1374
       },
       {
         "type": "image",
-        "src": "/media/works/ux-14/p02.webp?v=0449b2b9",
+        "src": "/media/works/ux-14/p02.webp?v=79e1ea78",
         "width": 1600,
-        "height": 2222
+        "height": 2595
       },
       {
         "type": "image",
-        "src": "/media/works/ux-14/p03.webp?v=89fa16d4",
+        "src": "/media/works/ux-14/p03.webp?v=f3edc20c",
         "width": 1600,
-        "height": 2222
+        "height": 2028
       },
       {
         "type": "image",
-        "src": "/media/works/ux-14/p04.webp?v=cf3ec660",
+        "src": "/media/works/ux-14/p04.webp?v=78e369da",
         "width": 1600,
-        "height": 2222
+        "height": 2453
       },
       {
         "type": "image",
-        "src": "/media/works/ux-14/p05.webp?v=e2097b24",
+        "src": "/media/works/ux-14/p05.webp?v=1d9114b5",
         "width": 1600,
-        "height": 2222
+        "height": 1697
       },
       {
         "type": "image",
-        "src": "/media/works/ux-14/p06.webp?v=020b95a2",
+        "src": "/media/works/ux-14/p06.webp?v=d0d45219",
         "width": 1600,
-        "height": 2222
+        "height": 1882
+      },
+      {
+        "type": "image",
+        "src": "/media/works/ux-14/p07.webp?v=faccac00",
+        "width": 1600,
+        "height": 1811
+      },
+      {
+        "type": "image",
+        "src": "/media/works/ux-14/p08.webp?v=f015c78b",
+        "width": 1600,
+        "height": 1882
+      },
+      {
+        "type": "image",
+        "src": "/media/works/ux-14/p09.webp?v=9ab7428a",
+        "width": 1600,
+        "height": 1253
+      },
+      {
+        "type": "image",
+        "src": "/media/works/ux-14/p10.webp?v=84516232",
+        "width": 1600,
+        "height": 1671
+      },
+      {
+        "type": "image",
+        "src": "/media/works/ux-14/p11.webp?v=c6bb6cd4",
+        "width": 1600,
+        "height": 2030
+      },
+      {
+        "type": "image",
+        "src": "/media/works/ux-14/p12.webp?v=25b332c0",
+        "width": 1600,
+        "height": 1055
       }
     ]
   },
@@ -4206,6 +4527,13 @@
       }
     ]
   },
+  "ux-16": {
+    "thumbnails": [
+      "/media/works/ux-16/thumb-a.webp?v=5eb13d50",
+      "/media/works/ux-16/thumb-b.webp?v=e63ad50a"
+    ],
+    "pages": []
+  },
   "ux-17": {
     "thumbnails": [
       "/media/works/ux-17/thumb-a.webp?v=7dbd21f2",
@@ -4220,8 +4548,8 @@
       },
       {
         "type": "video",
-        "src": "/media/works/ux-17/p02.mp4?v=ec01913f",
-        "poster": "/media/works/ux-17/p02.webp?v=8cd5e2ac",
+        "src": "/media/works/ux-17/p02.mp4?v=56e1b8d4",
+        "poster": "/media/works/ux-17/p02.webp?v=a002e125",
         "width": 1280,
         "height": 720
       },
@@ -4233,8 +4561,8 @@
       },
       {
         "type": "video",
-        "src": "/media/works/ux-17/p04.mp4?v=687a3429",
-        "poster": "/media/works/ux-17/p04.webp?v=39bb19ff",
+        "src": "/media/works/ux-17/p04.mp4?v=03e4d281",
+        "poster": "/media/works/ux-17/p04.webp?v=8cf5df66",
         "width": 1280,
         "height": 720
       },
@@ -4246,8 +4574,8 @@
       },
       {
         "type": "video",
-        "src": "/media/works/ux-17/p06.mp4?v=977e1e02",
-        "poster": "/media/works/ux-17/p06.webp?v=f63c5e52",
+        "src": "/media/works/ux-17/p06.mp4?v=bf8ad40b",
+        "poster": "/media/works/ux-17/p06.webp?v=3076bc03",
         "width": 1280,
         "height": 444
       }
@@ -4279,19 +4607,19 @@
       },
       {
         "type": "image",
-        "src": "/media/works/ux-18/p04.webp?v=d7d93591",
+        "src": "/media/works/ux-18/p04.webp?v=2c03cfc4",
         "width": 1600,
         "height": 1800
       },
       {
         "type": "image",
-        "src": "/media/works/ux-18/p05.webp?v=42ff8e00",
+        "src": "/media/works/ux-18/p05.webp?v=4795def4",
         "width": 1600,
         "height": 1800
       },
       {
         "type": "image",
-        "src": "/media/works/ux-18/p06.webp?v=778d00b8",
+        "src": "/media/works/ux-18/p06.webp?v=5468e87a",
         "width": 1600,
         "height": 1800
       },
@@ -4315,10 +4643,42 @@
       }
     ]
   },
+  "ux-19": {
+    "thumbnails": [
+      "/media/works/ux-19/thumb-a.webp?v=53a6e8ec",
+      "/media/works/ux-19/thumb-b.webp?v=0dcefc47"
+    ],
+    "pages": [
+      {
+        "type": "image",
+        "src": "/media/works/ux-19/p01.webp?v=73e4efda",
+        "width": 1600,
+        "height": 2635
+      },
+      {
+        "type": "image",
+        "src": "/media/works/ux-19/p02.webp?v=2b720a33",
+        "width": 1600,
+        "height": 2635
+      },
+      {
+        "type": "image",
+        "src": "/media/works/ux-19/p03.webp?v=b61e73f4",
+        "width": 1600,
+        "height": 2635
+      },
+      {
+        "type": "image",
+        "src": "/media/works/ux-19/p04.webp?v=5be26c0a",
+        "width": 1600,
+        "height": 2629
+      }
+    ]
+  },
   "ux-20": {
     "thumbnails": [
-      "/media/works/ux-20/thumb-a.webp?v=624f1a38",
-      "/media/works/ux-20/thumb-b.webp?v=9eceac72"
+      "/media/works/ux-20/thumb-a.webp?v=3cab8ef4",
+      "/media/works/ux-20/thumb-b.webp?v=850a9f6a"
     ],
     "pages": []
   },
@@ -4500,70 +4860,70 @@
   },
   "ux-25": {
     "thumbnails": [
-      "/media/works/ux-25/thumb-a.webp?v=cafe4ea8",
-      "/media/works/ux-25/thumb-b.webp?v=df22a377"
+      "/media/works/ux-25/thumb-a.webp?v=2b5a40a0",
+      "/media/works/ux-25/thumb-b.webp?v=74ca3a2d"
     ],
     "pages": [
       {
         "type": "image",
-        "src": "/media/works/ux-25/p01.webp?v=64cff39f",
+        "src": "/media/works/ux-25/p01.webp?v=f3740fc1",
         "width": 1600,
-        "height": 2583
+        "height": 2523
       },
       {
         "type": "image",
-        "src": "/media/works/ux-25/p02.webp?v=cd29bc35",
+        "src": "/media/works/ux-25/p02.webp?v=73119e26",
         "width": 1600,
         "height": 1804
       },
       {
         "type": "image",
-        "src": "/media/works/ux-25/p03.webp?v=042b7470",
+        "src": "/media/works/ux-25/p03.webp?v=3952b59f",
         "width": 1600,
         "height": 1786
       },
       {
         "type": "image",
-        "src": "/media/works/ux-25/p04.webp?v=75be519b",
+        "src": "/media/works/ux-25/p04.webp?v=31a1cc85",
         "width": 1600,
         "height": 1674
       },
       {
         "type": "image",
-        "src": "/media/works/ux-25/p05.webp?v=89384ce6",
+        "src": "/media/works/ux-25/p05.webp?v=b63453fe",
         "width": 1600,
         "height": 2106
       },
       {
         "type": "image",
-        "src": "/media/works/ux-25/p06.webp?v=8919c115",
+        "src": "/media/works/ux-25/p06.webp?v=72f82d3e",
         "width": 1600,
-        "height": 902
+        "height": 1662
       },
       {
         "type": "image",
-        "src": "/media/works/ux-25/p07.webp?v=c0dff23b",
+        "src": "/media/works/ux-25/p07.webp?v=225eadf6",
         "width": 1600,
-        "height": 2257
+        "height": 2462
       },
       {
         "type": "image",
-        "src": "/media/works/ux-25/p08.webp?v=2c261482",
+        "src": "/media/works/ux-25/p08.webp?v=b79fd26e",
         "width": 1600,
-        "height": 1736
+        "height": 1729
       },
       {
         "type": "image",
-        "src": "/media/works/ux-25/p09.webp?v=8affe90c",
+        "src": "/media/works/ux-25/p09.webp?v=7a034e0e",
         "width": 1600,
-        "height": 2023
+        "height": 1803
       }
     ]
   },
   "ux-26": {
     "thumbnails": [
-      "/media/works/ux-26/thumb-a.webp?v=d945f3f2",
-      "/media/works/ux-26/thumb-b.webp?v=d945f3f2"
+      "/media/works/ux-26/thumb-a.webp?v=2a0747db",
+      "/media/works/ux-26/thumb-b.webp?v=874c7ee6"
     ],
     "pages": []
   }
