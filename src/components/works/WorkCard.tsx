@@ -9,18 +9,26 @@ import { asset } from "@/lib/asset";
 
 /** 한 장이 다 들어온 뒤 머무는 시간 · 미는 시간 (넘어가는 간격 ≈ 1.3 + 1.2 = 2.5초) */
 const HOLD = 1300; // ms
-const SLIDE = { duration: 2.2, ease: [0.65, 0, 0.35, 1] } as const;
+const SLIDE = { duration: 1.2, ease: [0.45, 0, 0.25, 1] } as const;
 
 /**
  * Figma Works 카드 (2564:9047) — 썸네일 456×270, 아래로 16px, 제목 KR Body/Large · 이름 KR Body/Small, 사이 2px
  * 인터렉션(1801:15055): 호버하면 약 2.5초 간격으로 썸네일이 무한히 바뀌고 20% 검정 덮개 (2564:9048)
  * 바뀔 때는 왼쪽으로 민다 — 지금 사진이 왼쪽으로 빠지고 다음 사진이 오른쪽에서 들어온다 (1.2초)
- * (참고: readymag.com/designs/5807552). 호버가 끝나면 첫 장으로 같은 방향으로 돌아온다.
+ * (참고: readymag.com/designs/5807552). 호버가 끝나면 바로 멈추고 첫 장으로 돌아온다(밀지 않음).
  * 모션 줄이기 설정이면 밀지 않고 바로 바꾼다.
  */
 export default function WorkCard({ work, designerName }: { work: Work; designerName: string }) {
   const reduce = useReducedMotion();
-  const [hover, setHover] = useState(false);
+  // 마우스가 올라가 있거나, 키보드(Tab)로 포커스됐을 때만 넘긴다.
+  // 클릭으로 생긴 포커스까지 호버로 치면 포인터가 떠난 뒤에도 링크에 포커스가 남아 계속 넘어갔다
+  const [pointer, setPointer] = useState(false);
+  const [keyFocus, setKeyFocus] = useState(false);
+  const hover = pointer || keyFocus;
+  const hoverRef = useRef(hover);
+  useEffect(() => {
+    hoverRef.current = hover;
+  }, [hover]);
   // 화면에는 두 장만 그린다 — 왼쪽으로 빠지는 사진(prev)과 오른쪽에서 들어오는 사진(index).
   // 넘어갈 때마다 step 을 늘려 두 장을 새 key 로 다시 그린다 (나가는 사진은 0 에서, 들어오는 사진은 100% 에서 시작).
   // AnimatePresence 로 사진 번호를 key 로 쓰면 빠지는 중인 사진이 되살아나 왼·오로 왔다 갔다 하고,
@@ -39,7 +47,7 @@ export default function WorkCard({ work, designerName }: { work: Work; designerN
   const advance = () => setSlide((s) => ({ step: s.step + 1, index: (s.index + 1) % count, prev: s.index }));
   const queueNext = () => {
     clearTimeout(timer.current);
-    if (hover && count > 1) timer.current = setTimeout(advance, HOLD);
+    if (hoverRef.current && count > 1) timer.current = setTimeout(advance, HOLD);
   };
 
   useEffect(() => {
@@ -56,8 +64,8 @@ export default function WorkCard({ work, designerName }: { work: Work; designerN
     return () => {
       clearInterval(id);
       clearTimeout(timer.current);
-      // 호버가 끝나면 첫 장으로 — 이것도 같은 방향(왼쪽)으로 넘어간다
-      setSlide((s) => (s.index === 0 ? s : { step: s.step + 1, index: 0, prev: s.index }));
+      // 호버가 끝나면 그 자리에서 멈추고 첫 장으로 바로 돌아간다 — 밀던 중이어도 한 장 더 넘기지 않는다
+      setSlide((s) => (s.index === 0 && s.prev === null ? s : { step: s.step + 1, index: 0, prev: null }));
     };
   }, [hover, count, reduce]);
 
@@ -67,10 +75,10 @@ export default function WorkCard({ work, designerName }: { work: Work; designerN
     <Link
       href={`/works/${work.slug}/`}
       className="group block"
-      onPointerEnter={() => setHover(true)}
-      onPointerLeave={() => setHover(false)}
-      onFocus={() => setHover(true)}
-      onBlur={() => setHover(false)}
+      onPointerEnter={(e) => e.pointerType === "mouse" && setPointer(true)}
+      onPointerLeave={() => setPointer(false)}
+      onFocus={(e) => setKeyFocus(e.currentTarget.matches(":focus-visible"))}
+      onBlur={() => setKeyFocus(false)}
     >
       <div className="relative aspect-[456/270] overflow-hidden bg-bg-subtle">
         {prev !== null && !reduce && (
