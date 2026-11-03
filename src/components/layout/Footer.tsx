@@ -22,7 +22,8 @@ import ArrowUpRight from "@/components/icons/ArrowUpRight";
  * - 마블      : FooterMarble 참고
  */
 export default function Footer({ inverse = true }: { inverse?: boolean }) {
-  const links = [
+  // 주소가 비어 있으면(준비 중) 링크 없이 글자만 보여 준다
+  const links: { label: string; href: string }[] = [
     { label: "Instagram", href: SITE.contact.instagram },
     { label: "CCD Web", href: SITE.contact.ccd },
   ];
@@ -76,12 +77,14 @@ export default function Footer({ inverse = true }: { inverse?: boolean }) {
         ))}
       </ul>
 
-      {/* 모바일 외부 링크 (2593:5340) — INSTAGRAM · CCD 홈페이지 예정, 글자 뒤에 ↗ */}
+      {/* 모바일 외부 링크 (2593:5340) — INSTAGRAM · CCD WEB(Figma 에선 "CCD 홈페이지 예정" — 학부 사이트가 열려 바꿈), 글자 뒤에 ↗ */}
       <ul className="absolute top-[11px] left-[calc(264/390*100%)] z-10 md:hidden">
-        {[
-          { label: "INSTAGRAM", href: SITE.contact.instagram },
-          { label: "CCD 홈페이지 예정", href: SITE.contact.ccd },
-        ].map((l) => (
+        {(
+          [
+            { label: "INSTAGRAM", href: SITE.contact.instagram },
+            { label: "CCD WEB", href: SITE.contact.ccd },
+          ] as { label: string; href: string }[]
+        ).map((l) => (
           <li key={l.label}>
             {l.href ? (
               <a
