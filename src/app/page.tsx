@@ -120,15 +120,18 @@ export default function HomePage() {
             />
 
             <div className="mt-[calc(132*var(--u))] flex items-start justify-between gap-10 pl-px font-kr max-md:mt-16 max-md:flex-col max-md:gap-12">
-              {/* 전시 정보 */}
-              <dl className="flex flex-col gap-[calc(20*var(--u))] text-[calc(24*var(--u))] leading-[1.5] max-md:gap-4 max-md:text-[18px]">
-                {HOME_INFO.map((info) => (
-                  <div key={info.label}>
-                    <dt className="font-medium">{info.label}</dt>
-                    <dd className="font-light whitespace-nowrap">{info.value}</dd>
-                  </div>
+              {/* 전시 정보 — 전시 소개와 같은 모션으로 이름·값이 한 줄씩 올라온다 (묶음마다 조금씩 늦게) */}
+              <div className="flex flex-col gap-[calc(20*var(--u))] text-[calc(24*var(--u))] leading-[1.5] max-md:gap-4 max-md:text-[18px]">
+                {HOME_INFO.map((info, i) => (
+                  <RevealLines
+                    key={info.label}
+                    as="div"
+                    lines={[info.label, info.value]}
+                    lineClassNames={["font-medium", "font-light whitespace-nowrap"]}
+                    delay={i * 0.24}
+                  />
                 ))}
-              </dl>
+              </div>
 
               {/* 전시 소개 */}
               <section

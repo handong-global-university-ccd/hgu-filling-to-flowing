@@ -32,6 +32,9 @@ export async function generateMetadata({ params }: PageProps<"/works/[slug]">): 
  * - 본문은 헤더(110) 아래 46px, 좌측 정보 338px + 간격 16 + 상세 설명 이미지
  * - 좌측: 작품 사진(338×225, 개인 작품은 디자이너 프로필 338×224) → 타이틀·부제 → 설명 → 크레딧
  * - 좌측 안쪽 간격: 정보 묶음 24 / 제목·설명 20 / 크레딧은 890 높이 열의 맨 아래
+ *   화면이 짧으면(125% 배율 노트북 등) 열 높이를 화면에 맞춰 줄인다 — 고정(sticky)된 열이 화면보다 길면
+ *   맨 아래 크레딧(팀 이름·참여자)이 화면 밖에 남아 스크롤해도 보이지 않는다
+ *   짧은 화면에선 헤더 아래 46 여백도 16 까지 줄여, 처음 위치가 고정 위치(126)와 같게 한다 — 스크롤해도 열이 움직이지 않음
  * - 작업물 아래 240 띄우고 Others, 제목 아래 16 에 352×222 썸네일 루프
  * - 마지막 콘텐츠와 푸터 사이 300 (모든 페이지 공통)
  */
@@ -52,10 +55,11 @@ export default async function WorkDetailPage({ params }: PageProps<"/works/[slug
   return (
     <PageShell mobileTitle={{ title: work.title, backHref: "/works/" }}>
       {/* 모바일 (2563:7046 팀 / 2573:20660 개인): ← 헤더 아래 제목·부제·설명 → 20 → 작업물 → 80 → 사진·참여자 → 80 → Others */}
-      <article className="flex flex-col gap-4 px-margin pt-[46px] max-lg:gap-10 max-md:gap-5 max-md:pt-0 lg:flex-row lg:items-start">
+      <article className="flex flex-col gap-4 px-margin pt-[46px] max-lg:gap-10 lg:pt-[clamp(16px,calc(var(--svh)-1024px),46px)] max-md:gap-5 max-md:pt-0 lg:flex-row lg:items-start">
         {/* 좌측 정보 — 스크롤해도 고정 */}
-        {/* Figma: 좌측 열 높이 890 고정, 크레딧은 열 맨 아래 (justify-between) */}
-        <div className="flex w-full flex-col justify-between gap-10 max-md:gap-0 lg:sticky lg:top-[126px] lg:h-[890px] lg:w-[338px] lg:shrink-0 lg:gap-[104px]">
+        {/* Figma: 좌측 열 높이 890, 크레딧은 열 맨 아래 (justify-between).
+            높이는 min(890, 화면 높이 - 위 126 - 아래 24) 이고, 내용이 더 길면 그만큼 늘어난다 */}
+        <div className="flex w-full flex-col justify-between gap-10 max-md:gap-0 lg:sticky lg:top-[126px] lg:min-h-[min(890px,calc(var(--svh)-150px))] lg:w-[338px] lg:shrink-0">
           <div className="flex flex-col gap-6 max-md:gap-0">
             {/* 모바일은 사진을 작업물 아래로 (MobileCredits) */}
             <div className="max-md:hidden">

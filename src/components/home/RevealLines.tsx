@@ -15,11 +15,14 @@ export default function RevealLines({
   lines,
   as: Tag = "p",
   className,
+  lineClassNames,
   delay = 0,
 }: {
   lines: readonly string[];
-  as?: "p" | "h2";
+  as?: "p" | "h2" | "div";
   className?: string;
+  /** 줄마다 다른 글꼴 굵기 등을 줄 때 (lines 와 같은 순서) */
+  lineClassNames?: readonly string[];
   /** 앞 블록보다 늦게 시작할 때 (초) */
   delay?: number;
 }) {
@@ -47,11 +50,14 @@ export default function RevealLines({
 
   return (
     // 스크린리더는 한 문장으로 읽게 마스크 줄은 aria-hidden, 원문은 sr-only 로 둔다
-    <Tag ref={ref as React.Ref<HTMLParagraphElement & HTMLHeadingElement>} className={cn(className)}>
+    <Tag
+      ref={ref as React.Ref<HTMLParagraphElement & HTMLHeadingElement & HTMLDivElement>}
+      className={cn(className)}
+    >
       <span className="sr-only">{lines.join(" ")}</span>
-      {lines.map((line) => (
+      {lines.map((line, i) => (
         <span key={line} aria-hidden className="block overflow-hidden">
-          <span data-line className="block will-change-transform">
+          <span data-line className={cn("block will-change-transform", lineClassNames?.[i])}>
             {line}
           </span>
         </span>
