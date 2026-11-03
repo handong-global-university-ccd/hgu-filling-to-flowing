@@ -113,7 +113,7 @@ const entries = (dir) =>
         .sort()
     : [];
 
-rmSync(OUT, { recursive: true, force: true });
+// 폴더를 통째로 지우지 않고 덮어쓴다 — 사진이 줄어 남는 예전 파일만 마지막에 지운다
 mkdirSync(OUT, { recursive: true });
 
 const photos = [];
@@ -131,6 +131,16 @@ for (const major of entries(SRC)) {
       photos.push({ src: `/media/${OUT_DIR}/${name}`, title });
     }
     console.log(`  ${title}: ${files.length}장`);
+  }
+}
+
+const keep = new Set(photos.map((p) => path.basename(p.src)));
+for (const f of entries(OUT)) {
+  if (keep.has(f)) continue;
+  try {
+    rmSync(path.join(OUT, f));
+  } catch {
+    console.warn(`  지우지 못한 예전 파일: ${f}`);
   }
 }
 
