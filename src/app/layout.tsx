@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import SmoothScroll from "@/components/providers/SmoothScroll";
 import CrosshairCursor from "@/components/cursor/CrosshairCursor";
+import Hotjar from "@/components/analytics/Hotjar";
 import { SITE } from "@/lib/site";
 import { ZOOM_SCRIPT } from "@/lib/zoom";
 
@@ -47,6 +48,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-(--svh)">
         <SmoothScroll>{children}</SmoothScroll>
         <CrosshairCursor />
+        <Hotjar />
       </body>
     </html>
   );
