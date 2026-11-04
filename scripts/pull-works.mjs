@@ -502,6 +502,9 @@ for (const node of folders) {
       (a, b) =>
         Number(a.name.match(/^\d+/)[0]) - Number(b.name.match(/^\d+/)[0]) || a.name.localeCompare(b.name),
     );
+  // 같은 번호에 "(수정)" 파일이 따로 올라오면 그 번호는 수정본만 쓴다 — 원본까지 넣으면 같은 장이 두 번 나온다
+  const revised = new Set(pageFiles.filter((f) => /수정/.test(f.name)).map((f) => f.name.match(/^\d+/)[0]));
+  pageFiles = pageFiles.filter((f) => !revised.has(f.name.match(/^\d+/)[0]) || /수정/.test(f.name));
   // 같은 번호에 YouTube 링크(.youtube / .docx)가 있으면 그 번호의 영상 파일은 건너뛴다 — 같은 영상이 두 번 나온다
   const linked = new Set(
     pageFiles.filter((f) => [".youtube", ".docx"].includes(ext(f.name))).map((f) => f.name.match(/^\d+/)[0]),
