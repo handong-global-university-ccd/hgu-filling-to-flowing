@@ -71,7 +71,9 @@ const FIELD_DIR = {
 /** 드라이브 폴더 이름 → 데이터 팀명 (대소문자·띄어쓰기·기호는 무시하고 비교) */
 const TEAM_ALIAS = {
   빵구떵구: "빵꾸떵꾸",
-  framer: "FiveGuys_2",
+  fiveguys: "FRAMER",
+  fiveguys2: "FRAMER",
+  딛: "DiiD",
   공3즈: "03Z",
   헤일로: "공드리",
   halo: "공드리",

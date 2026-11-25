@@ -8,7 +8,6 @@ import { WORKS } from "./works.ts";
 //   김지민 22200184 jimin-kim / 22100191 jimin-kim-2, 김하경 22200205 hagyeong-kim / 22200206 hagyeong-kim-2
 // - fields 는 참여 작품의 분야, workSlugs 는 아래 DESIGNERS 에서 작품 데이터로 채운다
 // - links 의 Instagram 아이디는 instagram.com 주소로 바꾸고, 추적용 주소 뒷부분(utm 등)은 지웠다
-// TODO: 시트 미작성 — 이하람·이주희·이진희·한영찬 영문명·연락처, 정재은 영문명 (영문명은 임시 로마자)
 // TODO: 프로필 사진은 촬영본 들어오면 /media/designers/<slug>/... (npm run pull:drive)
 const RAW_DESIGNERS: Designer[] = [
   {
@@ -800,7 +799,7 @@ const RAW_DESIGNERS: Designer[] = [
   {
     slug: "juhui-lee",
     nameKo: "이주희",
-    nameEn: "Juhui Lee",
+    nameEn: "Joohee Lee",
     fields: ["ux-product"],
     profile: "/placeholder/dummy/designers/profile-1.webp",
     workSlugs: [],
@@ -808,7 +807,7 @@ const RAW_DESIGNERS: Designer[] = [
   {
     slug: "jinhui-lee",
     nameKo: "이진희",
-    nameEn: "Jinhui Lee",
+    nameEn: "Jinhee Lee",
     fields: ["ux-product"],
     profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: [],
@@ -926,7 +925,7 @@ const RAW_DESIGNERS: Designer[] = [
   {
     slug: "yeongchan-han",
     nameKo: "한영찬",
-    nameEn: "Yeongchan Han",
+    nameEn: "Youngchan Han",
     fields: ["ux-product"],
     profile: "/placeholder/dummy/designers/profile-2.webp",
     workSlugs: [],

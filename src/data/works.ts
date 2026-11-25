@@ -8,8 +8,7 @@ import workMedia from "./work-media.json" with { type: "json" };
  * - 시트의 강제 줄바꿈(PDF 폭에 맞춘 줄)은 풀고, 빈 줄(문단)과 문장 끝 줄바꿈만 남겼다
  * - teamName 이 있으면 팀 작품, 없으면 개인 작품 (Works 왼쪽 칸의 전시 구분 — data/projects.ts)
  * - 동명이인 김시은·김지민·김하경은 학번으로 구분했다 (designers.ts 참고)
- * TODO: 시트 미작성 — 김현진·이예찬·이윤서·한영찬 개인 작품, 딛 '영덕 복숭아 장터' 소개글
- *       (비어 있으면 제목은 디자이너 이름, 설명은 비워 둔다)
+ * 시트에서 비어 있는 작품은 제목을 디자이너 이름으로, 설명은 비워 둔다
  * 썸네일·작업물은 드라이브 '디그리어 작품취합' 폴더에서 `npm run pull:works` 로 받아 work-media.json 에 적힌다.
  * 아직 자료가 없는 작품은 썸네일만 더미, 작업물은 비워 둔다 (상세에 '준비 중' 표시)
  */
@@ -30,9 +29,9 @@ const TEXTS: WorkText[] = [
   {
     slug: "communication-14",
     field: "communication",
-    cardTitle: "Aukake: 8월 32일의 여름 맥주",
+    cardTitle: "Aukake: 8월 32일의 여름 라이프스타일 브랜드",
     title: "Aukake",
-    subtitle: "8월 32일의 여름 맥주",
+    subtitle: "8월 32일의 여름 라이프스타일 브랜드",
     description:
       "Aukake(아우카케)는 영원한 여름의 섬 하와이의 ‘8월'을 뜻합니다. 일상의 반복에서 잠시 벗어나 걱정은 31일에 두고 가는 하루, 달력에 없는 8월 32일을 위한 가상의 여름 맥주 브랜드입니다. 여름의 낮(11:00), 일몰(18:00), 여름밤(21:00) 세 챕터로 그 하루를 설계했습니다.",
     designerSlugs: ["gang-kim"],
@@ -54,7 +53,7 @@ const TEXTS: WorkText[] = [
     title: "Romene",
     subtitle: "낙서와 빈티지로 만들어낸 작은 도피처",
     description:
-      "Romene은 어린 시절의 기억과 상상에서 출발한 여성 빈티지 패션 브랜드이다. 낯선 환경에서 느꼈던 고립감 속에서 낙서와 빈티지 의류는 현실을 벗어나 자유롭게 자신을 표현할 수 있는 작은 도피처가 되었다.\n\n이러한 개인적 서사를 바탕으로 석류나무와 쥐, 자유로운 낙서를 브랜드의 시각적 모티브로 재해석했다. 석류의 붉은색과 거칠고 유희적인 드로잉을 중심으로 BI를 구축하고, 가오픈 포스터, 쇼핑백, 패키지, 웹사이트까지 일관된 브랜드 경험으로 확장했다. 특히 웹사이트는 어린 시절의 집을 모티브로, 방문자가 낯선 공간을 탐색하며 빈티지 의류를 발견하는 인터랙티브 경험을 제공한다.\n\nRomene은 단순히 오래된 옷을 판매하는 공간을 넘어, 누군가에게는 평범한 옷이 또 다른 누군가에게는 새로운 취향과 기억, 자신만의 세계를 발견하는 계기가 될 수 있다는 이야기를 전한다.",
+      "Romene은 어린 시절의 기억과 상상에서 출발한 여성 빈티지 패션 브랜드이다. 낯선 환경에서 느꼈던 고립감 속에서 낙서와 빈티지 의류는 현실을 벗어나 자유롭게 자신을 표현할 수 있는 작은 도피처가 되었다.\n\n이러한 개인적 서사를 바탕으로 석류나무와 쥐, 자유로운 낙서를 브랜드의 시각적 모티브로 재해석했다.",
     designerSlugs: ["sieun-kim"],
   },
   {
@@ -110,8 +109,11 @@ const TEXTS: WorkText[] = [
   {
     slug: "communication-22",
     field: "communication",
-    title: "김현진",
-    description: "",
+    cardTitle: "exkidsme: 어른들을 위한 놀이 커뮤니티",
+    title: "exkidsme:어른들의 놀이터",
+    subtitle: "어른들을 위한 놀이 커뮤니티",
+    description:
+      "어린 시절의 놀이를 통해 잊고 있던 즐거움을 되찾고, 사람과 사람을 다시 연결하는 소통 커뮤니티입니다.",
     designerSlugs: ["hyeonjin-kim"],
   },
   {
@@ -264,7 +266,7 @@ const TEXTS: WorkText[] = [
     title: "BPS: Body Pit Stop",
     subtitle: "다음 일상을 위한 짧은 정비",
     description:
-      "BPS(Body Pit Stop)는 레이싱의 빠르고 정교한 정비에서 영감을 받은 가상의 배쓰 라이프스타일 브랜드입니다. 목욕을 몸과 기분을 정돈하는 짧은 피트스톱으로 제안합니다. 빠르게 몸 컨디션을 리셋하여 다음 일상을 준비하도록 돕습니다.",
+      "BPS(Body Pit Stop)는 레이싱의 빠르고 정교한 정비에서 영감을 받은 배쓰 라이프스타일 브랜드입니다. 목욕을 몸과 기분을 정돈하는 짧은 피트스톱으로 제안합니다. 빠르게 몸 컨디션을 리셋하여 다음 일상을 준비하도록 돕습니다.",
     designerSlugs: ["dagyeong-lee"],
   },
   {
@@ -274,7 +276,7 @@ const TEXTS: WorkText[] = [
     title: "TiiiKiii Party",
     subtitle: "KiiiKiii x TiiiKiii 팬클럽 멤버십 브랜딩",
     description:
-      "본 작품은 KiiiKiii 멤버들의 개성과 분위기를 오리지널 캐릭터로 재해석해, 팬클럽 멤버십 키트로 확장한 프로젝트입니다. KiiiKiii와 팬덤 TiiKii가 친구처럼 편안하게 어울리는 모습을 ‘파자마 파티’라는 콘셉트에 담았습니다. 멤버별 매력을 살린 캐릭터와 키트 구성품을 통해 멤버십에 가입한 팬들이 KiiiKiii만의 세계관과 분위기를 일상에서도 경험할 수 있도록 기획했습니다.",
+      "본 작품은 KiiiKiii 멤버들의 개성과 분위기를 캐릭터로 재해석해, 팬클럽 멤버십 키트로 확장한 프로젝트입니다. KiiiKiii와 팬덤 TiiKii가 친구처럼 편안하게 어울리는 모습을 ‘파자마 파티’라는 콘셉트에 담았습니다. 멤버별 매력을 살린 캐릭터와 키트 구성품을 통해 멤버십에 가입한 팬들이 KiiiKiii만의 세계관과 분위기를 일상에서도 경험할 수 있도록 기획했습니다.",
     designerSlugs: ["saehui-lee"],
   },
   {
@@ -299,8 +301,11 @@ const TEXTS: WorkText[] = [
   {
     slug: "communication-42",
     field: "communication",
-    title: "이예찬",
-    description: "",
+    cardTitle: "펜타포트 락 페스티벌 2027년 가상 브랜딩",
+    title: "Incheon Pentaport Music Festival 2027",
+    subtitle: "한국적 정서로 재해석한 펜타포트 락 페스티벌",
+    description:
+      "탈춤이 지닌 신명과 자유로움을 펜타포트의 록 에너지로 재해석했다. 한국 전통의 흥이 현대적인 페스티벌 문화 속에서 새롭게 펼쳐진다.",
     designerSlugs: ["yechan-lee"],
   },
   {
@@ -427,7 +432,7 @@ const TEXTS: WorkText[] = [
     title: "100세 상담원",
     subtitle: "A Podcast based on Stories from a Century ago",
     description:
-      "〈100세 상담원〉은 한국 근현대 단편소설 속 인물들의 이야기를 전화 상담원이 들려주는 형식으로 풀어낸 문학 팟캐스트 프로젝트입니다. 전수화기를 들면, 백 년의 시간을 건너온 이야기가 시작됩니다. 낯설게 느껴졌던 옛 문학을 누군가의 사연처럼 친근하게 만나고, 그들의 삶을 통해 오늘의 우리를 다시 들여다봅니다.",
+      "〈100세 상담원〉은 한국 근현대 단편소설 속 인물들의 이야기를 전화 상담원이 들려주는 형식으로 풀어낸 문학 팟캐스트 프로젝트입니다. 수화기를 들면, 백 년의 시간을 건너온 이야기가 시작됩니다. 낯설게 느껴졌던 옛 문학을 누군가의 사연처럼 친근하게 만나고, 그들의 삶을 통해 오늘의 우리를 다시 들여다봅니다.",
     designerSlugs: ["jueun-jung"],
   },
   {
@@ -575,9 +580,12 @@ const TEXTS: WorkText[] = [
   {
     slug: "communication-09",
     field: "communication",
+    cardTitle: "일 년을 기다린 달콤함, 영덕 복숭아 장터",
     title: "영덕 복숭아 장터",
-    description: "",
-    teamName: "딛",
+    subtitle: "영덕 복숭아 장터 브랜딩",
+    description:
+      '"참지 마세요, 일 년을 기다린 영덕복숭아의 달콤함을!"\n영덕 복숭아 장터는 매해 여름(7~8월) 고속도로 휴게소와 마을 장터에서 열리는 복숭아 장터를 위한 브랜딩 프로젝트입니다. 농부의 손길로 한 해를 기다려 무르익은 영덕 복숭아를 오가는 이들이 그냥 지나치지 못하도록, 캐릭터와 굿즈 디자인 등 장터 전반의 경험을 디자인했습니다. 한 입의 달콤함이 여름의 즐거운 기억으로 남아, 매년 다시 찾고 싶은 장터가 되기를 바랍니다.',
+    teamName: "DiiD",
     designerSlugs: ["gang-kim", "hyeonjin-kim", "eunhye-lee", "jiin-lim"],
   },
   {
@@ -704,12 +712,12 @@ const TEXTS: WorkText[] = [
   {
     slug: "service-08",
     field: "service",
-    cardTitle: "헤매지 말고 주차각",
+    cardTitle: "주차각: 만차에도 곧 날 자리를 알려주는 AI 주차 안내 서비스",
     title: "주차각",
     subtitle: "만차에도 곧 날 자리를 알려주는 AI 주차 안내 서비스",
     description:
       "AI가 차량별 주차 기록을 분석해 만차일 때도 언제 어디서 자리가 날지 예측하는 네이버 지도 인앱 서비스입니다.",
-    teamName: "딛",
+    teamName: "DiiD",
     designerSlugs: ["gang-kim", "hyeonjin-kim", "eunhye-lee", "jiin-lim"],
   },
   {
@@ -975,8 +983,11 @@ const TEXTS: WorkText[] = [
   {
     slug: "industrial-22",
     field: "ax-product",
-    title: "이윤서",
-    description: "",
+    cardTitle: "meongmoon : 반려견의 발바닥·털 케어와 건강 감지를 해주는 웰니스 시스템",
+    title: "meongmoon",
+    subtitle: "반려견 청결·건강 케어를 위한 웰니스 시스템",
+    description:
+      "본 제품은 산책 후 반려견의 발바닥과 털 냄새를 케어하고 건강 이상을 감지하는 웰니스 시스템입니다. 반려견 산책 후 매번 씻길 수 없고, 냄새의 원인을 정확히 알기 어렵다는 문제에서 출발했습니다. 양쪽이 열린 터널 구조로 '가두지 않는 경험'을 제공해 반려견의 스트레스를 최소화하도록 설계했습니다. 또한 AI 센서 카메라를 통해 매번 강아지의 건강을 체크하고 앱으로 보호자에게 알려주어 상시 케어를 돕습니다.",
     designerSlugs: ["yunseo-lee"],
   },
   {
@@ -1085,7 +1096,7 @@ const TEXTS: WorkText[] = [
     subtitle: "능동형 AI 안전벨트 모듈",
     description:
       "FRAMER는 AI가 일상화된 모빌리티 환경을 배경으로, 차량 내 안전에 대한 새로운 사용자 경험을 제안하는 프로젝트입니다. 기존 3점식 안전벨트의 구조적 한계를 보완하고, 탑승자의 자세와 주행 상황에 맞춰 모듈이 능동적으로 이동하며 최적화된 맞춤형 안전을 제공합니다.",
-    teamName: "FiveGuys_2",
+    teamName: "FRAMER",
     designerSlugs: ["noeun-ki"],
   },
   {
@@ -1122,9 +1133,9 @@ const TEXTS: WorkText[] = [
   {
     slug: "ux-12",
     field: "ux-product",
-    cardTitle: "ON:DO 중증 지적장애인의 일상 자립을 지원하는 AI 동행 서비스",
+    cardTitle: "ON:DO | 그 순간, 혼자가 아니도록",
     title: "ON:DO",
-    subtitle: "그 순간, 혼자가 아니도록",
+    subtitle: "중증 지적장애인 일상 자립 지원 AI 동행 서비스",
     description:
       "혼란의 순간을, 다시 세상과 맞닿는 따뜻한 온도로. ON:DO는 중증 지적장애인이 예상치 못한 상황을 마주했을 때, 익숙한 안내와 필요한 도움을 연결하는 AI 동행 서비스입니다. 판단이 필요한 순간 켜지는 연결 ‘ON’과 다시 스스로 해내는 움직임 ‘DO’를 통해, 오늘 멈춰 선 순간이 내일의 한 걸음이 되도록 일상 속 자립을 함께합니다.",
     designerSlugs: ["juhui-lee"],
@@ -1162,8 +1173,11 @@ const TEXTS: WorkText[] = [
   {
     slug: "ux-16",
     field: "ux-product",
-    title: "한영찬",
-    description: "",
+    cardTitle: "TINE. : 측정하며 바르는 두피 케어 디바이스",
+    title: "TINE.",
+    subtitle: "측정하며 바르는 두피 케어 디바이스",
+    description:
+      "TINE은 손에 쥐고 머리를 쓸어내리기만 하면, 빗살 사이의 카메라와 온도 센서가 두피 상태를 먼저 살피고 그 자리에 맞는 앰플을 골라 바르는 두피 케어 디바이스입니다.",
     designerSlugs: ["yeongchan-han"],
   },
   {
