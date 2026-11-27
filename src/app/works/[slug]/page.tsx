@@ -44,8 +44,9 @@ export default async function WorkDetailPage({ params }: PageProps<"/works/[slug
   if (!work) notFound();
 
   const designers = work.designerSlugs.map(getDesigner).filter((d) => d !== undefined);
-  // 팀 이름이 없는 1인 작품 = 개인 작품
-  const solo = !work.teamName && designers.length === 1 ? designers[0] : undefined;
+  // 1인 작품 = 개인 작품 — 시트·드라이브에서 팀 칸에 들어간 1인 작품(FRAMER·TETÉ)도 팀 사진 대신 프로필을 보인다.
+  // teamName 은 Works 왼쪽 칸의 전시 구분(data/projects.ts)과 드라이브 폴더 찾기에만 쓴다
+  const solo = designers.length === 1 ? designers[0] : undefined;
   const others = getOtherWorks(slug).map((w) => ({
     slug: w.slug,
     title: w.title,
@@ -55,7 +56,7 @@ export default async function WorkDetailPage({ params }: PageProps<"/works/[slug
   return (
     <PageShell mobileTitle={{ title: work.title, backHref: "/works/" }}>
       {/* 모바일 (2563:7046 팀 / 2573:20660 개인): ← 헤더 아래 제목·부제·설명 → 20 → 작업물 → 80 → 사진·참여자 → 80 → Others */}
-      <article className="flex flex-col gap-4 px-margin pt-[46px] max-lg:gap-10 lg:pt-[clamp(16px,calc(var(--svh)-1024px),46px)] max-md:gap-5 max-md:pt-0 lg:flex-row lg:items-start">
+      <article className="flex flex-col gap-4 px-margin pt-[46px] max-lg:gap-10 max-md:gap-5 max-md:pt-0 lg:flex-row lg:items-start lg:pt-[clamp(16px,calc(var(--svh)-1024px),46px)]">
         {/* 좌측 정보 — 스크롤해도 고정 */}
         {/* Figma: 좌측 열 높이 890, 크레딧은 열 맨 아래 (justify-between).
             높이는 min(890, 화면 높이 - 위 126 - 아래 24) 이고, 내용이 더 길면 그만큼 늘어난다 */}

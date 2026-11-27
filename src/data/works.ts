@@ -331,8 +331,8 @@ const TEXTS: WorkText[] = [
     slug: "communication-45",
     field: "communication",
     cardTitle: "hint finder: 자연 속 힌트의 발견",
-    title: "자연 속 힌트의 발견",
-    subtitle: "Open in Finder",
+    title: "hint finder",
+    subtitle: "자연 속 힌트의 발견",
     description:
       "hint finder는 자연에서 발견한 형태와 색, 질감을 새로운 시각으로 해석하고, 다양한 소재와 표현 방식을 통해 낯설고 감각적인 일상의 오브제로 재구성하는 리빙 브랜드입니다.",
     designerSlugs: ["jisu-lee"],

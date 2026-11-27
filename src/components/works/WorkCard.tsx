@@ -139,7 +139,7 @@ export default function WorkCard({ work, designerName }: { work: Work; designerN
         </p>
         <p className="text-kr-body-sm max-md:hidden">{designerName}</p>
         <p className="text-[11px] leading-[17px] text-fg-tertiary md:hidden">
-          {work.teamName ?? designerName}
+          {(work.designerSlugs.length > 1 && work.teamName) || designerName}
         </p>
       </div>
     </Link>

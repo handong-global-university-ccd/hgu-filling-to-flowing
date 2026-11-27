@@ -22,6 +22,8 @@
   --color-neutral-300: #b3b3b3;
   --color-neutral-500: #666666;
   --color-neutral-700: #333333;
+  /* 홈 분야 아코디언 펼친 판 (2573:21294 — Figma 변수 없이 #171717) */
+  --color-neutral-800: #171717;
   --color-neutral-900: #000000;
 
   /* Semantic */

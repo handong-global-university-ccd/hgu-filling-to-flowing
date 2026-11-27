@@ -241,7 +241,7 @@ export default function FieldAccordion({ worksByField }: { worksByField: Record<
                     initial="enter"
                     animate="shown"
                     exit="leave"
-                    className="relative overflow-hidden bg-neutral-700 text-fg-inverse"
+                    className="relative overflow-hidden bg-neutral-800 text-fg-inverse"
                   >
                     {/* 패널 아무 데나 누르면 Works 의 이 분야로 — 썸네일은 그 위에 따로 링크 */}
                     <Link
