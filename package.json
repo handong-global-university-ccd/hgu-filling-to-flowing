@@ -18,7 +18,8 @@
     "pull:drive": "node --experimental-strip-types --no-warnings scripts/pull-drive.mjs",
     "pull:works": "node --experimental-strip-types --no-warnings scripts/pull-works.mjs",
     "pull:archive": "node scripts/pull-archive.mjs",
-    "pull:contacts": "node scripts/pull-contacts.mjs"
+    "pull:contacts": "node scripts/pull-contacts.mjs",
+    "pull:exhibition": "node scripts/pull-exhibition.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

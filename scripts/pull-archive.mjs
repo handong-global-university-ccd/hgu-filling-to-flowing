@@ -7,7 +7,7 @@
  *         npm run pull:archive -- --skip-download (이미 받은 원본으로 변환만 다시)
  * 그다음: npm run upload:media                    (R2 업로드)
  *
- * 드라이브 구조: <전공>/<팀명>_최대N장/<사진>  →  호버 제목은 팀명 ("_최대N장" 은 뗀다)
+ * 드라이브 구조: <전공>/<팀명>_최대N장/<사진>  →  호버 제목은 팀명 ("_최대N장"·"_N장" 은 떼고, 옛 팀명은 TEAM_ALIAS 로)
  * 폴더는 "링크가 있는 모든 사용자" 공유라 rclone 없이 공개 목록(embeddedfolderview)으로 받는다.
  * 원본은 media-src/archive/ 에 받아 둔다 (git 제외).
  *
@@ -37,12 +37,24 @@ const TEAM_SLUG = {
   디와와: "diwawa",
   유니콘: "unicorn",
   "케샤!": "kesha",
-  F4: "f4",
+  Hop: "hop",
   "J House": "jhouse",
+  SUPLY: "suply",
+  DiiD: "diid",
+  푸딩그리: "pudding",
+  동그리: "dongeuri",
+  FRAMER: "framer",
+  SK한동닉스: "skhandongnix",
 };
 
+/** 드라이브 폴더에 쓰인 옛 팀명 → 지금 데이터(works.ts)의 팀명 (호버 제목) */
+const TEAM_ALIAS = { 딛: "DiiD", F4: "Hop", FiveGuys: "FRAMER", FiveGuys_2: "FRAMER" };
+
 const nfc = (s) => s.normalize("NFC").trim();
-const teamName = (folder) => nfc(folder).replace(/_최대\s*\d+장$/, "");
+const teamName = (folder) => {
+  const name = nfc(folder).replace(/_(최대\s*)?\d+\s*장$/, "");
+  return TEAM_ALIAS[name] ?? name;
+};
 const IMAGE = /\.(jpe?g|png|heic|heif|webp)$/i;
 
 // ───────── 1. 드라이브에서 받기 ─────────
@@ -59,6 +71,9 @@ async function list(id) {
   return [...html.matchAll(re)].map(([, href, name]) => ({ href, name: unescape(name) }));
 }
 
+/** 이번에 드라이브에 있던 파일 — 드라이브에서 지운 사진은 media-src 에 남아 있어도 쓰지 않는다 */
+const onDrive = new Set();
+
 async function download(id, dir) {
   for (const { href, name } of await list(id)) {
     const folder = href.match(/\/folders\/([\w-]+)/);
@@ -69,6 +84,7 @@ async function download(id, dir) {
     const file = href.match(/\/file\/d\/([\w-]+)/);
     if (!file) continue;
     const out = path.join(dir, name);
+    onDrive.add(out);
     if (existsSync(out) && statSync(out).size > 0) continue;
     mkdirSync(dir, { recursive: true });
     const res = await fetch(`https://drive.google.com/uc?export=download&id=${file[1]}`);
@@ -124,7 +140,9 @@ for (const major of entries(SRC)) {
     if (!statSync(dir).isDirectory()) continue;
     const title = teamName(folder);
     const slug = TEAM_SLUG[title] ?? `team-${photos.length}`;
-    const files = entries(dir).filter((f) => IMAGE.test(f) && !f.endsWith(".conv.jpg"));
+    const files = entries(dir).filter(
+      (f) => IMAGE.test(f) && !f.endsWith(".conv.jpg") && (!onDrive.size || onDrive.has(path.join(dir, f))),
+    );
     for (const [i, f] of files.entries()) {
       const name = `${slug}-${String(i + 1).padStart(2, "0")}.webp`;
       await toWebp(path.join(dir, f), path.join(OUT, name));

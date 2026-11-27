@@ -61,6 +61,15 @@ const VIDEO = { crf: 22, maxrate: "10M", bufsize: "20M", audio: "192k" };
 /** Cloudflare Pages 파일 1개 한도(25MB)보다 조금 작게 — 넘으면 비트레이트를 맞춰 다시 인코딩 */
 const MAX_VIDEO_BYTES = 24 * 1024 * 1024;
 
+/**
+ * 드라이브에 파일로 올리지 않은 작업물을 끼워 넣는 곳 — 디자이너가 따로 전달한 것만.
+ * slug → { 드라이브 파일 번호: [그 번호 다음에 넣을 항목] }. pull:works 를 다시 돌려도 유지된다.
+ */
+const EXTRA_PAGES = {
+  // 03Z ORVET — 12번 다음에 영상 (재생목록 youtube.com/playlist?list=PLIPHVufuErfU 의 영상, 지금은 1개)
+  "ux-10": { 12: [{ type: "youtube", id: "g4LbVrVBvIA" }] },
+};
+
 const FIELD_DIR = {
   "AX Product": "ax-product",
   Communication: "communication",
@@ -216,7 +225,7 @@ function urlsIn(file, name) {
   return [...new Set(text.match(/https?:\/\/[^\s"'<>)]+/g) ?? [])].filter(
     (u) =>
       !/schemas\.(openxmlformats|microsoft)|w3\.org|purl\.org/.test(u) &&
-      !/^https?:\/\/(www\.)?(youtu\.be|youtube\.com)\/?$/.test(u), // 주소가 잘려 도메인만 남은 것
+      !/^https?:\/\/(www\.|m\.)?(youtu\.be|youtube\.com)(\/watch)?\/?$/.test(u), // 주소가 잘려 도메인(·/watch)만 남은 것
   );
 }
 
@@ -553,6 +562,8 @@ for (const node of folders) {
       }
     } catch (err) {
       report.warn.push(`${label}/${f.name} — ${err.message.split("\n")[0]}`);
+    } finally {
+      entry.pages.push(...(EXTRA_PAGES[slug]?.[Number(f.name.match(/^\d+/)?.[0])] ?? []));
     }
   }
 

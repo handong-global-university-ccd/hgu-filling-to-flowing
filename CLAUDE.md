@@ -41,7 +41,7 @@
 - 이미지·영상 경로는 항상 `asset()` 으로 감싸기
 - 영상·사진은 `public/media/` 에 두고 **커밋하지 않는다** (R2 로 업로드)
 - R2 로 갈 파일은 전부 `public/media/` 아래. 데이터에도 `/media/...` 로 적는다
-  (`works/<slug>/`, `designers/<slug>/`, `archive/behind/`, `intro/`)
+  (`works/<slug>/`, `designers/<slug>/`, `archive/behind/`, `archive/exhibition/`, `intro/`)
 - 이 규칙은 `.gitignore` · `scripts/upload-media.sh` · `scripts/pull-media.mjs` · `src/lib/asset.ts` 네 곳이 한 세트다
 - 로고·아이콘 등 **UI 이미지는 `public/media/` 에 넣지 않는다** (git 제외 대상이라 사라진다).
   로고타입·아이콘은 인라인 SVG 컴포넌트로, 후원사 로고 같은 고정 이미지는 `public/brand/` 에 둔다
