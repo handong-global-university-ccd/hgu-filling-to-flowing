@@ -28,6 +28,7 @@
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import {
+  createReadStream,
   createWriteStream,
   existsSync,
   mkdirSync,
@@ -68,6 +69,21 @@ const MAX_VIDEO_BYTES = 24 * 1024 * 1024;
 const EXTRA_PAGES = {
   // 03Z ORVET — 12번 다음에 영상 (재생목록 youtube.com/playlist?list=PLIPHVufuErfU 의 영상, 지금은 1개)
   "ux-10": { 12: [{ type: "youtube", id: "g4LbVrVBvIA" }] },
+};
+
+/**
+ * 드라이브 작품파일이 비었을 때 대신 쓸, 예전에 받아 둔 원본 (media-src/drive-works/<id>) — 확인받은 것만.
+ * 드라이브에 다시 올라오면 그쪽을 쓴다.
+ */
+const KEEP_PAGES = {
+  // 김채원 연리 — 2026-11-28 드라이브 작품 파일이 비어 있음. 예전 5장 유지 (하은 확인)
+  "ux-19": [
+    { name: "01_연리.jpg", id: "1wberGEOUSvI1ZKU8xLa7zirYvEwLndF8" },
+    { name: "02_연리.jpg", id: "1aF8EP8GzO9aNO-pFgXaSJILAqI7VYOAm" },
+    { name: "03_연리.jpg", id: "1q571YPRIa6IExziJQkB-yrNACUfzZB_5" },
+    { name: "04_연리.jpg", id: "1iqDp21mIYp8vVTu_7oaX20afWkkG-6KJ" },
+    { name: "05_연리.jpg", id: "1dfhpr8P2ZlsVYiXLnvaNf7C1DeF7C5L3" },
+  ],
 };
 
 const FIELD_DIR = {
@@ -115,7 +131,8 @@ async function list(id) {
       if (!res.ok) throw new Error(String(res.status));
       const html = await res.text();
       const items = [];
-      const re = /<a href="([^"]+)"[^>]*>[\s\S]*?<div class="flip-entry-title">([\s\S]*?)<\/div>/g;
+      const re =
+        /<a href="([^"]+)"[^>]*>[\s\S]*?<div class="flip-entry-title">([\s\S]*?)<\/div>(?:[\s\S]*?<div class="flip-entry-last-modified"><div>([^<]*)<\/div>)?/g;
       for (const m of html.matchAll(re)) {
         const name = nfc(
           m[2]
@@ -128,7 +145,7 @@ async function list(id) {
         const folder = m[1].match(/\/folders\/([^?/]+)/);
         const file = m[1].match(/\/d\/([^/?]+)/);
         if (folder) items.push({ dir: true, name, id: folder[1] });
-        else if (file) items.push({ dir: false, name, id: file[1] });
+        else if (file) items.push({ dir: false, name, id: file[1], modified: m[3]?.trim() ?? "" });
       }
       return items;
     } catch {
@@ -183,11 +200,83 @@ function collect(node, out = []) {
 }
 
 // ───────── 3. 받기 ─────────
+/**
+ * 드라이브 목록의 수정일 글자 ("Nov 10" · "Nov 10, 2025" · "6:04 pm") → Date. 모르면 null.
+ * 같은 파일 ID 로 새 버전을 올리면(드라이브 "버전 관리") ID 는 그대로라, 이 날짜로 다시 받을지 정한다
+ */
+function parseModified(label) {
+  if (!label) return null;
+  const now = new Date();
+  const t = label.match(/^(\d{1,2}):(\d{2})\s*([ap]m)$/i);
+  if (t) {
+    const d = new Date(now);
+    d.setHours((Number(t[1]) % 12) + (t[3].toLowerCase() === "pm" ? 12 : 0), Number(t[2]), 59, 999);
+    return d;
+  }
+  const d = new Date(/\d{4}/.test(label) ? label : `${label}, ${now.getFullYear()}`);
+  if (Number.isNaN(d.getTime())) return null;
+  if (d > now) d.setFullYear(d.getFullYear() - 1); // 연도 없는 "Dec 30" 이 올해 미래면 작년
+  d.setHours(23, 59, 59, 999); // 날짜만 있으니 그날 끝까지로 본다
+  return d;
+}
+
+/** 파일 ID → 마지막으로 확인한 드라이브 수정일 글자. 글자가 그대로면 다시 받지 않는다 */
+const CHECKED_FILE = path.join(CACHE, "_checked.json");
+const checked = existsSync(CHECKED_FILE) ? JSON.parse(readFileSync(CHECKED_FILE, "utf8")) : {};
+const saveChecked = () => writeFileSync(CHECKED_FILE, JSON.stringify(checked));
+
+/** 받아 둔 파일이 드라이브 새 버전보다 오래됐는지 */
+function stale(file, dest) {
+  if (!file.modified || checked[file.id] === file.modified) return false;
+  if (checked[file.id] !== undefined) return true; // 지난번 확인 뒤 수정일이 바뀌었다
+  const remote = parseModified(file.modified);
+  return remote !== null && remote > statSync(dest).mtime;
+}
+
 async function download(file) {
   mkdirSync(CACHE, { recursive: true });
   const dest = path.join(CACHE, file.id);
-  if (existsSync(dest) && statSync(dest).size > 0) return dest;
+  if (existsSync(dest) && statSync(dest).size > 0) {
+    if (!stale(file, dest)) {
+      if (file.modified && checked[file.id] === undefined) {
+        checked[file.id] = file.modified;
+        saveChecked();
+      }
+      return dest;
+    }
+    console.log(`      새 버전 확인: ${file.name}`);
+    // 옆에 받아 비교한다 — 내용이 같으면 그대로 두어 변환 결과(fresh)를 다시 만들지 않는다
+    const next = `${dest}.new`;
+    await fetchTo(file, next);
+    if (statSync(next).size === statSync(dest).size && (await md5(next)) === (await md5(dest))) {
+      rmSync(next);
+    } else {
+      renameSync(next, dest);
+      console.log(`      → 바뀜, 다시 변환`);
+    }
+    checked[file.id] = file.modified;
+    saveChecked();
+    return dest;
+  }
   console.log(`      받는 중: ${file.name}`);
+  await fetchTo(file, dest);
+  if (file.modified) {
+    checked[file.id] = file.modified;
+    saveChecked();
+  }
+  return dest;
+}
+
+const md5 = (file) =>
+  new Promise((resolve, reject) => {
+    const h = createHash("md5");
+    createReadStream(file)
+      .on("data", (c) => h.update(c))
+      .on("end", () => resolve(h.digest("hex")))
+      .on("error", reject);
+  });
+
+async function fetchTo(file, dest) {
   // 구글 문서(ID 가 긴 것)는 글자로, 나머지는 원본 그대로
   const urls = [
     ...(file.id.length > 40 ? [`https://docs.google.com/document/d/${file.id}/export?format=txt`] : []),
@@ -521,6 +610,12 @@ for (const node of folders) {
     pageFiles.filter((f) => [".youtube", ".docx"].includes(ext(f.name))).map((f) => f.name.match(/^\d+/)[0]),
   );
   pageFiles = pageFiles.filter((f) => !(isVideo(f.name) && linked.has(f.name.match(/^\d+/)[0])));
+  if (!pageFiles.length && KEEP_PAGES[slug]) {
+    pageFiles = KEEP_PAGES[slug];
+    report.note.push(
+      `${label} — 드라이브 작품파일이 비어 예전에 받아 둔 ${pageFiles.length}장을 씀 (KEEP_PAGES)`,
+    );
+  }
   // 작품파일이 비어 있으면 전체보기로 대신한다
   if (!pageFiles.length) {
     pageFiles = [...node.files, ...(pagesDir?.files ?? [])].filter((f) => OVERVIEW.test(f.name));

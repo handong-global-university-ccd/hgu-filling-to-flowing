@@ -933,9 +933,9 @@
     "pages": [
       {
         "type": "image",
-        "src": "/media/works/communication-24/p01.webp?v=a9f910c0",
-        "width": 1824,
-        "height": 1669
+        "src": "/media/works/communication-24/p01.webp?v=46db3c61",
+        "width": 2000,
+        "height": 3042
       },
       {
         "type": "video",
@@ -2512,9 +2512,9 @@
     "pages": [
       {
         "type": "image",
-        "src": "/media/works/communication-62/p01.webp?v=c3aca554",
+        "src": "/media/works/communication-62/p01.webp?v=5ab39d2e",
         "width": 2000,
-        "height": 1423
+        "height": 2440
       },
       {
         "type": "image",
@@ -5042,7 +5042,7 @@
       },
       {
         "type": "image",
-        "src": "/media/works/ux-10/p08.webp?v=152d0b5d",
+        "src": "/media/works/ux-10/p08.webp?v=5b98b732",
         "width": 2000,
         "height": 2307
       },
@@ -5076,7 +5076,7 @@
       },
       {
         "type": "image",
-        "src": "/media/works/ux-10/p13.webp?v=f204816a",
+        "src": "/media/works/ux-10/p13.webp?v=baafff01",
         "width": 2000,
         "height": 672
       }
@@ -5605,7 +5605,7 @@
   "ux-20": {
     "thumbnails": [
       "/media/works/ux-20/thumb-a.webp?v=6dbdc10d",
-      "/media/works/ux-20/thumb-b.webp?v=53aebc74"
+      "/media/works/ux-20/thumb-b.webp?v=2e1fd66e"
     ],
     "pages": [
       {

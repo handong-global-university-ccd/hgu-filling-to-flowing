@@ -7,11 +7,12 @@
  *         npm run pull:exhibition -- --skip-download (이미 받은 원본으로 변환만 다시)
  * 그다음: npm run upload:media                       (R2 업로드)
  *
- * 순서는 드라이브 파일 이름순. 화면은 810×540(3:2) 이라 2배 크기 3:2 로 잘라 둔다 (Figma 1807:16563).
+ * 순서는 드라이브 파일 이름순 (숫자는 1, 2, … 10 순서). 화면은 810×540(3:2) 이라 2배 크기 3:2 로 잘라 둔다 (Figma 1807:16563).
  * 폴더는 "링크가 있는 모든 사용자" 공유라 rclone 없이 공개 목록(embeddedfolderview)으로 받는다.
  * 원본은 media-src/exhibition/ 에 받아 둔다 (git 제외).
  */
-import { existsSync, mkdirSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import sharp from "sharp";
 
@@ -40,6 +41,9 @@ async function list(id) {
   return [...html.matchAll(re)].map(([, href, name]) => ({ href, name: unescape(name) }));
 }
 
+/** 이번에 드라이브에 있던 파일 — 드라이브에서 지운 사진은 media-src 에 남아 있어도 쓰지 않는다 */
+const onDrive = new Set();
+
 if (!process.argv.includes("--skip-download")) {
   console.log(`드라이브 ${FOLDER_ID}  →  media-src/exhibition`);
   mkdirSync(SRC, { recursive: true });
@@ -47,6 +51,7 @@ if (!process.argv.includes("--skip-download")) {
     const file = href.match(/\/file\/d\/([\w-]+)/);
     if (!file || !IMAGE.test(name)) continue;
     const out = path.join(SRC, name);
+    onDrive.add(name);
     if (existsSync(out) && statSync(out).size > 0) continue;
     const res = await fetch(`https://drive.google.com/uc?export=download&id=${file[1]}`);
     if (!res.ok) throw new Error(`${res.status} ${name}`);
@@ -58,7 +63,7 @@ if (!process.argv.includes("--skip-download")) {
 // ───────── 2. 변환 ─────────
 mkdirSync(OUT, { recursive: true });
 const files = readdirSync(SRC)
-  .filter((f) => IMAGE.test(f))
+  .filter((f) => IMAGE.test(f) && (!onDrive.size || onDrive.has(f)))
   .sort((a, b) => a.localeCompare(b, "en", { numeric: true }));
 
 const photos = [];
@@ -69,10 +74,15 @@ for (const [i, f] of files.entries()) {
     .resize({ ...SIZE, fit: "cover", position: "attention" })
     .webp({ quality: QUALITY })
     .toFile(path.join(OUT, name));
-  photos.push(`/media/${OUT_DIR}/${name}`);
+  // 주소 끝에 내용 해시(?v=) — R2 는 1년 캐시라, 순서가 바뀌어 같은 이름에 다른 사진이 들어가도 옛 사진이 보이지 않게
+  const v = createHash("md5")
+    .update(readFileSync(path.join(OUT, name)))
+    .digest("hex")
+    .slice(0, 8);
+  photos.push(`/media/${OUT_DIR}/${name}?v=${v}`);
 }
 
-const keep = new Set(photos.map((p) => path.basename(p)));
+const keep = new Set(photos.map((p) => path.basename(p.split("?")[0])));
 for (const f of readdirSync(OUT)) if (!keep.has(f)) rmSync(path.join(OUT, f), { force: true });
 
 // ───────── 3. 목록 ─────────
