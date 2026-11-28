@@ -104,6 +104,11 @@ export type Work = {
   description: string;
   /** 팀 작품의 팀 이름. 개인 작품은 없음 (Figma 2243:14655~) */
   teamName?: string;
+  /**
+   * 팀 작품이지만 상세에 팀 사진 대신 참여자 프로필을 나란히 보인다 (Figma 2870:5149 / 모바일 2563:7289 "팀인데 나뉨").
+   * UX Product AIDV 의 2인 팀들 — 팀 사진을 따로 찍지 않았다
+   */
+  splitProfiles?: boolean;
   designerSlugs: string[];
   /** 호버 시 A↔B 교차 */
   thumbnails: [string, string];

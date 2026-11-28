@@ -77,6 +77,23 @@ export default async function WorkDetailPage({ params }: PageProps<"/works/[slug
                     className="absolute top-[-33px] left-[-22px] h-[290px] w-[193px] max-w-none object-cover"
                   />
                 </div>
+              ) : work.splitProfiles ? (
+                /* 팀인데 나뉨 (2870:5149): 팀 사진 대신 참여자 프로필을 나란히 — 159×224 칸, 사이 19.
+                 칸 안의 사진은 개인 작품과 같이 193×290 을 왼쪽 -22 · 위 -33 으로 놓는다 */
+                <div className="flex gap-[19px]">
+                  {designers.map((d) => (
+                    <div key={d.slug} className="relative h-[224px] w-[159px] shrink-0 overflow-hidden">
+                      <Image
+                        src={asset(d.profile)}
+                        alt={`${d.nameKo} 프로필 사진`}
+                        width={193}
+                        height={290}
+                        priority
+                        className="absolute top-[-33px] left-[-22px] h-[290px] w-[193px] max-w-none object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
               ) : (
                 /* 팀 작품: 타이틀 위 팀 사진 — 따로 없으면 대표 썸네일 */
                 <Image
@@ -126,6 +143,11 @@ export default async function WorkDetailPage({ params }: PageProps<"/works/[slug
         photoAlt={solo ? `${solo.nameKo} 프로필 사진` : `${work.title} 작품 사진`}
         solo={Boolean(solo)}
         designers={designers.map((d) => ({ slug: d.slug, nameKo: d.nameKo }))}
+        profiles={
+          work.splitProfiles
+            ? designers.map((d) => ({ slug: d.slug, nameKo: d.nameKo, profile: d.profile }))
+            : undefined
+        }
       />
 
       {others.length > 0 && (

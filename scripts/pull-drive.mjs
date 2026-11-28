@@ -91,11 +91,13 @@ const report = { ok: [], skipped: [] };
 for (const file of files(path.join(SRC, "팀사진"))) {
   const team = teamKey(baseName(file));
   // 1인 작품은 팀 칸에 있어도 개인 작품이라 상세에 프로필을 쓴다 (works/[slug]/page.tsx) — 팀 사진을 만들지 않는다
-  const works = WORKS.filter((w) => w.teamName && w.designerSlugs.length > 1 && teamKey(w.teamName) === team);
+  const works = WORKS.filter(
+    (w) => w.teamName && w.designerSlugs.length > 1 && !w.splitProfiles && teamKey(w.teamName) === team,
+  );
   if (works.length === 0) {
     const solo = WORKS.some((w) => w.teamName && teamKey(w.teamName) === team);
     report.skipped.push(
-      `팀사진/${file} — ${solo ? "1인 작품이라 프로필을 쓴다" : "데이터에 이 팀명이 없음"}`,
+      `팀사진/${file} — ${solo ? "1인 작품이거나 팀인데 나뉨(splitProfiles)이라 프로필을 쓴다" : "데이터에 이 팀명이 없음"}`,
     );
     continue;
   }
@@ -155,9 +157,9 @@ writeFileSync(MANIFEST, JSON.stringify(manifest, null, 2) + "\n");
 const missingDesigners = DESIGNERS.filter((d) => !manifest.designers[d.slug]).map((d) => d.nameKo);
 const missingTeams = [
   ...new Set(
-    WORKS.filter((w) => w.teamName && w.designerSlugs.length > 1 && !manifest.works[w.slug]).map(
-      (w) => w.teamName,
-    ),
+    WORKS.filter(
+      (w) => w.teamName && w.designerSlugs.length > 1 && !w.splitProfiles && !manifest.works[w.slug],
+    ).map((w) => w.teamName),
   ),
 ];
 console.log(`\n✓ 변환 ${report.ok.length}개`);

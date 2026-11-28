@@ -1020,6 +1020,7 @@ const TEXTS: WorkText[] = [
     description:
       "TUNE은 세분화된 조작 단위로 개인의 감각에 맞는 차량 환경을 조율하는 통합 조작 인터페이스입니다. AI와의 대화로 원하는 환경을 설정하고, 하나의 다이얼에서 선택한 구간을 더 작은 단위로 나누어 세밀하게 조절합니다. 말로 표현하기 어려운 섬세한 요구를 반영한 가장 최적의 차량 환경을 만들어갑니다.",
     teamName: "Forky",
+    splitProfiles: true,
     designerSlugs: ["eunjin-kim", "juhui-lee"],
   },
   {
@@ -1031,6 +1032,7 @@ const TEXTS: WorkText[] = [
     description:
       "AI는 이제 사람처럼 대화하고, 사용자의 상황을 먼저 알아채고 제안하는 인격체로 발전하고 있습니다. 그러나 기존 AI는 주로 개인과의 상호작용에 집중되어 있어, 여러 사람이 함께하는 차 안에서의 관계까지 고려하지는 못하고 있습니다. 엇갈린 취향을 하나로 모을 수 있게 돕고, 가장 나은 선택으로 중재하며, 말하지 않아도 먼저 건네는 차 안의 다인승 라이프 모더레이터 'MOA'를 제안합니다.",
     teamName: "Young Forky",
+    splitProfiles: true,
     designerSlugs: ["damin-park", "jongbin-yoo"],
   },
   {
@@ -1042,6 +1044,7 @@ const TEXTS: WorkText[] = [
     description:
       "HOPIN은 차량을 통해 나를 표현하고, 이동 중 새로운 만남과 함께하는 즐거움을 만드는 Car SNS입니다. AI와 함께 나만의 차량 스타일을 꾸미고, 취향과 상황을 바탕으로 다른 차량과의 접점을 발견합니다. 듀얼 디스플레이와 홀로그램, XR 윈도우를 통해 가볍게 반응을 주고받고, 각자의 공간에서도 콘텐츠와 여정을 함께 즐기는 새로운 이동 경험을 제안합니다.",
     teamName: "Hop",
+    splitProfiles: true,
     designerSlugs: ["juyeon-jung", "yehan-jung"],
   },
   {
@@ -1053,6 +1056,7 @@ const TEXTS: WorkText[] = [
     description:
       "자율주행으로 달라지는 차 안의 시간을 시니어의 일상을 채우는 시간으로. 마실로는 시니어가 생활에 필요한 정보와 활동을 차 안에서 이어갈 수 있는 두 번째 생활 공간을 제안합니다. Agent AI가 일정과 관심사, 주변 상황을 살펴 필요한 정보를 먼저 준비하고, 움직이는 OLED가 정보를 한눈에 파악할 수 있도록 펼쳐줍니다. 일상에 필요한 것을 확인하고 생활을 이어가기 위해 자연스럽게 다시 찾는 공간입니다.",
     teamName: "Fabulous",
+    splitProfiles: true,
     designerSlugs: ["minseo-byun", "juhyang-lee"],
   },
   {
@@ -1086,6 +1090,7 @@ const TEXTS: WorkText[] = [
     description:
       "본 작품은 차량과 사람, 기계가 소통의 주체로 참여하는 미래를 그립니다. 우리는 도로 위 주체들이 가진 비전(Vision)을 활용한 새로운 커뮤니케이션의 가능성을 찾아, 공통의 문법으로 상태와 의도를 주고받는 시각 언어 체계를 설계했습니다. 서로의 뜻을 추측하는 데서 오는 불확실성을 줄이고, 다음 행동을 함께 조율하는 커뮤니케이션을 제안합니다.",
     teamName: "CEP",
+    splitProfiles: true,
     designerSlugs: ["chaewon-kim", "jaeeun-jung"],
   },
   {
@@ -1108,6 +1113,7 @@ const TEXTS: WorkText[] = [
     description:
       "MiMO는 사용자의 말과 행동에 움직임으로 호응하며, 일상 속에서 교감을 나누는 쿠션형 동반 로봇입니다. 말을 건네고, 쓰다듬고, 품에 안는 작은 행동에 반응하며 나의 행동이 상대에게 전해지고 있다는 감각을 만듭니다. 익숙한 쿠션에 반응하는 움직임을 더해, 곁에 두는 사물에서 함께하는 존재로 이어지는 경험을 제안합니다.",
     teamName: "MiMO",
+    splitProfiles: true,
     designerSlugs: ["hagyeong-kim", "jinhui-lee"],
   },
   {
